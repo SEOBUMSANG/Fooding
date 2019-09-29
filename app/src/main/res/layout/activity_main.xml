@@ -55,7 +55,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/btn_bg1"
+            android:background="@drawable/radius_background_white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -85,7 +85,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="80dp"
             android:layout_marginBottom="50dp"
-            android:background="@drawable/btn_bg1"
+            android:background="@drawable/radius_background_white"
             android:text="16강"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="80dp"
             android:layout_marginBottom="50dp"
-            android:background="@drawable/btn_bg1"
+            android:background="@drawable/radius_background_white"
             android:text="32강"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
