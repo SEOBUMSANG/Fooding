@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
+    <!-- 위 toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
@@ -51,6 +52,7 @@
         app:layout_constraintVertical_bias="0.0"
         tools:layout_editor_absoluteX="-3dp">
 
+        <!-- 위치 입력 창 -->
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="wrap_content"
@@ -79,6 +81,7 @@
 
         </LinearLayout>
 
+        <!-- 16강 버튼 -->
         <Button
             android:id="@+id/t16_button"
             android:layout_width="wrap_content"
@@ -90,6 +93,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <!-- 32강 버튼 -->
         <Button
             android:id="@+id/t32_button"
             android:layout_width="wrap_content"
@@ -103,6 +107,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- 아래 toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
         android:layout_width="match_parent"
