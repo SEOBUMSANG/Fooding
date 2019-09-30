@@ -2,7 +2,13 @@ package com.example.fooding;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.LinearLayout;
+
+import com.skt.Tmap.TMapCircle;
+import com.skt.Tmap.TMapPoint;
+import com.skt.Tmap.TMapView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -10,5 +16,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        LinearLayout linearLayoutTmap = (LinearLayout)findViewById(R.id.linearLayoutTmap);
+        TMapView tMapView = new TMapView(this);
+        tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");
+        linearLayoutTmap.addView( tMapView );
+        tMapView.setCenterPoint(126.963540, 37.509354, true);
+
+        TMapPoint tMapPoint = new TMapPoint(37.509354, 126.963540);
+        TMapCircle tMapCircle = new TMapCircle();
+        tMapCircle.setCenterPoint( tMapPoint );
+        tMapCircle.setRadius(30);
+        tMapCircle.setCircleWidth(15);
+        tMapCircle.setLineColor(Color.BLUE);
+        tMapCircle.setAreaColor(Color.GRAY);
+        tMapCircle.setAreaAlpha(100);
+        tMapView.addTMapCircle("circle1", tMapCircle);
+
     }
 }
