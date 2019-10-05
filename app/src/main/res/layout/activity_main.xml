@@ -127,7 +127,7 @@
     <!-- 아래 toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
-        android:layout_width="398dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:background="@drawable/radius_background_toolbar"
         android:minHeight="?attr/actionBarSize"
@@ -139,26 +139,34 @@
 
         <Button
             android:id="@+id/home_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_gravity="left"
             android:layout_marginLeft="5dp"
-            android:background="@drawable/home_icon" />
+            android:background="@drawable/radius_background_orange" />
+
+        <Button
+            android:id="@+id/youtuber_button"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginRight="15dp"
+            android:background="@drawable/radius_background_orange" />
 
         <Button
             android:id="@+id/worldcup_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_gravity="center"
-            android:background="@drawable/trophy_icon" />
+            android:background="@drawable/radius_background_orange" />
 
         <Button
             android:id="@+id/like_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_gravity="right"
             android:layout_marginRight="15dp"
-            android:background="@drawable/heart_blank_icon" />
+            android:background="@drawable/radius_background_orange" />
 
     </androidx.appcompat.widget.Toolbar>
 
