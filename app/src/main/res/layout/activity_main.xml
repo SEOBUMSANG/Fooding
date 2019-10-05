@@ -110,11 +110,12 @@
     <!-- 아래 toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar3"
-        android:layout_width="match_parent"
+        android:layout_width="392dp"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_light"
+        android:background="@drawable/radius_background_toolbar"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        android:layout_gravity="center_horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -125,7 +126,7 @@
             android:layout_height="25dp"
             android:layout_gravity="left"
             android:layout_marginLeft="5dp"
-            android:background="@drawable/home_icon" />
+            android:background="@drawable/radius_background_orange" />
 
         <Button
             android:id="@+id/worldcup_button"
