@@ -18,10 +18,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConstraintLayout constraintLayoutTmap = (ConstraintLayout) findViewById(R.id.constraint_layout_tmap);
+        ConstraintLayout layoutTmap = (ConstraintLayout) findViewById(R.id.layout_tmap);
         TMapView tMapView = new TMapView(this);
         tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");
-        constraintLayoutTmap.addView( tMapView );
+        layoutTmap.addView( tMapView );
         tMapView.setCenterPoint(126.963540, 37.509354, true);
 
         TMapPoint tMapPoint = new TMapPoint(37.509354, 126.963540);
