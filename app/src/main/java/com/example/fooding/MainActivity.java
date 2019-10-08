@@ -18,11 +18,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ConstraintLayout constraintLayoutTmap = (ConstraintLayout) findViewById(R.id.constraint_layout_tmap);
+        LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
+        ConstraintLayout layoutComponent = findViewById(R.id.layout_component);
+
         TMapView tMapView = new TMapView(this);
-        tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");
-        constraintLayoutTmap.addView( tMapView );
+        tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");   //API key setting
+        layoutTmap.addView( tMapView );
         tMapView.setCenterPoint(126.963540, 37.509354, true);
+
+        layoutComponent.bringToFront();
+        layoutComponent.invalidate();
 
         TMapPoint tMapPoint = new TMapPoint(37.509354, 126.963540);
         TMapCircle tMapCircle = new TMapCircle();
