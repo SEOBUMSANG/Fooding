@@ -1,6 +1,7 @@
 package com.example.fooding;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,10 +18,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LinearLayout linearLayoutTmap = (LinearLayout)findViewById(R.id.linearLayoutTmap);
+        ConstraintLayout constraintLayoutTmap = (ConstraintLayout) findViewById(R.id.constraint_layout_tmap);
         TMapView tMapView = new TMapView(this);
         tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");
-        linearLayoutTmap.addView( tMapView );
+        constraintLayoutTmap.addView( tMapView );
         tMapView.setCenterPoint(126.963540, 37.509354, true);
 
         TMapPoint tMapPoint = new TMapPoint(37.509354, 126.963540);
