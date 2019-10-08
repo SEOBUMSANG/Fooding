@@ -32,12 +32,14 @@
         <!-- 위 toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_up"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/radius_background_toolbar_up"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -105,12 +107,14 @@
         <!-- 아래 toolbar -->
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_down"
-            android:layout_width="400dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/radius_background_toolbar_down"
             android:minHeight="?attr/actionBarSize"
             android:theme="?attr/actionBarTheme"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -124,7 +128,7 @@
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="15dp">
 
-                <!-- 첫 번쨰 버튼 -->
+                <!-- 첫 번째 버튼 -->
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -145,7 +149,7 @@
                     </RelativeLayout>
                 </RelativeLayout>
 
-                <!-- 두 번쨰 버튼 -->
+                <!-- 두 번째 버튼 -->
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -167,7 +171,7 @@
                     </RelativeLayout>
                 </RelativeLayout>
 
-                <!-- 세 번쨰 버튼 -->
+                <!-- 세 번째 버튼 -->
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -189,7 +193,7 @@
                     </RelativeLayout>
                 </RelativeLayout>
 
-                <!-- 네 번쨰 버튼 -->
+                <!-- 네 번째 버튼 -->
                 <RelativeLayout
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
