@@ -1,15 +1,11 @@
 package com.example.fooding;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-
-import com.skt.Tmap.TMapCircle;
-import com.skt.Tmap.TMapPoint;
-import com.skt.Tmap.TMapView;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,21 +14,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
-        TMapView tMapView = new TMapView(this);
-        tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");   //API key setting
-        layoutTmap.addView( tMapView );
-        tMapView.setCenterPoint(126.963540, 37.509354, true);
+        Button homeButton = findViewById(R.id.home_button);
 
-        TMapPoint tMapPoint = new TMapPoint(37.509354, 126.963540);
-        TMapCircle tMapCircle = new TMapCircle();
-        tMapCircle.setCenterPoint( tMapPoint );
-        tMapCircle.setRadius(30);
-        tMapCircle.setCircleWidth(15);
-        tMapCircle.setLineColor(Color.BLUE);
-        tMapCircle.setAreaColor(Color.GRAY);
-        tMapCircle.setAreaAlpha(100);
-        tMapView.addTMapCircle("circle1", tMapCircle);
+        homeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSearchActivity();
+            }
+        });
 
+    }
+
+    public void showSearchActivity() {
+        Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
+        startActivityForResult(intent, 101);
     }
 }
