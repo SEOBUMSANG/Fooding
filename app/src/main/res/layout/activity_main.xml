@@ -23,10 +23,11 @@
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:context="com.skt.tmapsample.tmapview.MapDraw">
-        </LinearLayout>
+            app:layout_constraintVertical_bias="0.0"
+            tools:context="com.skt.tmapsample.tmapview.MapDraw"></LinearLayout>
 
         <!-- 위 toolbar -->
         <androidx.appcompat.widget.Toolbar
@@ -58,7 +59,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="right"
                     android:layout_marginRight="10dp"
-                    android:background="@drawable/magnifier_icon" />
+                    android:background="@drawable/setting_icon" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -88,6 +89,7 @@
                 android:layout_marginLeft="5dp"
                 android:ems="10"
                 android:hint="위치 검색"
+                android:textColorHint="@android:color/black"
                 android:inputType="textPersonName"
                 android:textAlignment="center"
                 android:textColor="@android:color/black" />
@@ -96,49 +98,92 @@
 
         <!-- 아래 toolbar -->
         <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar_down"
-                android:layout_width="400dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/radius_background_toolbar_down"
-                android:minHeight="?attr/actionBarSize"
-                android:theme="?attr/actionBarTheme"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent">
+            android:id="@+id/toolbar_down"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/radius_background_toolbar_down"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-                <Button
-                    android:id="@+id/home_button"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="left"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="15dp">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_background_orange"
+                    android:layout_marginRight="5dp">
+
+                    <Button
+                        android:id="@+id/home_button"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/magnifier_icon" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_background_orange"
                     android:layout_marginLeft="5dp"
-                    android:background="@drawable/radius_background_orange" />
+                    android:layout_marginRight="5dp">
 
-                <Button
-                    android:id="@+id/youtuber_button"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/radius_background_orange" />
+                    <Button
+                        android:id="@+id/youtuber_button"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/radius_background_white" />
+                </RelativeLayout>
 
-                <Button
-                    android:id="@+id/worldcup_button"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/radius_background_orange" />
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_background_orange"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp">
 
-                <Button
-                    android:id="@+id/like_button"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/radius_background_orange" />
+                    <Button
+                        android:id="@+id/worldcup_button"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/trophy_icon" />
+                </RelativeLayout>
 
-            </androidx.appcompat.widget.Toolbar>
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/radius_background_orange"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="18dp">
+
+                    <Button
+                        android:id="@+id/like_button"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/heart_blank_icon" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
