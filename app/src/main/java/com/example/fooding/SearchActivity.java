@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.skt.Tmap.TMapCircle;
+import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
@@ -34,6 +37,7 @@ public class SearchActivity extends AppCompatActivity {
         tMapView = new TMapView(this);
         tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");   //API key setting
         layoutTmap.addView( tMapView );
+
         tMapView.setCenterPoint(126.963540, 37.509354, true);
 
         TMapPoint tMapPoint = new TMapPoint(37.509354, 126.963540);
@@ -106,6 +110,20 @@ public class SearchActivity extends AppCompatActivity {
                 tMapView.MapZoomOut();
             }
         });
+
+        TMapMarkerItem markerItem1 = new TMapMarkerItem();
+        TMapPoint tMapPoint1 = tMapView.getCenterPoint();
+
+// 마커 아이콘
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
+
+        markerItem1.setIcon(bitmap); // 마커 아이콘 지정
+        markerItem1.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
+        markerItem1.setTMapPoint( tMapPoint1 ); // 마커의 좌표 지정
+        markerItem1.setName("현 위치"); // 마커의 타이틀 지정
+        tMapView.addMarkerItem("markerItem1", markerItem1); // 지도에 마커 추가
+
+        //tMapView.setCenterPoint( 126.985302, 37.570841 );
 
     }
 
