@@ -34,9 +34,9 @@ public class SearchActivity extends AppCompatActivity {
         tMapView = new TMapView(this);
         tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");   //API key setting
         layoutTmap.addView( tMapView );
-        tMapView.setCenterPoint(126.963540, 37.509354, true);
+        tMapView.setCenterPoint(127.027601, 37.497919, true);
 
-        TMapPoint tMapPoint = new TMapPoint(37.509354, 126.963540);
+        TMapPoint tMapPoint = new TMapPoint(37.497919, 127.027601);
         TMapCircle tMapCircle = new TMapCircle();
         tMapCircle.setCenterPoint( tMapPoint );
         tMapCircle.setRadius(30);
