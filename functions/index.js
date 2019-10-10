@@ -1,9 +1,11 @@
-const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const functions = require('firebase-functions');
 const Youtube = require('youtube-node');
-admin.initializeApp();
+admin.initializeApp(functions.config().firebase);
+
 exports.testFunction = functions.https.onRequest(async (req, res) => {
   // Grab the text parameter.
+  let db = admin.firestore();
   const original = req.query.text;
   var youtube = new Youtube();
   var word = "강남 맛집";
@@ -27,7 +29,12 @@ exports.testFunction = functions.https.onRequest(async (req, res) => {
           var video_id = it["id"]["videoId"];
           var thumbnail = it["snippet"]["thumbnails"]["default"]["url"];
           var url = "https://www.youtube.com/watch?v=" + video_id;
-          console.log(it);
+          let docRef = db.collection('users').doc(title);
+          let setAda = docRef.set({
+            title: title,
+            thumbnail: thumbnail,
+            URL: url
+          });
           
       }
   });
