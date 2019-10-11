@@ -11,8 +11,6 @@
     tools:context=".MainActivity">
 
     <!-- t map -->
-
-    <!-- 위 toolbar -->
     <LinearLayout
         android:id="@+id/layout_tmap"
         android:layout_width="match_parent"
@@ -26,6 +24,7 @@
         app:layout_constraintVertical_bias="1.0"
         tools:context="com.skt.tmapsample.tmapview.MapDraw" />
 
+    <!-- 위 toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_up"
         android:layout_width="match_parent"

@@ -1,288 +1,285 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/layout_component"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    tools:context=".MainActivity">
+
+    <!-- t map -->
+    <LinearLayout
+        android:id="@+id/layout_tmap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:context="com.skt.tmapsample.tmapview.MapDraw" />
 
     <!-- 위 toolbar -->
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_up"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@android:color/transparent"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/radius_background_toolbar_up"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView"
-            tools:layout_editor_absoluteX="174dp"
-            tools:layout_editor_absoluteY="23dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="FOODING"
             android:textColor="@android:color/black"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="174dp"
+            tools:layout_editor_absoluteY="23dp" />
 
         <Button
-            android:id="@+id/magnifier_button"
+            android:id="@+id/setting_button"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="right"
             android:layout_marginRight="10dp"
-            android:background="@drawable/magnifier_icon" />
+            android:background="@drawable/setting_icon" />
 
     </androidx.appcompat.widget.Toolbar>
 
+    <!-- 위치 입력 창 -->
     <LinearLayout
+        android:id="@+id/linear_layout_location_input"
         android:layout_width="match_parent"
-        android:layout_height="635dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/radius_background_white"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- 후보1 자리 -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="270dp">
+        //레이아웃 잡기 용 버튼
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="53dp"
+            android:background="@drawable/radius_background_white" />
 
-            <!--후보1 내용물-->
-            <LinearLayout
-                android:layout_width="380dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/radius_background_white"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <!--음식점 이름 레이아웃-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="후보1"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true"/>
-                </RelativeLayout>
-
-                <!--사진 레이아웃-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:background="@drawable/radius_background_black"
-                    android:layout_marginTop="8dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="160dp"
-                            android:layout_height="140dp"
-                            android:src="@android:color/darker_gray" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" "/>
-
-                        <ImageView
-                            android:layout_width="160dp"
-                            android:layout_height="140dp"
-                            android:src="@android:color/darker_gray" />
-
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-                <!--키워드, 상세 버튼 레이아웃-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <Button
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/radius_background_white"
-                            android:layout_centerHorizontal="true"
-                            android:text="키워드" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <Button
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/radius_background_white"
-                            android:layout_centerHorizontal="true"
-                            android:text="상세" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- vs -->
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="vs"
-            android:textSize="40dp"/>
+            android:orientation="vertical"
+            android:layout_marginRight="15dp">
 
-        <!-- 후보2 자리 -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/youtuber_story_button"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/radius_background_white" />
 
-            <!--후보2 내용물-->
-            <LinearLayout
-                android:layout_width="380dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/radius_background_white"
-                android:orientation="vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                android:layout_gravity="center_horizontal"
+                android:text="벤쯔"
+                android:textColor="@color/black"/>
+        </LinearLayout>
 
-                <!--음식점 이름 레이아웃-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="후보2"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true"/>
-                </RelativeLayout>
+        //샘플2
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="8dp">
 
-                <!--사진 레이아웃-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:background="@drawable/radius_background_black"
-                    android:layout_marginTop="8dp">
+            <Button
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/radius_background_white" />
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="슈기"
+                android:textColor="@color/black"/>
+        </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="160dp"
-                            android:layout_height="140dp"
-                            android:src="@android:color/darker_gray" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" "/>
+    </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="160dp"
-                            android:layout_height="140dp"
-                            android:src="@android:color/darker_gray" />
+    <!-- zoom 버튼 -->
+    <LinearLayout
+        android:layout_width="45dp"
+        android:layout_height="95dp"
+        android:layout_marginLeft="8dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar_down"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout_location_input">
 
-                    </LinearLayout>
+        <Button
+            android:id="@+id/button_zoom_in"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="+"
+            android:textSize="20dp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/radius_background_white"/>
 
-                </RelativeLayout>
-
-                <!--키워드, 상세 버튼 레이아웃-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <Button
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/radius_background_white"
-                            android:layout_centerHorizontal="true"
-                            android:text="키워드" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <Button
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/radius_background_white"
-                            android:layout_centerHorizontal="true"
-                            android:text="상세" />
-                    </RelativeLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <Button
+            android:id="@+id/button_zoom_out"
+            android:layout_marginTop="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:text="-"
+            android:textSize="20dp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/radius_background_white"/>
     </LinearLayout>
 
     <!-- 아래 toolbar -->
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
+        android:id="@+id/toolbar_down"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_light"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/radius_background_toolbar_down"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/home_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/home_icon" />
-
-        <Button
-            android:id="@+id/worldcup_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:background="@drawable/trophy_icon" />
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="15dp">
 
-        <Button
-            android:id="@+id/like_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/heart_blank_icon" />
+            <!-- 첫 번째 버튼 -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/layout_search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/oval_background_orange_fill">
+
+                    <Button
+                        android:id="@+id/search_button"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/magnifier_icon" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <!-- 두 번째 버튼 -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/layout_youtuber_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/oval_background_orange_blank">
+
+                    <Button
+                        android:id="@+id/youtuber_button"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/radius_background_white" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <!-- 세 번째 버튼 -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/layout_worldcup_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/oval_background_orange_blank">
+
+                    <Button
+                        android:id="@+id/worldcup_button"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/trophy_icon" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <!-- 네 번째 버튼 -->
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="18dp"
+                android:layout_weight="1">
+
+                <RelativeLayout
+                    android:id="@+id/layout_like_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/oval_background_orange_blank">
+
+                    <Button
+                        android:id="@+id/like_button"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_centerInParent="true"
+                        android:background="@drawable/heart_blank_icon" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </LinearLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
