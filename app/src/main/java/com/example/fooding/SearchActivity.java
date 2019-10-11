@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,7 +23,14 @@ import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import android.location.Location;
+import android.location.Address;
+
+
 
 public class SearchActivity extends AppCompatActivity {
     TMapView tMapView;
@@ -39,7 +47,6 @@ public class SearchActivity extends AppCompatActivity {
         layoutTmap.addView( tMapView );
 
         tMapView.setCenterPoint(127.027601, 37.497919, true);
-
         TMapPoint tMapPoint = new TMapPoint(37.497919, 127.027601);
         TMapCircle tMapCircle = new TMapCircle();
         tMapCircle.setCenterPoint( tMapPoint );
@@ -83,7 +90,7 @@ public class SearchActivity extends AppCompatActivity {
         //화면 설정
         Button settingButton = findViewById(R.id.setting_button);
         Button mylocationButton = findViewById(R.id.my_location_button);
-        EditText locationInput = findViewById(R.id.location_input);
+        final EditText locationInput = findViewById(R.id.location_input);
         Button locationInputButton = findViewById(R.id.location_input_button);
 
         Button buttonZoomIn = findViewById(R.id.button_zoom_in);
@@ -94,6 +101,28 @@ public class SearchActivity extends AppCompatActivity {
         Button youtuberButton = findViewById(R.id.youtuber_button);
         Button worldcupButton = findViewById(R.id.worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
+
+        locationInputButton.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                String address = locationInput.getText().toString();
+                Geocoder geocoder = new Geocoder(getApplicationContext());
+
+                ArrayList<GeoLocation> resultList = new ArrayList<>();
+
+
+                try {
+                    List<Address> list = geocoder.getFromLocationName(address, 10);
+
+                    for (Address addr : list) {
+                        resultList.add(new GeoLocation(addr.getLatitude(), addr.getLongitude()));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                tMapView.setCenterPoint(resultList.get(0).longitude, resultList.get(0).latitude, true);
+            }
+        });
 
         // "확대" 버튼 클릭
         buttonZoomIn.setOnClickListener(new View.OnClickListener() {
