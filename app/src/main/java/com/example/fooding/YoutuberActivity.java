@@ -2,20 +2,19 @@ package com.example.fooding;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.skt.Tmap.TMapCircle;
@@ -23,25 +22,17 @@ import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.location.Location;
-import android.location.Address;
-
-
-
-public class SearchActivity extends AppCompatActivity {
+public class YoutuberActivity extends AppCompatActivity {
     TMapView tMapView;
     Intent intent;
-
-    Button youtuberButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        setContentView(R.layout.activity_youtuber);
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
         tMapView = new TMapView(this);
@@ -91,26 +82,22 @@ public class SearchActivity extends AppCompatActivity {
 
         //화면 설정
         Button settingButton = findViewById(R.id.setting_button);
-        Button mylocationButton = findViewById(R.id.my_location_button);
-        final EditText locationInput = findViewById(R.id.location_input);
-        Button locationInputButton = findViewById(R.id.location_input_button);
 
         Button buttonZoomIn = findViewById(R.id.button_zoom_in);
         Button buttonZoomOut = findViewById(R.id.button_zoom_out);
 
-        //layoutSearchButton = findViewById(R.id.layout_search_button);
-        //Button searchButton = findViewById(R.id.search_button);
-        youtuberButton = findViewById(R.id.youtuber_button);
+        Button searchButton = findViewById(R.id.search_button);
+        //Button youtuberButton = findViewById(R.id.youtuber_button);
         Button worldcupButton = findViewById(R.id.worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
 
         //아래 toolbar 버튼 설정
-        youtuberButton.setOnClickListener(new View.OnClickListener() {
+        searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), YoutuberActivity.class);
+                intent = new Intent(getApplicationContext(), SearchActivity.class);
                 intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivityForResult(intent, 202);
+                startActivityForResult(intent, 201);
             }
         });
         worldcupButton.setOnClickListener(new View.OnClickListener() {
@@ -123,28 +110,6 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-            }
-        });
-
-        locationInputButton.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                String address = locationInput.getText().toString();
-                Geocoder geocoder = new Geocoder(getApplicationContext());
-
-                ArrayList<GeoLocation> resultList = new ArrayList<>();
-
-
-                try {
-                    List<Address> list = geocoder.getFromLocationName(address, 10);
-
-                    for (Address addr : list) {
-                        resultList.add(new GeoLocation(addr.getLatitude(), addr.getLongitude()));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                tMapView.setCenterPoint(resultList.get(0).longitude, resultList.get(0).latitude, true);
             }
         });
 
@@ -177,15 +142,12 @@ public class SearchActivity extends AppCompatActivity {
         tMapView.addMarkerItem("markerItem1", markerItem1); // 지도에 마커 추가
 
         //tMapView.setCenterPoint( 126.985302, 37.570841 );
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "youtuber", Toast.LENGTH_SHORT).show();
     }
-
-
 }
