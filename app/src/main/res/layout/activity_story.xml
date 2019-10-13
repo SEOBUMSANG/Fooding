@@ -108,7 +108,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginRight="8dp">
+            android:layout_marginRight="15dp">
+
+            <Button
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:background="@drawable/radius_background_orange" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="슈기"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        //샘플3
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginRight="15dp">
 
             <Button
                 android:layout_width="45dp"
@@ -119,7 +139,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="슈기"
+                android:text="범준"
                 android:textColor="@color/black"/>
         </LinearLayout>
 
@@ -195,7 +215,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_fill">
+                    android:background="@drawable/oval_background_orange_blank">
 
                     <Button
                         android:id="@+id/search_button"
@@ -219,7 +239,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_blank">
+                    android:background="@drawable/oval_background_orange_fill">
 
                     <Button
                         android:id="@+id/youtuber_button"
