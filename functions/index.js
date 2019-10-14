@@ -5,47 +5,67 @@ const puppeteer = require('puppeteer');
 const $ = require('cheerio');
 admin.initializeApp(functions.config().firebase);
 
-exports.searchVideo = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
+exports.searchVideo = functions.region('asia-northeast1').https.onRequest((req, res) => {
 
   let db = admin.firestore();
 
   var youtube = new Youtube();
-  var wordArray = [];
-  var limit = 9;
-  var wordIndex = 0;
-  var count = 0;
+  var wordArray = ['강남 구구당', '강남 땀땀', '강남 바비레드', '강남 마초쉐프', '강남 고에몬', '강남 낙원타코', '강남 쉐이크쉑', '강남 스시메이진', '강남 마녀주방', '강남 감성타코', '강남 어글리스토브', '강남 장인닭갈비', '강남 베트남이랑', '강남 낙원테산도'];
+  var limit = 10;
 
-  youtube.setKey('AIzaSyBa6lDf0K-_meL_ON8kA4bEPIb3GctemO8');
-  youtube.addParam('order', 'rating');
+  youtube.setKey('AIzaSyBLSk0tcF9cIqo-1nVOi4nwi6JvyDRkLfs');
+  youtube.addParam('order', 'relevance');
   youtube.addParam('type', 'video');
   youtube.addParam('videoLicense', 'youtube');
 
-
-  for (wordIndex in wordArray) {
-    youtube.search(wordArray[wordIndex], limit, function (err, result) {
-
-      if (err) {
-        console.log(err);
-        return;
-      }
-
-      var items = result["items"];
-
-      for (var itemIndex in items) {
-        var it = items[itemIndex];
-        var title = it["snippet"]["title"];
-        var video_id = it["id"]["videoId"];
-        var thumbnail = it["snippet"]["thumbnails"]["default"]["url"];
-        var url = "https://www.youtube.com/watch?v=" + video_id;
-        let docRef = db.collection(wordArray[count]).doc('영상 ' + itemIndex).set({
-          title: title,
-          thumbnail: thumbnail,
-          URL: url
-        });
-      }
-      count++;
+  function youtubeSearch(word) {
+    return new Promise(function (resolve, reject) {
+      youtube.search(word, limit, function (err, result) {
+        if (err) {
+          console.log(err);
+          reject("error");
+        }
+        else {
+          resolve(result);
+        }
+      });
     });
   }
+
+  function youtubeCallBack(result, word) {
+    var items = result["items"];
+    for (var itemIndex in items) {
+      var it = items[itemIndex];
+      var title = it["snippet"]["title"];
+      var description = it["snippet"]["description"];
+      var video_id = it["id"]["videoId"];
+      var thumbnail = it["snippet"]["thumbnails"]["default"]["url"];
+      var url = "https://www.youtube.com/watch?v=" + video_id;
+      let docRef1 = db.collection('강남구').doc(word);
+      let docRef2 = docRef1.collection('유튜브 동영상').doc('동영상 ' + itemIndex);
+      let setAda2 = docRef2.set({
+        title: title,
+        description: description,
+        thumbnail: thumbnail,
+        URL: url
+      });
+
+    }
+  }
+  async function searchData() {
+    var i = 0;
+    var length = wordArray.length;
+    for (i = 0; i < length; i++) {
+      var searchResult = await youtubeSearch(wordArray[i])
+      youtubeCallBack(searchResult, wordArray[i]);
+    }
+    if (i == length) {
+      res.send('완료');
+    }
+  }
+
+  searchData();
+
 });
 
 exports.autoCrawling = functions.region('asia-northeast1').https.onRequest((req, res) => {
