@@ -18,6 +18,16 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.fooding.Target.TargetItem;
+import com.example.fooding.Target.TargetList;
+import com.example.fooding.Youtube.ResponseInfo;
+import com.example.fooding.Youtube.YoutubeItem;
+import com.example.fooding.Youtube.YoutubeList;
+import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
@@ -38,11 +48,15 @@ public class SearchActivity extends AppCompatActivity {
     Intent intent;
 
     Button youtuberButton;
+    
+    TargetList targetList;
+    ArrayList<TMapMarkerItem2> markerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        markerList = new ArrayList<>();
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
         tMapView = new TMapView(this);
@@ -59,6 +73,7 @@ public class SearchActivity extends AppCompatActivity {
         tMapCircle.setAreaColor(Color.GRAY);
         tMapCircle.setAreaAlpha(100);
         tMapView.addTMapCircle("circle1", tMapCircle);
+
 
         //지도 이벤트 설정
             // 클릭 이벤트 설정
@@ -127,7 +142,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
-        // 위치 검색, 이
+        // 위치 검색, 이동
         locationInputButton.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -166,7 +181,7 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         // 마커 생성하기
-        MarkerOverlay markerItem1 = new MarkerOverlay(this, "custom", "marker");
+        MarkerOverlay markerItem1 = new MarkerOverlay(this, "custom", "음식점 이름");
         //TMapPoint tMapPoint1 = tMapView.getCenterPoint();
         String sID = "markerItem1";
 
@@ -176,8 +191,69 @@ public class SearchActivity extends AppCompatActivity {
         markerItem1.setTMapPoint( tMapPoint ); // 마커의 좌표 지정
         markerItem1.setID(sID); // 마커의 타이틀 지정
 
+        markerItem1.setMarkerTouch(true);
+
         tMapView.addMarkerItem2(sID, markerItem1); // 지도에 마커 추가
 
+    }
+
+
+
+
+
+    public void makeMarker() {
+        for (int i = 0; i < targetList.result.size(); i++) {
+            TargetItem targetItem = targetList.result.get(i);
+            
+            // 마커 생성하기
+            MarkerOverlay markerItem = new MarkerOverlay(this, "custom", targetItem.name);
+            markerItem.setTMapPoint( targetItem.address ); // 마커의 좌표 지정
+            String sID = "markerItem" + i;
+
+            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
+            markerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
+            markerItem.setPosition(0.5f, 0.75f); // 마커의 중심점을 중앙, 하단으로 설정
+            markerItem.setID(sID); // 마커의 id 지정
+            
+            markerList.add(markerItem);
+            tMapView.addMarkerItem2(sID, markerItem);
+        }
+    }
+
+    public void requestTargetList(final String guName) {
+        String url = "http://" + AppHelper.host + ":" + AppHelper.port + AppHelper.readCommentList;
+        url += "?" + "guName=" + guName;
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET,
+                url,    //GET 방식은 요청 path가 필요
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        processResponse(response);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "에러발생", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
+
+        request.setShouldCache(false);
+        AppHelper.requestQueue.add(request);
+    }
+
+    public void processResponse(String response) {
+        Gson gson = new Gson();
+
+        ResponseInfo info = gson.fromJson(response, ResponseInfo.class);
+        if (info.code == 200) {
+            targetList = gson.fromJson(response, TargetList.class);
+
+            makeMarker();
+        }
     }
 
     @Override

@@ -8,7 +8,17 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.fooding.Youtube.ResponseInfo;
+import com.example.fooding.Youtube.YoutubeAdapter;
+import com.example.fooding.Youtube.YoutubeItem;
+import com.example.fooding.Youtube.YoutubeList;
+import com.google.gson.Gson;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
@@ -20,6 +30,8 @@ public class MarkerOverlay extends TMapMarkerItem2 {
     private Context mContext = null;
     private BalloonOverlayView balloonView = null;
 
+    private Rect rect = new Rect();
+    private String id;  //음식점 이름 또는 id
 
     @Override
     public Bitmap getIcon() {
@@ -77,19 +89,75 @@ public class MarkerOverlay extends TMapMarkerItem2 {
         canvas.save();
         canvas.rotate(-mapView.getRotate(), mapView.getCenterPointX(), mapView.getCenterPointY());
 
-        balloonView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+//        balloonView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+//                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+//
+//        int nTempX =  x - balloonView.getMeasuredWidth() / 2;
+//        int nTempY =  y - balloonView.getMeasuredHeight();
+//
+//        canvas.translate(nTempX, nTempY);
+//        balloonView.draw(canvas);
+//        canvas.restore();
 
-        int nTempX =  x - balloonView.getMeasuredWidth() / 2;
-        int nTempY =  y - balloonView.getMeasuredHeight();
+        float xPos = getPositionX();
+        float yPos = getPositionY();
 
-        canvas.translate(nTempX, nTempY);
-        balloonView.draw(canvas);
+        int nPos_x, nPos_y;
+
+        int nMarkerIconWidth = 0;
+        int nMarkerIconHeight = 0;
+        int marginX = 0;
+        int marginY = 0;
+
+        nMarkerIconWidth = getIcon().getWidth();
+        nMarkerIconHeight = getIcon().getHeight();
+
+        nPos_x = (int) (xPos * nMarkerIconWidth);
+        nPos_y = (int) (yPos * nMarkerIconHeight);
+
+        if(nPos_x == 0) {
+            marginX = nMarkerIconWidth / 2;
+        } else {
+            marginX = nPos_x;
+        }
+
+        if(nPos_y == 0) {
+            marginY = nMarkerIconHeight / 2;
+        } else {
+            marginY = nPos_y;
+        }
+
+        canvas.translate(x - marginX, y - marginY);
+        canvas.drawBitmap(getIcon(), 0, 0, null);
         canvas.restore();
+
+        if (showCallout) {
+            canvas.save();
+            canvas.rotate(-mapView.getRotate(), mapView.getCenterPointX(), mapView.getCenterPointY());
+
+            balloonView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
+                    View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+            int nTempX =  x - balloonView.getMeasuredWidth() / 2;
+            int nTempY =  y - marginY - balloonView.getMeasuredHeight();
+
+            canvas.translate(nTempX, nTempY);
+            balloonView.draw(canvas);
+
+            // 풍선뷰 영역 설정
+            rect.left = nTempX;
+            rect.top = nTempY;
+            rect.right = rect.left + balloonView.getMeasuredWidth();
+            rect.bottom = rect.top + balloonView.getMeasuredHeight();
+
+            setCalloutRect(rect);
+            canvas.restore();
+        }
     }
 
     public boolean onSingleTapUp(PointF point, TMapView mapView) {
         mapView.showCallOutViewWithMarkerItemID(getID());
         return false;
     }
+
 }
