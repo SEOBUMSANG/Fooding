@@ -126,6 +126,7 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        // 위치 검색, 이
         locationInputButton.setOnClickListener(new Button.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -133,7 +134,6 @@ public class SearchActivity extends AppCompatActivity {
                 Geocoder geocoder = new Geocoder(getApplicationContext());
 
                 ArrayList<GeoLocation> resultList = new ArrayList<>();
-
 
                 try {
                     List<Address> list = geocoder.getFromLocationName(address, 10);
@@ -164,19 +164,16 @@ public class SearchActivity extends AppCompatActivity {
             }
         });
 
+        // 마커 생성하기
         TMapMarkerItem markerItem1 = new TMapMarkerItem();
         TMapPoint tMapPoint1 = tMapView.getCenterPoint();
 
-// 마커 아이콘
         Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
-
-        markerItem1.setIcon(bitmap); // 마커 아이콘 지정
-        markerItem1.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
-        markerItem1.setTMapPoint( tMapPoint1 ); // 마커의 좌표 지정
+        markerItem1.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
+        markerItem1.setPosition(0.5f, 0.75f); // 마커의 중심점을 중앙, 하단으로 설정
+        markerItem1.setTMapPoint( tMapPoint ); // 마커의 좌표 지정
         markerItem1.setName("현 위치"); // 마커의 타이틀 지정
         tMapView.addMarkerItem("markerItem1", markerItem1); // 지도에 마커 추가
-
-        //tMapView.setCenterPoint( 126.985302, 37.570841 );
 
     }
 
@@ -187,5 +184,17 @@ public class SearchActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
     }
 
+    public Bitmap resizeBitmap(Bitmap original) {
+        int resizeWidth = 200;
+
+        double aspectRatio = (double) original.getHeight() / (double) original.getWidth();
+        int targetHeight = (int) (resizeWidth * aspectRatio);
+
+        Bitmap result = Bitmap.createScaledBitmap(original, resizeWidth, targetHeight, false);
+        if( result != original) {
+            original.recycle();
+        }
+        return result;
+    }
 
 }
