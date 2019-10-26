@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
@@ -165,15 +166,17 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         // 마커 생성하기
-        TMapMarkerItem markerItem1 = new TMapMarkerItem();
-        TMapPoint tMapPoint1 = tMapView.getCenterPoint();
+        MarkerOverlay markerItem1 = new MarkerOverlay(this, "custom", "marker");
+        //TMapPoint tMapPoint1 = tMapView.getCenterPoint();
+        String sID = "markerItem1";
 
         Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
         markerItem1.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
         markerItem1.setPosition(0.5f, 0.75f); // 마커의 중심점을 중앙, 하단으로 설정
         markerItem1.setTMapPoint( tMapPoint ); // 마커의 좌표 지정
-        markerItem1.setName("현 위치"); // 마커의 타이틀 지정
-        tMapView.addMarkerItem("markerItem1", markerItem1); // 지도에 마커 추가
+        markerItem1.setID(sID); // 마커의 타이틀 지정
+
+        tMapView.addMarkerItem2(sID, markerItem1); // 지도에 마커 추가
 
     }
 
