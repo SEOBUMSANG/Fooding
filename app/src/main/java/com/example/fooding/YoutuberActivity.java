@@ -140,6 +140,6 @@ public class YoutuberActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Toast.makeText(getApplicationContext(), "youtuber", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "channel", Toast.LENGTH_SHORT).show();
     }
 }

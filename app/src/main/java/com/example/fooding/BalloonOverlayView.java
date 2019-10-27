@@ -1,6 +1,7 @@
 package com.example.fooding;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,9 @@ public class BalloonOverlayView extends FrameLayout {
     public BalloonOverlayView(Context context, String labelName, String id) {
         super(context);
 
+        final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
+        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, getResources().getDisplayMetrics());
+
         adapter = new YoutubeAdapter();
 
         setPadding(10, 0, 10, 0);
@@ -44,7 +48,7 @@ public class BalloonOverlayView extends FrameLayout {
         setupView(context, layout, labelName, id);
 
         //LayoutParams params = new LayoutParams( , LayoutParams.WRAP_CONTENT);
-        LayoutParams param = new LayoutParams(800, 600);
+        LayoutParams param = new LayoutParams(width, height);
         param.gravity = Gravity.NO_GRAVITY;
         addView(layout, param);
     }
@@ -63,6 +67,18 @@ public class BalloonOverlayView extends FrameLayout {
         setSubTitle(id);
 
         //requestYoutubeList(id);
+
+        //테스트
+        YoutubeItem youtubeItem = new YoutubeItem(
+                "https://i.ytimg.com/vi/upr-gMBSsQE/default.jpg",
+                "쿠캣 - COOKAT",
+                "강남에 상륙한 대만 삼미식당 리얼후기     대왕연어초밥에 장어덮밥까지 싹 다 먹어봄! 추천 메뉴는 꼭 먹어봐야 합니다,, ",
+                "[오늘 뭐 먹지?] 강남에 상륙한 대만 삼미식당 리얼후기\uD83D\uDD25\uD83D\uDD25",
+                "https://www.youtube.com/watch?v=upr-gMBSsQE");
+        adapter.addItem(youtubeItem);
+        adapter.notifyDataSetChanged();
+        //
+
         listView.setAdapter(adapter);
 
     }
@@ -108,8 +124,8 @@ public class BalloonOverlayView extends FrameLayout {
     }
 
     public void setYoutubeList() {
-        for (int i = 0; i < youtubeList.result.size(); i++) {
-            YoutubeItem youtubeItem = youtubeList.result.get(i);
+        for (int i = 0; i < youtubeList.youtube.size(); i++) {
+            YoutubeItem youtubeItem = youtubeList.youtube.get(i);
             adapter.addItem(youtubeItem);
         }
         adapter.notifyDataSetChanged();

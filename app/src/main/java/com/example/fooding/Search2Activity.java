@@ -101,6 +101,12 @@ public class Search2Activity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "zoomLevel=" + zoom + "\nlon=" + centerPoint.getLongitude() + "\nlat=" + centerPoint.getLatitude(), Toast.LENGTH_SHORT).show();
             }
         });
+        tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
+            @Override
+            public void onCalloutMarker2ClickEvent(String s, TMapMarkerItem2 tMapMarkerItem2) {
+                Toast.makeText(getApplicationContext(), "marker", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         //화면 설정
         Button settingButton = findViewById(R.id.setting_button);
