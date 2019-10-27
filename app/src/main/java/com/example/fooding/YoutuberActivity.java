@@ -8,12 +8,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.location.Address;
-import android.location.Geocoder;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -23,7 +20,6 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class YoutuberActivity extends AppCompatActivity {
     TMapView tMapView;
@@ -39,10 +35,13 @@ public class YoutuberActivity extends AppCompatActivity {
         tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");   //API key setting
         layoutTmap.addView( tMapView );
 
-        tMapView.setCenterPoint(127.027601, 37.497919, true);
-        TMapPoint tMapPoint = new TMapPoint(37.497919, 127.027601);
+        Intent getIntent = getIntent();
+        final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
+        TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
+
+        tMapView.setCenterPoint(centerPointList[1], centerPointList[0], true);
         TMapCircle tMapCircle = new TMapCircle();
-        tMapCircle.setCenterPoint( tMapPoint );
+        tMapCircle.setCenterPoint( centerPoint );
         tMapCircle.setRadius(30);
         tMapCircle.setCircleWidth(15);
         tMapCircle.setLineColor(Color.BLUE);
@@ -95,8 +94,9 @@ public class YoutuberActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), SearchActivity.class);
+                intent = new Intent(getApplicationContext(), Search2Activity.class);
                 intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("point", centerPointList);
                 startActivityForResult(intent, 201);
             }
         });
@@ -132,16 +132,8 @@ public class YoutuberActivity extends AppCompatActivity {
         TMapMarkerItem markerItem1 = new TMapMarkerItem();
         TMapPoint tMapPoint1 = tMapView.getCenterPoint();
 
-// 마커 아이콘
-        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
+// 마커
 
-        markerItem1.setIcon(bitmap); // 마커 아이콘 지정
-        markerItem1.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
-        markerItem1.setTMapPoint( tMapPoint1 ); // 마커의 좌표 지정
-        markerItem1.setName("현 위치"); // 마커의 타이틀 지정
-        tMapView.addMarkerItem("markerItem1", markerItem1); // 지도에 마커 추가
-
-        //tMapView.setCenterPoint( 126.985302, 37.570841 );
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +27,13 @@ public class BalloonOverlayView extends FrameLayout {
     private TextView title;
     private TextView subTitle;
 
-    String id;
+    ListView listView;
     YoutubeList youtubeList;
     YoutubeAdapter adapter;
 
     public BalloonOverlayView(Context context, String labelName, String id) {
         super(context);
-        this.id = id;
+
         adapter = new YoutubeAdapter();
 
         setPadding(10, 0, 10, 0);
@@ -42,10 +43,10 @@ public class BalloonOverlayView extends FrameLayout {
         //requestYoutubeList(this.id); // db에 유튜브 리스트 요청
         setupView(context, layout, labelName, id);
 
-        LayoutParams params = new LayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.NO_GRAVITY;
-        addView(layout, params);
+        //LayoutParams params = new LayoutParams( , LayoutParams.WRAP_CONTENT);
+        LayoutParams param = new LayoutParams(800, 600);
+        param.gravity = Gravity.NO_GRAVITY;
+        addView(layout, param);
     }
 
 
@@ -54,11 +55,15 @@ public class BalloonOverlayView extends FrameLayout {
 
         View view = inflater.inflate(R.layout.youtube_list_view, parent, true);
 
+        listView = view.findViewById(R.id.listView);
         //title = (TextView) view.findViewById(R.id.bubble_title);
         //subTitle = (TextView) view.findViewById(R.id.bubble_subtitle);
 
         setTitle(labelName);
         setSubTitle(id);
+
+        //requestYoutubeList(id);
+        listView.setAdapter(adapter);
 
     }
 
@@ -118,4 +123,7 @@ public class BalloonOverlayView extends FrameLayout {
     public void setSubTitle(String str) {
         //subTitle.setText(str);
     }
+
+
+
 }
