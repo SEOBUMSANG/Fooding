@@ -1,12 +1,14 @@
 package com.example.fooding;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,13 +28,16 @@ public class BalloonOverlayView extends FrameLayout {
     private TextView title;
     private TextView subTitle;
 
-    String id;
+    ListView listView;
     YoutubeList youtubeList;
     YoutubeAdapter adapter;
 
     public BalloonOverlayView(Context context, String labelName, String id) {
         super(context);
-        this.id = id;
+
+        final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
+        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, getResources().getDisplayMetrics());
+
         adapter = new YoutubeAdapter();
 
         setPadding(10, 0, 10, 0);
@@ -42,10 +47,10 @@ public class BalloonOverlayView extends FrameLayout {
         //requestYoutubeList(this.id); // db에 유튜브 리스트 요청
         setupView(context, layout, labelName, id);
 
-        LayoutParams params = new LayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.gravity = Gravity.NO_GRAVITY;
-        addView(layout, params);
+        //LayoutParams params = new LayoutParams( , LayoutParams.WRAP_CONTENT);
+        LayoutParams param = new LayoutParams(width, height);
+        param.gravity = Gravity.NO_GRAVITY;
+        addView(layout, param);
     }
 
 
@@ -54,11 +59,27 @@ public class BalloonOverlayView extends FrameLayout {
 
         View view = inflater.inflate(R.layout.youtube_list_view, parent, true);
 
+        listView = view.findViewById(R.id.listView);
         //title = (TextView) view.findViewById(R.id.bubble_title);
         //subTitle = (TextView) view.findViewById(R.id.bubble_subtitle);
 
         setTitle(labelName);
         setSubTitle(id);
+
+        //requestYoutubeList(id);
+
+        //테스트
+        YoutubeItem youtubeItem = new YoutubeItem(
+                "https://i.ytimg.com/vi/upr-gMBSsQE/default.jpg",
+                "쿠캣 - COOKAT",
+                "강남에 상륙한 대만 삼미식당 리얼후기     대왕연어초밥에 장어덮밥까지 싹 다 먹어봄! 추천 메뉴는 꼭 먹어봐야 합니다,, ",
+                "[오늘 뭐 먹지?] 강남에 상륙한 대만 삼미식당 리얼후기\uD83D\uDD25\uD83D\uDD25",
+                "https://www.youtube.com/watch?v=upr-gMBSsQE");
+        adapter.addItem(youtubeItem);
+        adapter.notifyDataSetChanged();
+        //
+
+        listView.setAdapter(adapter);
 
     }
 
@@ -103,8 +124,8 @@ public class BalloonOverlayView extends FrameLayout {
     }
 
     public void setYoutubeList() {
-        for (int i = 0; i < youtubeList.result.size(); i++) {
-            YoutubeItem youtubeItem = youtubeList.result.get(i);
+        for (int i = 0; i < youtubeList.youtube.size(); i++) {
+            YoutubeItem youtubeItem = youtubeList.youtube.get(i);
             adapter.addItem(youtubeItem);
         }
         adapter.notifyDataSetChanged();
@@ -118,4 +139,7 @@ public class BalloonOverlayView extends FrameLayout {
     public void setSubTitle(String str) {
         //subTitle.setText(str);
     }
+
+
+
 }

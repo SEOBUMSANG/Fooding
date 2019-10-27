@@ -37,14 +37,11 @@ public class YoutubeAdapter extends BaseAdapter {
         }
 
         YoutubeItem item = items.get(position);
-
-        view.setItemId(item.getId());
-        view.setItemLink(item.getLink());
+        view.setItemLink(item.getURL());
         view.setItemThumbnail(item.getThumbnail());
         view.setItemTitle(item.getTitle());
-        view.setItemYoutuber(item.getYoutuber());
-        view.setItemHits(item.getHits());
-        view.setItemDate(item.getDate());
+        view.setItemYoutuber(item.getChannel());
+        //view.setItemDescription(item.getDescription());
 
         return view;
     }

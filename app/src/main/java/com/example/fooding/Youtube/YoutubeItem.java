@@ -4,32 +4,26 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class YoutubeItem implements Parcelable {
-    public int id;
-    public String link;
     public String thumbnail;
+    public String channel;
+    public String description;
     public String title;
-    public String youtuber;
-    public int hits;
-    public String date;
+    public String URL;
 
-    public YoutubeItem(int id, String link, String thumbnail, String title, String youtuber, int hits, String date) {
-        this.id = id;
-        this.link = link;
+    public YoutubeItem(String thumbnail, String channel, String description, String title, String URL) {
         this.thumbnail = thumbnail;
+        this.channel = channel;
+        this.description = description;
         this.title = title;
-        this.youtuber = youtuber;
-        this.hits = hits;
-        this.date = date;
+        this.URL = URL;
     }
 
     public YoutubeItem(Parcel src) {
-        id = src.readInt();
-        link = src.readString();
         thumbnail = src.readString();
+        channel = src.readString();
+        description = src.readString();
         title = src.readString();
-        youtuber = src.readString();
-        hits = src.readInt();
-        date = src.readString();
+        URL = src.readString();
     }
 
     public static final Creator CREATOR = new Creator() {
@@ -48,30 +42,20 @@ public class YoutubeItem implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(link);
+    public void writeToParcel(Parcel dest, int flags) { ;
         dest.writeString(thumbnail);
+        dest.writeString(channel);
+        dest.writeString(description);
         dest.writeString(title);
-        dest.writeString(youtuber);
-        dest.writeInt(hits);
-        dest.writeString(date);
+        dest.writeString(URL);
     }
 
-    public int getId() {
-        return id;
+    public String getURL() {
+        return URL;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
+    public void setURL(String URL) {
+        this.URL = URL;
     }
 
     public String getThumbnail() {
@@ -90,27 +74,19 @@ public class YoutubeItem implements Parcelable {
         this.title = title;
     }
 
-    public String getYoutuber() {
-        return youtuber;
+    public String getChannel() {
+        return channel;
     }
 
-    public void setYoutuber(String youtuber) {
-        this.youtuber = youtuber;
+    public void setChannel(String channel) {
+        this.channel = channel;
     }
 
-    public int getHits() {
-        return hits;
+    public String getDescription() {
+        return description;
     }
 
-    public void setHits(int hits) {
-        this.hits = hits;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
