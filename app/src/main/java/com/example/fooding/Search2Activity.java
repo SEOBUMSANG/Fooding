@@ -34,6 +34,8 @@ import java.util.List;
 
 import android.location.Address;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class Search2Activity extends AppCompatActivity {
@@ -43,6 +45,8 @@ public class Search2Activity extends AppCompatActivity {
     Button youtuberButton;
     
     TargetList targetList;
+    ArrayList<JSONObject> jsonObjectArrayList;
+
     ArrayList<TMapMarkerItem2> markerList;
 
     @Override
@@ -51,6 +55,7 @@ public class Search2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_search2);
 
         Intent getIntent = getIntent();
+        jsonObjectArrayList = new ArrayList<>();
         markerList = new ArrayList<>();
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
@@ -184,80 +189,67 @@ public class Search2Activity extends AppCompatActivity {
             }
         });
 
-        // 마커 생성하기
-        MarkerOverlay markerItem1 = new MarkerOverlay(this, "custom", "음식점 이름");
-        //TMapPoint tMapPoint1 = tMapView.getCenterPoint();
-        String sID = "markerItem1";
+        // db에 유튜브 리스트 요청
+        jsonObjectArrayList = new ArrayList<>();
+        SearchDB searchDB = null;
+        try {
+            searchDB = new SearchDB();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
-        markerItem1.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
-        markerItem1.setPosition(0.5f, 0.75f); // 마커의 중심점을 중앙, 하단으로 설정
-        markerItem1.setTMapPoint( centerPoint ); // 마커의 좌표 지정
-        markerItem1.setID(sID); // 마커의 타이틀 지정
+        searchDB.returnData(jsonObjectArrayList);   // 전체 음식점 정보 json으로 받아오기
 
-        markerItem1.setMarkerTouch(true);
-
-        tMapView.addMarkerItem2(sID, markerItem1); // 지도에 마커 추가
+        try {
+            if ( makeMarker(jsonObjectArrayList) ) {    // 마커 생성
+                TMapMarkerItem2 markerItem = null;
+                for (int i=0; i<markerList.size(); i++) {
+                    markerItem = markerList.get(i);
+                    tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    
+    public boolean makeMarker(ArrayList<JSONObject> jsonObjectArrayList) throws JSONException {
 
+        for (int i = 0; i < jsonObjectArrayList.size(); i++) {
+            JSONObject jsonObject = jsonObjectArrayList.get(i);
+            String response = jsonObject.toString();
 
-    public void makeMarker() {
-        for (int i = 0; i < targetList.result.size(); i++) {
-            TargetItem targetItem = targetList.result.get(i);
-            
-            // 마커 생성하기
-            MarkerOverlay markerItem = new MarkerOverlay(this, "custom", targetItem.name);
-            markerItem.setTMapPoint( targetItem.address ); // 마커의 좌표 지정
+            // 마커 생성
+            MarkerOverlay markerItem = new MarkerOverlay(this, response);
+            markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
             String sID = "markerItem" + i;
 
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
-            markerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
+           markerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
             markerItem.setPosition(0.5f, 0.75f); // 마커의 중심점을 중앙, 하단으로 설정
             markerItem.setID(sID); // 마커의 id 지정
-            
+
             markerList.add(markerItem);
-            tMapView.addMarkerItem2(sID, markerItem);
         }
-    }
 
-    public void requestTargetList(final String guName) {
-        String url = "http://" + AppHelper.host + ":" + AppHelper.port + AppHelper.readCommentList;
-        url += "?" + "guName=" + guName;
-
-        StringRequest request = new StringRequest(
-                Request.Method.GET,
-                url,    //GET 방식은 요청 path가 필요
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        processResponse(response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "에러발생", Toast.LENGTH_SHORT).show();
-                    }
-                }
-        );
-
-        request.setShouldCache(false);
-        AppHelper.requestQueue.add(request);
-    }
-
-    public void processResponse(String response) {
-        Gson gson = new Gson();
-
-        ResponseInfo info = gson.fromJson(response, ResponseInfo.class);
-        if (info.code == 200) {
-            targetList = gson.fromJson(response, TargetList.class);
-
-            makeMarker();
+        if (markerList.isEmpty()) {
+            return false;
         }
+        return true;
     }
+
+
+//    public void processResponse(String response) {
+//        Gson gson = new Gson();
+//
+//        ResponseInfo info = gson.fromJson(response, ResponseInfo.class);
+//        if (info.code == 200) {
+//            targetList = gson.fromJson(response, TargetList.class);
+//
+//            makeMarker();
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

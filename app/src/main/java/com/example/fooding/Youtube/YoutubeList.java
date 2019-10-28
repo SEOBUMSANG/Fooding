@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class YoutubeList {
     public String name;
-    //public String lating;
+    public double lat;
+    public double lng;
     public ArrayList<YoutubeItem> youtube = new ArrayList<YoutubeItem>();
 
 }

@@ -53,17 +53,13 @@ public class SearchDB {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            JSONObject videoObject = new JSONObject();
+                            ArrayList<String> videoList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                try {
-                                    videoObject.put(document.getId(),document.getData());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
+                                videoList.add(document.getData().toString());
                             }
                             try {
                                 jsonObject.put("name",name);
-                                jsonObject.put("youtube",videoObject.toString());
+                                jsonObject.put("youtube",videoList);
                                 Log.d("tag",jsonObject.toString());
                                 jsonObjectArrayList.add(jsonObject);
                             } catch (JSONException e) {

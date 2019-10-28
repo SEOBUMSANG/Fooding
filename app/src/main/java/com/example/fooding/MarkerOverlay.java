@@ -8,20 +8,12 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.example.fooding.Youtube.ResponseInfo;
-import com.example.fooding.Youtube.YoutubeAdapter;
-import com.example.fooding.Youtube.YoutubeItem;
-import com.example.fooding.Youtube.YoutubeList;
-import com.google.gson.Gson;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
+
+import org.json.JSONException;
 
 public class MarkerOverlay extends TMapMarkerItem2 {
 
@@ -29,9 +21,9 @@ public class MarkerOverlay extends TMapMarkerItem2 {
 
     private Context mContext = null;
     private BalloonOverlayView balloonView = null;
+    public TMapPoint markerPoint = null;
 
     private Rect rect = new Rect();
-    private String id;  //음식점 이름 또는 id
 
     @Override
     public Bitmap getIcon() {
@@ -66,14 +58,15 @@ public class MarkerOverlay extends TMapMarkerItem2 {
         super.setCalloutRect(rect);
     }
 
-    public MarkerOverlay(Context context, String labelName, String id) {
+    public MarkerOverlay(Context context, String response) {
         this.mContext = context;
 
         dm = new DisplayMetrics();
         WindowManager wmgr = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         wmgr.getDefaultDisplay().getMetrics(dm);
 
-        balloonView = new BalloonOverlayView(mContext, labelName, id);
+        balloonView = new BalloonOverlayView(mContext, response);
+        markerPoint = balloonView.markerPoint;
 
         balloonView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
