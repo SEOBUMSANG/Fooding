@@ -19,7 +19,7 @@ public class MarkerOverlay extends TMapMarkerItem2 {
     private DisplayMetrics dm = null;
 
     private Context mContext = null;
-    private BalloonOverlayView balloonView = null;
+    public BalloonOverlayView balloonView = null;
     public TMapPoint markerPoint = null;
 
     private Rect rect = new Rect();

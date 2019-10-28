@@ -11,6 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.fooding.Target.TargetList;
 import com.example.fooding.Youtube.YoutubeAdapter;
 import com.example.fooding.Youtube.YoutubeItem;
@@ -27,6 +29,7 @@ public class BalloonOverlayView extends FrameLayout {
     private TextView title;
 
     ListView listView;
+    //RecyclerView listView;
 
     TargetList targetList;
     YoutubeList youtubeList;
@@ -35,12 +38,13 @@ public class BalloonOverlayView extends FrameLayout {
     YoutubeAdapter adapter;
 
     TMapPoint markerPoint;
+    String uri[];
 
     public BalloonOverlayView(Context context, String response) {
         super(context);
 
         final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
-        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 240, getResources().getDisplayMetrics());
+        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 365, getResources().getDisplayMetrics());
 
         adapter = new YoutubeAdapter();
 

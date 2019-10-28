@@ -1,6 +1,8 @@
 package com.example.fooding.Youtube;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,11 @@ import android.widget.TextView;
 import com.example.fooding.ImageLoadTask;
 import com.example.fooding.R;
 
+
+
 public class YoutubeItemView extends LinearLayout {
+    Context mcontext;
+
     int youtubeId;
     String youtubeLink;
     ImageView youtubeThumbnailView;
@@ -44,6 +50,7 @@ public class YoutubeItemView extends LinearLayout {
     }
 
     private void init(Context context) {
+        mcontext = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.youtube_item_view, this, true);
 
@@ -57,6 +64,8 @@ public class YoutubeItemView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 //링크 열기
+//                Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink));
+//                mcontext.startActivity(myintent);
             }
         });
     }

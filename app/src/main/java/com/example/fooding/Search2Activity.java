@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -102,6 +103,11 @@ public class Search2Activity extends AppCompatActivity {
             @Override
             public void onCalloutMarker2ClickEvent(String s, TMapMarkerItem2 tMapMarkerItem2) {
                 Toast.makeText(getApplicationContext(), "marker", Toast.LENGTH_SHORT).show();
+                MarkerOverlay marker = (MarkerOverlay) tMapMarkerItem2;
+
+                Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.youtubeItems[0].URL));
+                startActivity(myintent);
+
             }
         });
 
