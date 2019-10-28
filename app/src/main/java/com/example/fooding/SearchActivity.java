@@ -64,7 +64,6 @@ public class SearchActivity extends AppCompatActivity {
     public void moveToSearch2(double[] tMapPoint) {
         intent = new Intent(getApplicationContext(), Search2Activity.class);
         intent.putExtra("point", tMapPoint);
-        //intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivityForResult(intent, 102);
     }
 }

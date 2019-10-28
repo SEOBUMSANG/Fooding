@@ -95,7 +95,7 @@ public class YoutuberActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), Search2Activity.class);
-                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("point", centerPointList);
                 startActivityForResult(intent, 201);
             }

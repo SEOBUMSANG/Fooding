@@ -13,7 +13,6 @@ import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
-import org.json.JSONException;
 
 public class MarkerOverlay extends TMapMarkerItem2 {
 
@@ -81,16 +80,6 @@ public class MarkerOverlay extends TMapMarkerItem2 {
 
         canvas.save();
         canvas.rotate(-mapView.getRotate(), mapView.getCenterPointX(), mapView.getCenterPointY());
-
-//        balloonView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
-//                View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-//
-//        int nTempX =  x - balloonView.getMeasuredWidth() / 2;
-//        int nTempY =  y - balloonView.getMeasuredHeight();
-//
-//        canvas.translate(nTempX, nTempY);
-//        balloonView.draw(canvas);
-//        canvas.restore();
 
         float xPos = getPositionX();
         float yPos = getPositionY();

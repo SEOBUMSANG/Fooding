@@ -16,28 +16,26 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import androidx.annotation.NonNull;
+
 
 public class SearchDB {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public SearchDB() throws JSONException {
+    public SearchDB() {
     }
 
     public void returnData(final ArrayList<JSONObject> jsonObjectArrayList) {
-        db.collection("gangnam")
+        db.collection("Crawling")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            JSONObject jsonObject = new JSONObject();
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                JSONObject jsonObject = new JSONObject();
                                 Log.d("TAG", document.getId() + " => " + document.getData().get("name"));
-                                returnYoutube(jsonObjectArrayList,jsonObject,document.getId(),document.getData().get("name"));
+                                returnYoutube(jsonObjectArrayList,jsonObject,document.getId(),document.getData().get("name"),document.getData().get("lat"),document.getData().get("lng"));
                             }
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
@@ -46,8 +44,8 @@ public class SearchDB {
                 });
     }
 
-    public void returnYoutube(final ArrayList<JSONObject> jsonObjectArrayList,final JSONObject jsonObject ,final Object id,final Object name){
-        db.collection("gangnam").document(id.toString()).collection("youtube")
+    public void returnYoutube(final ArrayList<JSONObject> jsonObjectArrayList,final JSONObject jsonObject ,final Object id,final Object name,final Object lat,final Object lng){
+        db.collection("Crawling").document(id.toString()).collection("youtube")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -59,6 +57,8 @@ public class SearchDB {
                             }
                             try {
                                 jsonObject.put("name",name);
+                                jsonObject.put("lat",lat);
+                                jsonObject.put("lng",lng);
                                 jsonObject.put("youtube",videoList);
                                 Log.d("tag",jsonObject.toString());
                                 jsonObjectArrayList.add(jsonObject);

@@ -10,20 +10,15 @@ import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.example.fooding.Target.TargetItem;
 import com.example.fooding.Target.TargetList;
-import com.example.fooding.Youtube.ResponseInfo;
-import com.google.gson.Gson;
+
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
@@ -31,10 +26,7 @@ import com.skt.Tmap.TMapView;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.location.Address;
-
-import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -133,7 +125,7 @@ public class Search2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), YoutuberActivity.class);
-                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                //intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("point", centerPointList);
                 startActivityForResult(intent, 202);
             }
@@ -191,34 +183,50 @@ public class Search2Activity extends AppCompatActivity {
 
         // db에 유튜브 리스트 요청
         jsonObjectArrayList = new ArrayList<>();
-        SearchDB searchDB = null;
-        try {
-            searchDB = new SearchDB();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
+        SearchDB searchDB = new SearchDB();
         searchDB.returnData(jsonObjectArrayList);   // 전체 음식점 정보 json으로 받아오기
 
-        try {
-            if ( makeMarker(jsonObjectArrayList) ) {    // 마커 생성
-                TMapMarkerItem2 markerItem = null;
-                for (int i=0; i<markerList.size(); i++) {
-                    markerItem = markerList.get(i);
-                    tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
+//        if (jsonObjectArrayList.isEmpty()){
+//            Log.e("TAG", "jsonObjectArrayList isEmpty");
+//            int i=0;
+//            do {
+//                //Log.e("COUNT", "count : " + i);
+//                i++;
+//            } while (jsonObjectArrayList.isEmpty());
+//        }
+
+        // 잠시 시간 필요함
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Log.e("TAG", "check");
+
+                if ( makeMarker(jsonObjectArrayList) ) {    // 마커 생성
+                    Toast.makeText(getApplicationContext(), "makeMarker통과", Toast.LENGTH_SHORT).show();
+                    TMapMarkerItem2 markerItem = null;
+                    for (int i = 0; i < markerList.size(); i++) {
+                        markerItem = markerList.get(i);
+                        Log.d("TAG", "markerPoint : " + markerItem.getTMapPoint());
+                        tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
+                    }
                 }
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        }, 5000);
 
     }
 
-    public boolean makeMarker(ArrayList<JSONObject> jsonObjectArrayList) throws JSONException {
+    public boolean makeMarker(ArrayList<JSONObject> jsonObjectArrayList) {
 
+        if (jsonObjectArrayList.isEmpty())
+            Log.e("TAG", "어레이 비어있음");
+
+        JSONObject jsonObject;
         for (int i = 0; i < jsonObjectArrayList.size(); i++) {
-            JSONObject jsonObject = jsonObjectArrayList.get(i);
+            jsonObject = jsonObjectArrayList.get(i);
             String response = jsonObject.toString();
+            Log.e("TAG", response);
 
             // 마커 생성
             MarkerOverlay markerItem = new MarkerOverlay(this, response);
@@ -226,7 +234,7 @@ public class Search2Activity extends AppCompatActivity {
             String sID = "markerItem" + i;
 
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
-           markerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
+            markerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
             markerItem.setPosition(0.5f, 0.75f); // 마커의 중심점을 중앙, 하단으로 설정
             markerItem.setID(sID); // 마커의 id 지정
 
@@ -238,18 +246,6 @@ public class Search2Activity extends AppCompatActivity {
         }
         return true;
     }
-
-
-//    public void processResponse(String response) {
-//        Gson gson = new Gson();
-//
-//        ResponseInfo info = gson.fromJson(response, ResponseInfo.class);
-//        if (info.code == 200) {
-//            targetList = gson.fromJson(response, TargetList.class);
-//
-//            makeMarker();
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
