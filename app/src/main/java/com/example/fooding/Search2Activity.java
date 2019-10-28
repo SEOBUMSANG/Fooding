@@ -186,14 +186,6 @@ public class Search2Activity extends AppCompatActivity {
         SearchDB searchDB = new SearchDB();
         searchDB.returnData(jsonObjectArrayList);   // 전체 음식점 정보 json으로 받아오기
 
-//        if (jsonObjectArrayList.isEmpty()){
-//            Log.e("TAG", "jsonObjectArrayList isEmpty");
-//            int i=0;
-//            do {
-//                //Log.e("COUNT", "count : " + i);
-//                i++;
-//            } while (jsonObjectArrayList.isEmpty());
-//        }
 
         // 잠시 시간 필요함
         new Handler().postDelayed(new Runnable()
@@ -230,6 +222,7 @@ public class Search2Activity extends AppCompatActivity {
 
             // 마커 생성
             MarkerOverlay markerItem = new MarkerOverlay(this, response);
+            Log.d("point", "point : " + markerItem.markerPoint);
             markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
             String sID = "markerItem" + i;
 

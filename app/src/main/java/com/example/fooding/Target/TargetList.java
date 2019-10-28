@@ -6,5 +6,5 @@ public class TargetList {
     public String name;
     public String lat;
     public String lng;
-    //public String youtube;
+    public String youtube;
 }

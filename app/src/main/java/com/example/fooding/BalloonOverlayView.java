@@ -16,6 +16,7 @@ import com.example.fooding.Youtube.YoutubeAdapter;
 import com.example.fooding.Youtube.YoutubeItem;
 import com.example.fooding.Youtube.YoutubeList;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.skt.Tmap.TMapPoint;
 
 import org.json.JSONObject;
@@ -29,6 +30,8 @@ public class BalloonOverlayView extends FrameLayout {
 
     TargetList targetList;
     YoutubeList youtubeList;
+    YoutubeItem[] youtubeItems;
+
     YoutubeAdapter adapter;
 
     TMapPoint markerPoint;
@@ -72,11 +75,11 @@ public class BalloonOverlayView extends FrameLayout {
         // 음식점 이름 설정
         setTitle(name);
 
-//        for (int i = 0; i < youtubeList.youtube.size(); i++) {
-//            YoutubeItem youtubeItem = youtubeList.youtube.get(i);
-//            adapter.addItem(youtubeItem);
-//        }
-//        adapter.notifyDataSetChanged();
+        for (int i = 0; i < youtubeItems.length; i++) {
+            YoutubeItem youtubeItem = youtubeItems[i];
+            adapter.addItem(youtubeItem);
+        }
+        adapter.notifyDataSetChanged();
 
         listView.setAdapter(adapter);
 
@@ -87,25 +90,20 @@ public class BalloonOverlayView extends FrameLayout {
         Gson gson = new Gson();
 
         targetList = gson.fromJson(response, TargetList.class);
+        youtubeItems = gson.fromJson(targetList.youtube, YoutubeItem[].class);
 
-        //youtubeList = gson.fromJson(gson.toJson(targetList.youtube), YoutubeList.class);
+        setYoutubeList();
 
-        //setYoutubeList();
-
-//        if (youtubeList.youtube.isEmpty()) {
-//            return false;
-//        }
         return true;
     }
 
     public void setYoutubeList() {
-        for (int i = 0; i < youtubeList.youtube.size(); i++) {
-            YoutubeItem youtubeItem = youtubeList.youtube.get(i);
+        for (int i = 0; i < youtubeItems.length; i++) {
+            YoutubeItem youtubeItem = youtubeItems[i];
             adapter.addItem(youtubeItem);
         }
         adapter.notifyDataSetChanged();
     }
-
 
     public void setTitle(String str) {
         title.setText(str);

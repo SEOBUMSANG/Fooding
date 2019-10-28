@@ -53,7 +53,19 @@ public class SearchDB {
                         if (task.isSuccessful()) {
                             ArrayList<String> videoList = new ArrayList<>();
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                videoList.add(document.getData().toString());
+
+                                JSONObject youtubeitem = new JSONObject();
+                                try {
+                                    youtubeitem.put("thumbnail",document.getData().get("thumbnail"));
+                                    youtubeitem.put("channel",document.getData().get("channel"));
+                                    youtubeitem.put("description",document.getData().get("description"));
+                                    youtubeitem.put("title",document.getData().get("title"));
+                                    youtubeitem.put("URL",document.getData().get("URL"));
+                                    videoList.add(youtubeitem.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                             }
                             try {
                                 jsonObject.put("name",name);
