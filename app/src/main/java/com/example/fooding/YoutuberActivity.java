@@ -2,6 +2,8 @@ package com.example.fooding;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,6 +26,9 @@ import java.util.ArrayList;
 public class YoutuberActivity extends AppCompatActivity {
     TMapView tMapView;
     Intent intent;
+
+    private RecyclerView listview;
+    private YoutuberAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,9 +137,50 @@ public class YoutuberActivity extends AppCompatActivity {
         TMapMarkerItem markerItem1 = new TMapMarkerItem();
         TMapPoint tMapPoint1 = tMapView.getCenterPoint();
 
+        //youtuber listview 셋팅
+        init();
+
 // 마커
 
+
     }
+
+    private void init() {
+
+        listview = findViewById(R.id.youtuber_listview);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        listview.setLayoutManager(layoutManager);
+
+        ArrayList<String> itemList = new ArrayList<>();
+        itemList.add("0");
+        itemList.add("1");
+        itemList.add("2");
+        itemList.add("3");
+        itemList.add("4");
+        itemList.add("5");
+        itemList.add("6");
+        itemList.add("7");
+        itemList.add("8");
+        itemList.add("9");
+        itemList.add("10");
+        itemList.add("11");
+
+        adapter = new YoutuberAdapter(this, itemList, onClickItem);
+        listview.setAdapter(adapter);
+
+        MyListDecoration decoration = new MyListDecoration();
+        listview.addItemDecoration(decoration);
+    }
+
+
+    private View.OnClickListener onClickItem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String str = (String) v.getTag();
+            Toast.makeText(YoutuberActivity.this, str, Toast.LENGTH_SHORT).show();
+        }
+    };
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

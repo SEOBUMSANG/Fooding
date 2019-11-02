@@ -60,91 +60,22 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <!-- 위치 입력 창 -->
-    <LinearLayout
-        android:id="@+id/linear_layout_location_input"
+    <!-- youtuber 목록 recyclerview -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/youtuber_listview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
+        android:scrollbars="horizontal"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/radius_background_white"
-        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        //레이아웃 잡기 용 버튼
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="53dp"
-            android:background="@drawable/radius_background_white" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="15dp">
-
-            <Button
-                android:id="@+id/youtuber_story_button"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/radius_background_white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="벤쯔"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-
-        //샘플2
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="15dp">
-
-            <Button
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/radius_background_orange" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="슈기"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-
-        //샘플3
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="15dp">
-
-            <Button
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/radius_background_white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="범준"
-                android:textColor="@color/black"/>
-        </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"/>
 
 
-    </LinearLayout>
 
     <!-- zoom 버튼 -->
     <LinearLayout
