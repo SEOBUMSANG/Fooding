@@ -127,9 +127,11 @@ public class Search2Activity extends AppCompatActivity {
         Button worldcupButton = findViewById(R.id.worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
 
+        //갱신 버튼
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                refreshMarker();
             }
         });
         //아래 toolbar 버튼 설정
@@ -272,4 +274,37 @@ public class Search2Activity extends AppCompatActivity {
         return result;
     }
 
+    public void deleteMarker(){
+        jsonObjectArrayList.clear();
+        for(int i=0;i<markerList.size();i++) {
+            tMapView.removeMarkerItem2(markerList.get(i).getID());
+        }
+        markerList.clear();
+        Log.d("삭제","삭제~");
+    }
+
+    public void refreshMarker(){
+        deleteMarker();
+        SearchDB searchDB = new SearchDB();
+        searchDB.returnData(jsonObjectArrayList,tMapView.getCenterPoint());
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Log.e("TAG", "check");
+
+                if ( makeMarker(jsonObjectArrayList) ) {    // 마커 생성
+                    Toast.makeText(getApplicationContext(), "makeMarker통과", Toast.LENGTH_SHORT).show();
+                    TMapMarkerItem2 markerItem = null;
+                    for (int i = 0; i < markerList.size(); i++) {
+                        markerItem = markerList.get(i);
+                        Log.d("TAG", "markerPoint : " + markerItem.getTMapPoint());
+                        tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
+                    }
+                }
+            }
+        }, 3000);
+
+    }
 }
