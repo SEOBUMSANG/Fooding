@@ -11,6 +11,7 @@
     tools:context=".MainActivity">
 
     <!-- t map -->
+
     <LinearLayout
         android:id="@+id/layout_tmap"
         android:layout_width="match_parent"
@@ -22,7 +23,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:context="com.skt.tmapsample.tmapview.MapDraw" />
+        tools:context="com.skt.tmapsample.tmapview.MapDraw" >
+
+    </LinearLayout>
 
     <!-- 위 toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -131,6 +134,29 @@
             android:textSize="20dp"
             android:textColor="@android:color/black"
             android:background="@drawable/radius_background_white"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar_down"
+        app:layout_constraintRight_toRightOf="parent"
+        >
+
+        <Button
+            android:id="@+id/refresh_button"
+            android:layout_width="match_parent"
+            android:layout_height="43dp"
+            android:layout_weight="1"
+            android:background="@drawable/radius_background_white"
+            android:text="갱신"
+            android:textColor="@android:color/black"
+            android:textSize="20dp" />
+
     </LinearLayout>
 
     <!-- 아래 toolbar -->
