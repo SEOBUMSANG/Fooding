@@ -80,46 +80,4 @@ public class YoutubeItemView extends LinearLayout {
     public void setItemYoutuber(String youtuber) {youtubeYoutuberView.setText(youtuber);}
     //public void setItemDescription(String description) {youtubeDescriptionView.setText(description);}
 
-    //포맷 남겨둠
-//    public void requestIncreaseRecommend(final int id) {
-////        String url = "http://" + AppHelper.host + ":" + AppHelper.port + "/movie/increaseRecommend";
-////        url += "?" + "review_id=" + id;
-////
-////        StringRequest request = new StringRequest(
-////                Request.Method.POST,
-////                url,    //GET 방식은 요청 path가 필요
-////                new Response.Listener<String>() {
-////                    @Override
-////                    public void onResponse(String response) {
-////                        processResponse(response);
-////                    }
-////                },
-////                new Response.ErrorListener() {
-////                    @Override
-////                    public void onErrorResponse(VolleyError error) {
-////                        Toast.makeText(getContext(), "에러발생", Toast.LENGTH_SHORT).show();
-////                    }
-////                }
-////        );
-////
-////        request.setShouldCache(false);
-////        AppHelper.requestQueue.add(request);
-////
-////    }
-////
-////    public void processResponse(String response) {
-////        Gson gson = new Gson();
-////
-////        ResponseInfo info = gson.fromJson(response, ResponseInfo.class);
-////        if (info.code == 200) {
-////            try {
-////                //recommendCallback.resetComment();
-////                Toast.makeText(getContext(), "추천 완료", Toast.LENGTH_SHORT).show();
-////            } catch (Exception e) {
-////                e.printStackTrace();
-////            }
-////        }
-////
-////    }
-
 }

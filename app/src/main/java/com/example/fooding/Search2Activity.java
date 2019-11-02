@@ -107,7 +107,6 @@ public class Search2Activity extends AppCompatActivity {
 
                 Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.youtubeItems[0].URL));
                 startActivity(myintent);
-
             }
         });
 

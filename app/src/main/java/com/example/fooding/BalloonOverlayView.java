@@ -11,17 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.fooding.Target.TargetList;
 import com.example.fooding.Youtube.YoutubeAdapter;
 import com.example.fooding.Youtube.YoutubeItem;
-import com.example.fooding.Youtube.YoutubeList;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.skt.Tmap.TMapPoint;
-
-import org.json.JSONObject;
 
 public class BalloonOverlayView extends FrameLayout {
 
@@ -32,7 +26,6 @@ public class BalloonOverlayView extends FrameLayout {
     //RecyclerView listView;
 
     TargetList targetList;
-    YoutubeList youtubeList;
     YoutubeItem[] youtubeItems;
 
     YoutubeAdapter adapter;
