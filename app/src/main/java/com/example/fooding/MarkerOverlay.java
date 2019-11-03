@@ -8,6 +8,7 @@ import android.graphics.Rect;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
@@ -70,6 +71,7 @@ public class MarkerOverlay extends TMapMarkerItem2 {
         balloonView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
+        // left, top, left+900, top+783
         balloonView.layout(0, 0, balloonView.getMeasuredWidth(), balloonView.getMeasuredHeight());
     }
 
@@ -141,5 +143,13 @@ public class MarkerOverlay extends TMapMarkerItem2 {
         mapView.showCallOutViewWithMarkerItemID(getID());
         return false;
     }
+
+    private View.OnClickListener onClickItem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String str = (String) v.getTag();
+            Toast.makeText(mContext, str, Toast.LENGTH_SHORT).show();
+        }
+    };
 
 }

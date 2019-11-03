@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.example.fooding.Target.TargetList;
 
+import com.google.android.gms.maps.MapView;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
@@ -49,8 +50,10 @@ public class Search2Activity extends AppCompatActivity {
         setContentView(R.layout.activity_search2);
 
         Intent getIntent = getIntent();
+
         jsonObjectArrayList = new ArrayList<>();
         markerList = new ArrayList<>();
+
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
@@ -103,11 +106,12 @@ public class Search2Activity extends AppCompatActivity {
         tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
             @Override
             public void onCalloutMarker2ClickEvent(String s, TMapMarkerItem2 tMapMarkerItem2) {
-                Toast.makeText(getApplicationContext(), "marker", Toast.LENGTH_SHORT).show();
-                MarkerOverlay marker = (MarkerOverlay) tMapMarkerItem2;
+                Toast.makeText(getApplicationContext(), "" + tMapMarkerItem2.getCalloutRect(), Toast.LENGTH_SHORT).show();
 
-                Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.youtubeItems[0].URL));
-                startActivity(myintent);
+                MarkerOverlay marker = (MarkerOverlay) tMapMarkerItem2;
+                marker.balloonView.listView.setOnClickListener();
+//                Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.youtubeItems[0].URL));
+//                startActivity(myintent);
             }
         });
 

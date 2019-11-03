@@ -42,13 +42,14 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         YoutubeItem item = items.get(position);
 
-        holder.youtubeItemView.setItemLink(item.getURL());
+        //holder.youtubeItemView.setItemLink(item.getURL());
 
         ImageLoadTask imageLoadTask = new ImageLoadTask(item.getThumbnail(), holder.youtubeThumbnailView);
         imageLoadTask.execute();
         holder.youtubeTitleView.setText(item.getTitle());
         holder.youtubeYoutuberView.setText(item.getChannel());
         holder.youtubeLinkButton.setOnClickListener(onClickItem);
+        holder.itemView.setTag(item.getURL());
 
     }
 
@@ -70,7 +71,7 @@ public class YoutubeAdapter extends RecyclerView.Adapter<YoutubeAdapter.ViewHold
         public ViewHolder(View itemView) {
             super(itemView);
 
-            youtubeItemView = new YoutubeItemView(context);
+            //youtubeItemView = new YoutubeItemView(context);
             youtubeThumbnailView = itemView.findViewById(R.id.youtube_thumbnail_view);
             youtubeTitleView = itemView.findViewById(R.id.youtube_title_view);
             youtubeYoutuberView = itemView.findViewById(R.id.youtube_youtuber_view);

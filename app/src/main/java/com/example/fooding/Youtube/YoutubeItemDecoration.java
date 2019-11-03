@@ -11,7 +11,7 @@ public class YoutubeItemDecoration extends RecyclerView.ItemDecoration {
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
 
         if (parent.getChildAdapterPosition(view) != parent.getAdapter().getItemCount() - 1) {
-            outRect.right = 30;
+            outRect.bottom = 30;
         }
     }
 }
