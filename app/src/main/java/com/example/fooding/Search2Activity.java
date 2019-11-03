@@ -37,9 +37,11 @@ public class Search2Activity extends AppCompatActivity {
 
     Button youtuberButton;
     Button refreshButton;
+    Button currentButton;
 
     SearchDB searchDB;
     TargetList targetList;
+    CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem2> markerList;
 
@@ -124,6 +126,7 @@ public class Search2Activity extends AppCompatActivity {
         //Button searchButton = findViewById(R.id.search_button);
         youtuberButton = findViewById(R.id.youtuber_button);
         refreshButton = findViewById(R.id.refresh_button);
+        currentButton = findViewById(R.id.my_location_button);
         Button worldcupButton = findViewById(R.id.worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
 
@@ -132,6 +135,29 @@ public class Search2Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 refreshMarker();
+            }
+        });
+        //현재위치 버튼
+        currentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentGps = new CurrentGps(Search2Activity.this);
+                // GPS 사용유무 가져오기
+                if (currentGps.isGetLocation()) {
+
+                    double latitude = currentGps.getLatitude();
+                    double longitude = currentGps.getLongitude();
+
+                    tMapView.setCenterPoint(longitude,latitude,true);
+
+                    Toast.makeText(
+                            getApplicationContext(),
+                            "위도: " + latitude + " 경도: " + longitude,
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    // GPS 를 사용할수 없으므로
+                    currentGps.showSettingsAlert();
+                }
             }
         });
         //아래 toolbar 버튼 설정
