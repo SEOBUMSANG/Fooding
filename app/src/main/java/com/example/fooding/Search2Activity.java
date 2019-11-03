@@ -201,7 +201,6 @@ public class Search2Activity extends AppCompatActivity {
                 Log.e("TAG", "check");
 
                 if ( makeMarker(jsonObjectArrayList) ) {    // 마커 생성
-                    Toast.makeText(getApplicationContext(), "makeMarker통과", Toast.LENGTH_SHORT).show();
                     TMapMarkerItem2 markerItem = null;
                     for (int i = 0; i < markerList.size(); i++) {
                         markerItem = markerList.get(i);

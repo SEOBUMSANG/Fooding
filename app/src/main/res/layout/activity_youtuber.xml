@@ -62,7 +62,7 @@
 
     <!-- youtuber 목록 recyclerview -->
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/youtuber_listview"
+        android:id="@+id/youtuber_listview2"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:scrollbars="horizontal"

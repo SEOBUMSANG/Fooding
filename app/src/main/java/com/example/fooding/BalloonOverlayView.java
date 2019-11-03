@@ -1,6 +1,7 @@
 package com.example.fooding;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,23 +11,31 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fooding.Target.TargetList;
 import com.example.fooding.Youtube.YoutubeAdapter;
 import com.example.fooding.Youtube.YoutubeItem;
+import com.example.fooding.Youtube.YoutubeItemDecoration;
 import com.google.gson.Gson;
 import com.skt.Tmap.TMapPoint;
+
+import java.util.ArrayList;
 
 public class BalloonOverlayView extends FrameLayout {
 
     private LinearLayout layout;
     private TextView title;
 
-    ListView listView;
-    //RecyclerView listView;
+    //ListView listView;
+    RecyclerView listView;
 
     TargetList targetList;
     YoutubeItem[] youtubeItems;
+    ArrayList<YoutubeItem> items = new ArrayList<>();
 
     YoutubeAdapter adapter;
 
@@ -38,8 +47,6 @@ public class BalloonOverlayView extends FrameLayout {
 
         final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
         final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 365, getResources().getDisplayMetrics());
-
-        adapter = new YoutubeAdapter();
 
         setPadding(10, 0, 10, 0);
         layout = new LinearLayout(context);
@@ -53,6 +60,7 @@ public class BalloonOverlayView extends FrameLayout {
             // 뷰 설정
             setupView(context, layout, targetList.name);
         }
+
 
         // 풍선뷰 크기
         LayoutParams param = new LayoutParams(width, height);
@@ -72,16 +80,25 @@ public class BalloonOverlayView extends FrameLayout {
         // 음식점 이름 설정
         setTitle(name);
 
-        for (int i = 0; i < youtubeItems.length; i++) {
-            YoutubeItem youtubeItem = youtubeItems[i];
-            adapter.addItem(youtubeItem);
-        }
-        adapter.notifyDataSetChanged();
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        listView.setLayoutManager(layoutManager);
 
+        adapter = new YoutubeAdapter(getContext(), items, onClickItem);
+        adapter.notifyDataSetChanged();
         listView.setAdapter(adapter);
+
+        YoutubeItemDecoration decoration = new YoutubeItemDecoration();
+        listView.addItemDecoration(decoration);
 
     }
 
+    private View.OnClickListener onClickItem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String str = (String) v.getTag();
+            Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
+        }
+    };
 
     public boolean processResponse(String response) {
         Gson gson = new Gson();
@@ -97,9 +114,8 @@ public class BalloonOverlayView extends FrameLayout {
     public void setYoutubeList() {
         for (int i = 0; i < youtubeItems.length; i++) {
             YoutubeItem youtubeItem = youtubeItems[i];
-            adapter.addItem(youtubeItem);
+            items.add(youtubeItem);
         }
-        adapter.notifyDataSetChanged();
     }
 
     public void setTitle(String str) {

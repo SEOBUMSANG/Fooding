@@ -147,7 +147,7 @@ public class YoutuberActivity extends AppCompatActivity {
 
     private void init() {
 
-        listview = findViewById(R.id.youtuber_listview);
+        listview = findViewById(R.id.youtuber_listview2);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listview.setLayoutManager(layoutManager);
 
