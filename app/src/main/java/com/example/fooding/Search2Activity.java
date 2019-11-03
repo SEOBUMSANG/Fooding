@@ -36,10 +36,11 @@ public class Search2Activity extends AppCompatActivity {
     Intent intent;
 
     Button youtuberButton;
-    
+    Button refreshButton;
+
+    SearchDB searchDB;
     TargetList targetList;
     ArrayList<JSONObject> jsonObjectArrayList;
-
     ArrayList<TMapMarkerItem2> markerList;
 
     @Override
@@ -122,9 +123,17 @@ public class Search2Activity extends AppCompatActivity {
         //layoutSearchButton = findViewById(R.id.layout_search_button);
         //Button searchButton = findViewById(R.id.search_button);
         youtuberButton = findViewById(R.id.youtuber_button);
+        refreshButton = findViewById(R.id.refresh_button);
         Button worldcupButton = findViewById(R.id.worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
 
+        //갱신 버튼
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refreshMarker();
+            }
+        });
         //아래 toolbar 버튼 설정
         youtuberButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,7 +198,7 @@ public class Search2Activity extends AppCompatActivity {
         // db에 유튜브 리스트 요청
         jsonObjectArrayList = new ArrayList<>();
         SearchDB searchDB = new SearchDB();
-        searchDB.returnData(jsonObjectArrayList);   // 전체 음식점 정보 json으로 받아오기
+        searchDB.returnData(jsonObjectArrayList,centerPoint);   // 전체 음식점 정보 json으로 받아오기
 
 
         // 잠시 시간 필요함
@@ -209,7 +218,7 @@ public class Search2Activity extends AppCompatActivity {
                     }
                 }
             }
-        }, 5000);
+        }, 3000);
 
     }
 
@@ -264,4 +273,37 @@ public class Search2Activity extends AppCompatActivity {
         return result;
     }
 
+    public void deleteMarker(){
+        jsonObjectArrayList.clear();
+        for(int i=0;i<markerList.size();i++) {
+            tMapView.removeMarkerItem2(markerList.get(i).getID());
+        }
+        markerList.clear();
+        Log.d("삭제","삭제~");
+    }
+
+    public void refreshMarker(){
+        deleteMarker();
+        SearchDB searchDB = new SearchDB();
+        searchDB.returnData(jsonObjectArrayList,tMapView.getCenterPoint());
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Log.e("TAG", "check");
+
+                if ( makeMarker(jsonObjectArrayList) ) {    // 마커 생성
+                    Toast.makeText(getApplicationContext(), "makeMarker통과", Toast.LENGTH_SHORT).show();
+                    TMapMarkerItem2 markerItem = null;
+                    for (int i = 0; i < markerList.size(); i++) {
+                        markerItem = markerList.get(i);
+                        Log.d("TAG", "markerPoint : " + markerItem.getTMapPoint());
+                        tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
+                    }
+                }
+            }
+        }, 3000);
+
+    }
 }
