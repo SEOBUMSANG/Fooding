@@ -267,7 +267,7 @@ public class Search2Activity extends AppCompatActivity {
 
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
             markerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
-            markerItem.setPosition(0.5f, 0.75f); // 마커의 중심점을 중앙, 하단으로 설정
+            markerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
             markerItem.setID(sID); // 마커의 id 지정
 
             markerList.add(markerItem);
