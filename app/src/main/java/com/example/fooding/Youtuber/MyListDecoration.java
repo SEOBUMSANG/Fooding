@@ -1,4 +1,4 @@
-package com.example.fooding;
+package com.example.fooding.Youtuber;
 
 import android.graphics.Rect;
 import android.view.View;

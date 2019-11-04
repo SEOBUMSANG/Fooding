@@ -1,11 +1,8 @@
 package com.example.fooding;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Geocoder;
@@ -31,7 +28,7 @@ import android.location.Address;
 import org.json.JSONObject;
 
 
-public class Search2Activity extends AppCompatActivity {
+public class Search2Activity extends mapActivity {
     TMapView tMapView;
     Intent intent;
 
@@ -39,8 +36,6 @@ public class Search2Activity extends AppCompatActivity {
     Button refreshButton;
     Button currentButton;
 
-    SearchDB searchDB;
-    TargetList targetList;
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem2> markerList;
@@ -62,7 +57,6 @@ public class Search2Activity extends AppCompatActivity {
         layoutTmap.addView( tMapView );
 
         tMapView.setCenterPoint(centerPointList[1], centerPointList[0], true);
-        //TMapPoint tMapPoint = new TMapPoint(37.497919, 127.027601);
         TMapCircle tMapCircle = new TMapCircle();
         tMapCircle.setCenterPoint( centerPoint ); // 센터 설정
         tMapCircle.setRadius(30);
@@ -165,7 +159,7 @@ public class Search2Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), YoutuberActivity.class);
-                //intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("point", centerPointList);
                 startActivityForResult(intent, 202);
             }
@@ -235,7 +229,7 @@ public class Search2Activity extends AppCompatActivity {
             {
                 Log.e("TAG", "check");
 
-                if ( makeMarker(jsonObjectArrayList) ) {    // 마커 생성
+                if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
                     TMapMarkerItem2 markerItem = null;
                     for (int i = 0; i < markerList.size(); i++) {
                         markerItem = markerList.get(i);
@@ -248,37 +242,6 @@ public class Search2Activity extends AppCompatActivity {
 
     }
 
-    public boolean makeMarker(ArrayList<JSONObject> jsonObjectArrayList) {
-
-        if (jsonObjectArrayList.isEmpty())
-            Log.e("TAG", "어레이 비어있음");
-
-        JSONObject jsonObject;
-        for (int i = 0; i < jsonObjectArrayList.size(); i++) {
-            jsonObject = jsonObjectArrayList.get(i);
-            String response = jsonObject.toString();
-            Log.e("TAG", response);
-
-            // 마커 생성
-            MarkerOverlay markerItem = new MarkerOverlay(this, response);
-            Log.d("point", "point : " + markerItem.markerPoint);
-            markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
-            String sID = "markerItem" + i;
-
-            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
-            markerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
-            markerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
-            markerItem.setID(sID); // 마커의 id 지정
-
-            markerList.add(markerItem);
-        }
-
-        if (markerList.isEmpty()) {
-            return false;
-        }
-        return true;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -286,30 +249,9 @@ public class Search2Activity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
     }
 
-    public Bitmap resizeBitmap(Bitmap original) {
-        int resizeWidth = 200;
-
-        double aspectRatio = (double) original.getHeight() / (double) original.getWidth();
-        int targetHeight = (int) (resizeWidth * aspectRatio);
-
-        Bitmap result = Bitmap.createScaledBitmap(original, resizeWidth, targetHeight, false);
-        if( result != original) {
-            original.recycle();
-        }
-        return result;
-    }
-
-    public void deleteMarker(){
-        jsonObjectArrayList.clear();
-        for(int i=0;i<markerList.size();i++) {
-            tMapView.removeMarkerItem2(markerList.get(i).getID());
-        }
-        markerList.clear();
-        Log.d("삭제","삭제~");
-    }
 
     public void refreshMarker(){
-        deleteMarker();
+        deleteMarker(tMapView, jsonObjectArrayList, markerList);
         SearchDB searchDB = new SearchDB();
         searchDB.returnData(jsonObjectArrayList,tMapView.getCenterPoint());
         new Handler().postDelayed(new Runnable()
@@ -319,7 +261,7 @@ public class Search2Activity extends AppCompatActivity {
             {
                 Log.e("TAG", "check");
 
-                if ( makeMarker(jsonObjectArrayList) ) {    // 마커 생성
+                if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
                     Toast.makeText(getApplicationContext(), "makeMarker통과", Toast.LENGTH_SHORT).show();
                     TMapMarkerItem2 markerItem = null;
                     for (int i = 0; i < markerList.size(); i++) {

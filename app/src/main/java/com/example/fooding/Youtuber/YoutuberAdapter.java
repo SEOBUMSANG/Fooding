@@ -1,4 +1,4 @@
-package com.example.fooding;
+package com.example.fooding.Youtuber;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,10 +8,12 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.fooding.R;
+
 import java.util.ArrayList;
 
 public class YoutuberAdapter extends RecyclerView.Adapter<YoutuberAdapter.ViewHolder> {
-
+    private View view;
     private ArrayList<String> itemList;
     private Context context;
     private View.OnClickListener onClickItem;
@@ -30,6 +32,7 @@ public class YoutuberAdapter extends RecyclerView.Adapter<YoutuberAdapter.ViewHo
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.youtuber_item, parent, false);
 
+        this.view = view;
         return new ViewHolder(view);
     }
 
@@ -40,7 +43,16 @@ public class YoutuberAdapter extends RecyclerView.Adapter<YoutuberAdapter.ViewHo
         holder.textview.setText(item);
         holder.textview.setTag(item);
         holder.textview.setOnClickListener(onClickItem);
+
     }
+
+//    public void setInitial() {
+//        ViewHolder holder = onCreateViewHolder()
+//
+//        for(int i=0; i<getItemCount(); i++) {
+//            holder.textview.setBackgroundResource(R.drawable.radius_background_orange);
+//        }
+//    }
 
     @Override
     public int getItemCount() {

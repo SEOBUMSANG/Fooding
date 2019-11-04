@@ -6,26 +6,35 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fooding.Youtuber.MyListDecoration;
+import com.example.fooding.Youtuber.YoutuberAdapter;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem;
+import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
-public class YoutuberActivity extends AppCompatActivity {
+public class YoutuberActivity extends mapActivity {
     TMapView tMapView;
     Intent intent;
+
+    ArrayList<JSONObject> jsonObjectArrayList;
+    ArrayList<TMapMarkerItem2> markerList;
 
     private RecyclerView listview;
     private YoutuberAdapter adapter;
@@ -100,7 +109,7 @@ public class YoutuberActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), Search2Activity.class);
-                //intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("point", centerPointList);
                 startActivityForResult(intent, 201);
             }
@@ -140,8 +149,32 @@ public class YoutuberActivity extends AppCompatActivity {
         //youtuber listview 셋팅
         init();
 
-// 마커
+        // 마커
+            // db에 유튜브 리스트 요청
+        jsonObjectArrayList = new ArrayList<>();
+        markerList = new ArrayList<>();
+        SearchDB searchDB = new SearchDB();
+        searchDB.returnData(jsonObjectArrayList,centerPoint);   // 전체 음식점 정보 json으로 받아오기
 
+
+            // 잠시 시간 필요함
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                Log.e("TAG", "check");
+
+                if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
+                    TMapMarkerItem2 markerItem = null;
+                    for (int i = 0; i < markerList.size(); i++) {
+                        markerItem = markerList.get(i);
+                        Log.d("TAG", "markerPoint : " + markerItem.getTMapPoint());
+                        tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
+                    }
+                }
+            }
+        }, 3000);
 
     }
 
@@ -152,9 +185,9 @@ public class YoutuberActivity extends AppCompatActivity {
         listview.setLayoutManager(layoutManager);
 
         ArrayList<String> itemList = new ArrayList<>();
-        itemList.add("0");
-        itemList.add("1");
-        itemList.add("2");
+        itemList.add("햇님");
+        itemList.add("범준");
+        itemList.add("재상");
         itemList.add("3");
         itemList.add("4");
         itemList.add("5");
@@ -177,6 +210,13 @@ public class YoutuberActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             String str = (String) v.getTag();
+            //v.setBackgroundResource(R.drawable.radius_background_black);
+            TextView textView = (TextView) v;
+
+            //adapter.setInitial();
+
+            textView.setBackgroundResource(R.drawable.radius_background_black);
+            textView.setTextColor(getResources().getColor(android.R.color.white));
             Toast.makeText(YoutuberActivity.this, str, Toast.LENGTH_SHORT).show();
         }
     };
