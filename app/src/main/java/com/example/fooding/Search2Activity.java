@@ -34,7 +34,6 @@ public class Search2Activity extends mapActivity {
 
     Button youtuberButton;
     Button refreshButton;
-    Button currentButton;
 
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
@@ -116,11 +115,8 @@ public class Search2Activity extends mapActivity {
         Button buttonZoomIn = findViewById(R.id.button_zoom_in);
         Button buttonZoomOut = findViewById(R.id.button_zoom_out);
 
-        //layoutSearchButton = findViewById(R.id.layout_search_button);
-        //Button searchButton = findViewById(R.id.search_button);
         youtuberButton = findViewById(R.id.youtuber_button);
         refreshButton = findViewById(R.id.refresh_button);
-        currentButton = findViewById(R.id.my_location_button);
         Button worldcupButton = findViewById(R.id.worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
 
@@ -131,8 +127,9 @@ public class Search2Activity extends mapActivity {
                 refreshMarker();
             }
         });
+
         //현재위치 버튼
-        currentButton.setOnClickListener(new View.OnClickListener() {
+        mylocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 currentGps = new CurrentGps(Search2Activity.this);
@@ -154,6 +151,7 @@ public class Search2Activity extends mapActivity {
                 }
             }
         });
+
         //아래 toolbar 버튼 설정
         youtuberButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,13 +225,10 @@ public class Search2Activity extends mapActivity {
             @Override
             public void run()
             {
-                Log.e("TAG", "check");
-
                 if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
                     TMapMarkerItem2 markerItem = null;
                     for (int i = 0; i < markerList.size(); i++) {
                         markerItem = markerList.get(i);
-                        Log.d("TAG", "markerPoint : " + markerItem.getTMapPoint());
                         tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
                     }
                 }
@@ -245,8 +240,6 @@ public class Search2Activity extends mapActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -259,14 +252,11 @@ public class Search2Activity extends mapActivity {
             @Override
             public void run()
             {
-                Log.e("TAG", "check");
-
                 if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
                     Toast.makeText(getApplicationContext(), "makeMarker통과", Toast.LENGTH_SHORT).show();
                     TMapMarkerItem2 markerItem = null;
                     for (int i = 0; i < markerList.size(); i++) {
                         markerItem = markerList.get(i);
-                        Log.d("TAG", "markerPoint : " + markerItem.getTMapPoint());
                         tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
                     }
                 }

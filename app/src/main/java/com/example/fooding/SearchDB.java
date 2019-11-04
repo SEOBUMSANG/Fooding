@@ -3,12 +3,8 @@ package com.example.fooding;
 import android.location.Location;
 import android.util.Log;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -41,12 +37,12 @@ public class SearchDB {
                                 }
                                 else {
                                     JSONObject jsonObject = new JSONObject();
-                                    Log.d("TAG", document.getId() + " => " + document.getData().get("name"));
+                                    Log.i("returnData", document.getId() + " => " + document.getData().get("name"));
                                     returnYoutube(jsonObjectArrayList, jsonObject, document.getId(), document.getData().get("name"), document.getData().get("lat"), document.getData().get("lng"));
                                 }
                             }
                         } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
+                            Log.e("returnData", "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -80,13 +76,13 @@ public class SearchDB {
                                 jsonObject.put("lat",lat);
                                 jsonObject.put("lng",lng);
                                 jsonObject.put("youtube",videoList);
-                                Log.d("tag",jsonObject.toString());
+                                Log.i("returnYoutube",jsonObject.toString());
                                 jsonObjectArrayList.add(jsonObject);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
+                            Log.e("returnYoutube", "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -99,19 +95,12 @@ public class SearchDB {
         locationA.setLatitude(point.getLatitude());
         locationA.setLongitude(point.getLongitude());
 
-        Log.d("개씨빨",Double.toString(locationA.getLatitude()));
-        Log.d("개씨빨",Double.toString(locationA.getLongitude()));
-
-
         locationB.setLatitude(Double.parseDouble(document.getData().get("lat").toString()));
         locationB.setLongitude(Double.parseDouble(document.getData().get("lng").toString()));
 
-        Log.d("개씨빨",Double.toString(locationB.getLatitude()));
-        Log.d("개씨빨",Double.toString(locationB.getLongitude()));
-
         double distance = locationA.distanceTo(locationB);
 
-        Log.d("개씨빨",Double.toString(distance));
+        Log.i("checkDistance",Double.toString(distance));
         return distance;
     }
 

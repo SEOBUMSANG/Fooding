@@ -24,11 +24,10 @@ public class mapActivity extends AppCompatActivity {
         for (int i = 0; i < jsonObjectArrayList.size(); i++) {
             jsonObject = jsonObjectArrayList.get(i);
             String response = jsonObject.toString();
-            Log.e("TAG", response);
+            Log.i("TAG", response);
 
             // 마커 생성
             MarkerOverlay markerItem = new MarkerOverlay(this, response);
-            Log.d("point", "point : " + markerItem.markerPoint);
             markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
             String sID = "markerItem" + i;
 
@@ -52,8 +51,10 @@ public class mapActivity extends AppCompatActivity {
             tMapView.removeMarkerItem2(markerList.get(i).getID());
         }
         markerList.clear();
-        Log.d("삭제","삭제~");
+        Log.d("deleteMarker","마커 삭제");
     }
+
+
 
     public Bitmap resizeBitmap(Bitmap original) {
         int resizeWidth = 200;
