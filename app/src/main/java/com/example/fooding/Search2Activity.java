@@ -261,7 +261,7 @@ public class Search2Activity extends mapActivity {
                     }
                 }
             }
-        }, 3000);
+        }, 5000);
 
     }
 }
