@@ -28,7 +28,7 @@ public class SearchDB {
     }
 
     public void returnData(final ArrayList<JSONObject> jsonObjectArrayList,final TMapPoint centerPoint) {
-        db.collection("Crawling")
+        db.collection("GangNam")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -42,7 +42,7 @@ public class SearchDB {
                                 else {
                                     JSONObject jsonObject = new JSONObject();
                                     Log.d("TAG", document.getId() + " => " + document.getData().get("name"));
-                                    returnYoutube(jsonObjectArrayList, jsonObject, document.getId(), document.getData().get("name"), document.getData().get("lat"), document.getData().get("lng"));
+                                    returnYoutube(jsonObjectArrayList, jsonObject, document);
                                 }
                             }
                         } else {
@@ -52,8 +52,8 @@ public class SearchDB {
                 });
     }
 
-    public void returnYoutube(final ArrayList<JSONObject> jsonObjectArrayList,final JSONObject jsonObject ,final Object id,final Object name,final Object lat,final Object lng){
-        db.collection("Crawling").document(id.toString()).collection("youtube")
+    public void returnYoutube(final ArrayList<JSONObject> jsonObjectArrayList, final JSONObject jsonObject , final QueryDocumentSnapshot document){
+        db.collection("GangNam").document(document.getId()).collection("youtube")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -76,11 +76,14 @@ public class SearchDB {
 
                             }
                             try {
-                                jsonObject.put("name",name);
-                                jsonObject.put("lat",lat);
-                                jsonObject.put("lng",lng);
+                                jsonObject.put("name",document.getData().get("name"));
+                                jsonObject.put("lat",document.getData().get("lat"));
+                                jsonObject.put("lng",document.getData().get("lng"));
+                                jsonObject.put("description",document.getData().get("description"));
+                                jsonObject.put("resAddress",document.getData().get("resAddress"));
+                                jsonObject.put("resImageURL",document.getData().get("resImageURL"));
                                 jsonObject.put("youtube",videoList);
-                                Log.d("tag",jsonObject.toString());
+                                Log.d("예이예",jsonObject.toString());
                                 jsonObjectArrayList.add(jsonObject);
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -99,19 +102,11 @@ public class SearchDB {
         locationA.setLatitude(point.getLatitude());
         locationA.setLongitude(point.getLongitude());
 
-        Log.d("개씨빨",Double.toString(locationA.getLatitude()));
-        Log.d("개씨빨",Double.toString(locationA.getLongitude()));
-
-
         locationB.setLatitude(Double.parseDouble(document.getData().get("lat").toString()));
         locationB.setLongitude(Double.parseDouble(document.getData().get("lng").toString()));
 
-        Log.d("개씨빨",Double.toString(locationB.getLatitude()));
-        Log.d("개씨빨",Double.toString(locationB.getLongitude()));
-
         double distance = locationA.distanceTo(locationB);
 
-        Log.d("개씨빨",Double.toString(distance));
         return distance;
     }
 
