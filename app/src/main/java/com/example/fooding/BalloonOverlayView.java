@@ -56,7 +56,6 @@ public class BalloonOverlayView extends FrameLayout {
         if ( processResponse(response) ) {
             // 좌표 만들기
             markerPoint = new TMapPoint(Double.parseDouble(targetList.lat), Double.parseDouble(targetList.lng));
-            //markerPoint = new TMapPoint(37.49793412, 127.02774112);
             // 뷰 설정
             setupView(context, layout, targetList.name);
         }

@@ -18,13 +18,13 @@ public class mapActivity extends AppCompatActivity {
     public boolean makeMarker(ArrayList<JSONObject> jsonObjectArrayList, ArrayList<TMapMarkerItem2> markerList) {
 
         if (jsonObjectArrayList.isEmpty())
-            Log.e("TAG", "어레이 비어있음");
+            Log.e("makeMarker", "어레이 비어있음");
 
         JSONObject jsonObject;
         for (int i = 0; i < jsonObjectArrayList.size(); i++) {
             jsonObject = jsonObjectArrayList.get(i);
             String response = jsonObject.toString();
-            Log.i("TAG", response);
+            Log.i("makeMarker", response);
 
             // 마커 생성
             MarkerOverlay markerItem = new MarkerOverlay(this, response);

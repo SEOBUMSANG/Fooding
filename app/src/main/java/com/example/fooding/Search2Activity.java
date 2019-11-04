@@ -253,7 +253,6 @@ public class Search2Activity extends mapActivity {
             public void run()
             {
                 if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
-                    Toast.makeText(getApplicationContext(), "makeMarker통과", Toast.LENGTH_SHORT).show();
                     TMapMarkerItem2 markerItem = null;
                     for (int i = 0; i < markerList.size(); i++) {
                         markerItem = markerList.get(i);

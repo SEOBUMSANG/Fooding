@@ -106,8 +106,6 @@ public class SearchDB {
 
         double distance = locationA.distanceTo(locationB);
 
-        Log.i("checkDistance",Double.toString(distance));
-
         return distance;
     }
 
