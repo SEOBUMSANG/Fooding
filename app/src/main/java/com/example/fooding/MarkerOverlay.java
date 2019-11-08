@@ -13,8 +13,11 @@ import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
+import java.util.ArrayList;
+
 
 public class MarkerOverlay extends TMapMarkerItem2 {
+    public ArrayList<TMapMarkerItem2> markerList;
 
     private DisplayMetrics dm = null;
 
@@ -59,6 +62,7 @@ public class MarkerOverlay extends TMapMarkerItem2 {
 
     public MarkerOverlay(Context context, String response) {
         this.mContext = context;
+        markerList = new ArrayList<>();
 
         dm = new DisplayMetrics();
         WindowManager wmgr = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);

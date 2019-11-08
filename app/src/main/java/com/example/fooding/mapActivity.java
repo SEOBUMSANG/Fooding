@@ -2,6 +2,7 @@ package com.example.fooding;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,63 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class mapActivity extends AppCompatActivity {
+    MarkerOverlay firstMarkerItem;
+    float[] distance = new float[1];
+
+    public boolean makeBigMarker(ArrayList<JSONObject> jsonObjectArrayList, ArrayList<TMapMarkerItem2> bigMarkerList) {
+
+        if (jsonObjectArrayList.isEmpty()) {
+            Log.e("makeBigMarker", "json 어레이 비어있음");
+            return false;
+        }
+
+        // 첫 번째 빅마커 생성
+        if (bigMarkerList.isEmpty()) {
+            JSONObject firstJsonObject = jsonObjectArrayList.get(0);
+            String firstResponse = firstJsonObject.toString();
+            firstMarkerItem = new MarkerOverlay(this, firstResponse);
+            firstMarkerItem.setID("firstBigMarkerItem");
+            bigMarkerList.add(firstMarkerItem);
+        }
+
+        JSONObject jsonObject;
+        String response;
+        MarkerOverlay markerItem;
+            for (int i = 0; i < jsonObjectArrayList.size(); i++) {
+                jsonObject = jsonObjectArrayList.get(i);
+                response = jsonObject.toString();
+
+                // 마커 생성
+                markerItem = new MarkerOverlay(this, response);
+                markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
+                markerItem.setID("markerItem" + i);
+
+                // 거리 계산
+                Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
+
+                if (distance[0] <= 500) {
+                    firstMarkerItem.markerList.add(markerItem);
+                } else {
+                    firstMarkerItem = markerItem;
+                    firstMarkerItem.markerList.add(markerItem); // 자기 자신도 추가
+                    bigMarkerList.add(firstMarkerItem);
+                }
+            }
+
+            for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
+                Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_red);
+                bigMarkerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
+                bigMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
+            }
+
+
+        if (bigMarkerList.isEmpty()) {
+            Log.e("makeBigMarker", "big 마커 어레이 비어있음");
+            return false;
+        }
+
+        return true;
+    }
 
     public boolean makeMarker(ArrayList<JSONObject> jsonObjectArrayList, ArrayList<TMapMarkerItem2> markerList) {
 
