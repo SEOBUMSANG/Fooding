@@ -37,6 +37,7 @@ public class Search2Activity extends mapActivity {
 
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
+    ArrayList<TMapMarkerItem2> bigMarkerList;
     ArrayList<TMapMarkerItem2> markerList;
 
     @Override
@@ -46,6 +47,7 @@ public class Search2Activity extends mapActivity {
 
         Intent getIntent = getIntent();
         jsonObjectArrayList = new ArrayList<>();
+        bigMarkerList = new ArrayList<>();
         markerList = new ArrayList<>();
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
@@ -202,6 +204,10 @@ public class Search2Activity extends mapActivity {
             @Override
             public void onClick(View v) {
                 tMapView.MapZoomIn();
+                Log.v("MapZoomIn", "zoomlevel : " + tMapView.getZoomLevel());
+                if (tMapView.getZoomLevel() == 15) {
+                    parseBigMarker();
+                }
             }
         });
 
@@ -210,6 +216,10 @@ public class Search2Activity extends mapActivity {
             @Override
             public void onClick(View v) {
                 tMapView.MapZoomOut();
+                Log.v("MapZoomOut", "zoomlevel : " + tMapView.getZoomLevel());
+                if (tMapView.getZoomLevel() == 14) {
+                    mergeMarker();
+                }
             }
         });
 
@@ -225,12 +235,9 @@ public class Search2Activity extends mapActivity {
             @Override
             public void run()
             {
-                if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
-                    TMapMarkerItem2 markerItem = null;
-                    for (int i = 0; i < markerList.size(); i++) {
-                        markerItem = markerList.get(i);
-                        tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
-                    }
+                if ( makeBigMarker(jsonObjectArrayList, bigMarkerList) ) {    // 빅마커 생성
+                    showMarker(bigMarkerList);
+                    makeMarker(jsonObjectArrayList, markerList);    // 그냥 마커도 미리 생성
                 }
             }
         }, 3000);
@@ -242,6 +249,29 @@ public class Search2Activity extends mapActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void mergeMarker() {
+        Log.d("mergeMarker", "deleteMarker & makeBigMarker");
+
+        deleteMarker(tMapView, jsonObjectArrayList, markerList);
+
+        showMarker(bigMarkerList);
+    }
+
+    public void parseBigMarker() {
+        Log.d("parseBigMarker", "deleteBigMarker & makeMarker");
+
+        deleteBigMarker(tMapView, jsonObjectArrayList, bigMarkerList);
+
+        showMarker(markerList);
+    }
+
+    public void showMarker(ArrayList<TMapMarkerItem2> markerList) {
+        TMapMarkerItem2 marker = null;
+        for (int i = 0; i < markerList.size(); i++) {
+            marker = markerList.get(i);
+            tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
+        }
+    }
 
     public void refreshMarker(){
         deleteMarker(tMapView, jsonObjectArrayList, markerList);
@@ -252,13 +282,7 @@ public class Search2Activity extends mapActivity {
             @Override
             public void run()
             {
-                if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
-                    TMapMarkerItem2 markerItem = null;
-                    for (int i = 0; i < markerList.size(); i++) {
-                        markerItem = markerList.get(i);
-                        tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
-                    }
-                }
+                showMarker(markerList);
             }
         }, 5000);
 

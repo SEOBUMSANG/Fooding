@@ -37,32 +37,33 @@ public class mapActivity extends AppCompatActivity {
         JSONObject jsonObject;
         String response;
         MarkerOverlay markerItem;
-            for (int i = 0; i < jsonObjectArrayList.size(); i++) {
-                jsonObject = jsonObjectArrayList.get(i);
-                response = jsonObject.toString();
+        for (int i = 0; i < jsonObjectArrayList.size(); i++) {
+            jsonObject = jsonObjectArrayList.get(i);
+            response = jsonObject.toString();
 
-                // 마커 생성
-                markerItem = new MarkerOverlay(this, response);
-                markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
-                markerItem.setID("markerItem" + i);
+            // 마커 생성
+            markerItem = new MarkerOverlay(this, response);
+            markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
+            markerItem.setID("markerItem" + i);
 
-                // 거리 계산
-                Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
 
-                if (distance[0] <= 500) {
-                    firstMarkerItem.markerList.add(markerItem);
-                } else {
-                    firstMarkerItem = markerItem;
-                    firstMarkerItem.markerList.add(markerItem); // 자기 자신도 추가
-                    bigMarkerList.add(firstMarkerItem);
-                }
+            // 거리 계산
+            Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
+
+            if (distance[0] <= 500) {
+                firstMarkerItem.markerList.add(markerItem);
+            } else {
+                firstMarkerItem = markerItem;
+                firstMarkerItem.markerList.add(markerItem); // 자기 자신도 추가
+                bigMarkerList.add(firstMarkerItem);
             }
+        }
 
-            for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
-                Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_red);
-                bigMarkerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
-                bigMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
-            }
+        for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
+            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_red);
+            bigMarkerItem.setIcon(resizeBigBitmap(bitmap)); // 마커 아이콘 지정
+            bigMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
+        }
 
 
         if (bigMarkerList.isEmpty()) {
@@ -100,22 +101,44 @@ public class mapActivity extends AppCompatActivity {
         if (markerList.isEmpty()) {
             return false;
         }
+
         return true;
     }
 
     public void deleteMarker(TMapView tMapView, ArrayList<JSONObject> jsonObjectArrayList, ArrayList<TMapMarkerItem2> markerList){
-        jsonObjectArrayList.clear();
+
         for(int i=0;i<markerList.size();i++) {
             tMapView.removeMarkerItem2(markerList.get(i).getID());
         }
-        markerList.clear();
+        //markerList.clear();
         Log.d("deleteMarker","마커 삭제");
     }
 
+    public void deleteBigMarker(TMapView tMapView, ArrayList<JSONObject> jsonObjectArrayList, ArrayList<TMapMarkerItem2> bigMarkerList){
+
+        for(int i=0;i<bigMarkerList.size();i++) {
+            tMapView.removeMarkerItem2(bigMarkerList.get(i).getID());
+        }
+        //bigMarkerList.clear();
+        Log.d("deleteBigMarker","빅마커 삭제");
+    }
 
 
     public Bitmap resizeBitmap(Bitmap original) {
         int resizeWidth = 200;
+
+        double aspectRatio = (double) original.getHeight() / (double) original.getWidth();
+        int targetHeight = (int) (resizeWidth * aspectRatio);
+
+        Bitmap result = Bitmap.createScaledBitmap(original, resizeWidth, targetHeight, false);
+        if( result != original) {
+            original.recycle();
+        }
+        return result;
+    }
+
+    public Bitmap resizeBigBitmap(Bitmap original) {
+        int resizeWidth = 100;
 
         double aspectRatio = (double) original.getHeight() / (double) original.getWidth();
         int targetHeight = (int) (resizeWidth * aspectRatio);
