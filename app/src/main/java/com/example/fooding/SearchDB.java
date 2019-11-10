@@ -39,7 +39,21 @@ public class SearchDB {
                                     JSONObject jsonObject = new JSONObject();
 
                                     Log.d("returnData", document.getId() + " => " + document.getData().get("name"));
-                                    returnYoutube(jsonObjectArrayList, jsonObject, document);
+                                    try {
+                                        jsonObject.put("name",document.getData().get("name"));
+                                        jsonObject.put("name",document.getData().get("name"));
+                                        jsonObject.put("lat",document.getData().get("lat"));
+                                        jsonObject.put("lng",document.getData().get("lng"));
+                                        jsonObject.put("description",document.getData().get("description"));
+                                        jsonObject.put("resAddress",document.getData().get("resAddress"));
+                                        jsonObject.put("resImageURL",document.getData().get("resImageURL"));
+                                        jsonObject.put("youtube",document.getData().get("youtube"));
+
+
+                                        jsonObjectArrayList.add(jsonObject);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         } else {

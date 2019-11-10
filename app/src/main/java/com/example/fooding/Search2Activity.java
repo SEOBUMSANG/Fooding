@@ -242,7 +242,7 @@ public class Search2Activity extends mapActivity {
                     makeMarker(jsonObjectArrayList, markerList);    // 그냥 마커도 미리 생성
                 }
             }
-        }, 8000);
+        }, 5000);
 
     }
 
