@@ -39,6 +39,7 @@ public class Search2Activity extends mapActivity {
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem2> bigMarkerList;
     ArrayList<TMapMarkerItem2> markerList;
+    ArrayList<TMapMarkerItem2> partMarkerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class Search2Activity extends mapActivity {
         jsonObjectArrayList = new ArrayList<>();
         bigMarkerList = new ArrayList<>();
         markerList = new ArrayList<>();
+        partMarkerList = new ArrayList<>();
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
@@ -240,7 +242,7 @@ public class Search2Activity extends mapActivity {
                     makeMarker(jsonObjectArrayList, markerList);    // 그냥 마커도 미리 생성
                 }
             }
-        }, 3000);
+        }, 8000);
 
     }
 
@@ -250,7 +252,7 @@ public class Search2Activity extends mapActivity {
     }
 
     public void mergeMarker() {
-        Log.d("mergeMarker", "deleteMarker & makeBigMarker");
+        Log.d("mergeMarker", "delete Marker & makeBigMarker");
 
         deleteMarker(tMapView, markerList);
 
@@ -258,7 +260,7 @@ public class Search2Activity extends mapActivity {
     }
 
     public void parseBigMarker() {
-        Log.d("parseBigMarker", "deleteBigMarker & makeMarker");
+        Log.d("parseBigMarker", "delete BigMarker & makeMarker");
 
         deleteMarker(tMapView, bigMarkerList);
 
@@ -274,15 +276,27 @@ public class Search2Activity extends mapActivity {
     }
 
     public void refreshMarker(){
-        deleteMarker(tMapView, markerList);
-        SearchDB searchDB = new SearchDB();
-        searchDB.returnData(jsonObjectArrayList,tMapView.getCenterPoint());
+        if (tMapView.getZoomLevel() >= 15) {
+            deleteMarker(tMapView, markerList);
+        } else {
+            deleteMarker(tMapView, bigMarkerList);
+        }
+
+        TMapPoint centerPoint = tMapView.getCenterPoint();
+        if (tMapView.getZoomLevel() >= 15) {
+
+            showMarker(markerList);
+        } else {
+            showMarker(bigMarkerList);
+        }
+
         new Handler().postDelayed(new Runnable()
         {
             @Override
             public void run()
             {
-                showMarker(markerList);
+
+
             }
         }, 5000);
 

@@ -30,7 +30,6 @@ public class BalloonOverlayView extends FrameLayout {
     private LinearLayout layout;
     private TextView title;
 
-    //ListView listView;
     RecyclerView listView;
 
     TargetList targetList;
@@ -42,6 +41,8 @@ public class BalloonOverlayView extends FrameLayout {
     TMapPoint markerPoint;
     String uri[];
 
+    int flag = 0;
+
     public BalloonOverlayView(Context context, String response) {
         super(context);
 
@@ -51,6 +52,12 @@ public class BalloonOverlayView extends FrameLayout {
         setPadding(10, 0, 10, 0);
         layout = new LinearLayout(context);
         layout.setVisibility(VISIBLE);
+
+
+        if (response.isEmpty()) {
+            flag = 1;
+            Log.wtf("reponse is empty", "don't click marker");
+        }
 
         // json 파싱
         if ( processResponse(response) ) {
@@ -65,6 +72,7 @@ public class BalloonOverlayView extends FrameLayout {
         LayoutParams param = new LayoutParams(width, height);
         param.gravity = Gravity.NO_GRAVITY;
         addView(layout, param);
+        flag = 0;
     }
 
 

@@ -32,7 +32,7 @@ public class SearchDB {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 double distance = checkDistance(document,centerPoint);
-                                if(distance>1000) {
+                                if(distance>10000000) {
                                     continue;
                                 }
                                 else {
