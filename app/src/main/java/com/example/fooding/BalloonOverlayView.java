@@ -56,7 +56,7 @@ public class BalloonOverlayView extends FrameLayout {
         // 좌표 만들기
         markerPoint = new TMapPoint(Double.parseDouble(eachTarget.lat), Double.parseDouble(eachTarget.lng));
         // 뷰 설정
-        setupView(context, layout, eachTarget.name);
+        setupView(context, layout, eachTarget.name, eachTarget);
 
 
         // 풍선뷰 크기
@@ -66,7 +66,7 @@ public class BalloonOverlayView extends FrameLayout {
     }
 
 
-    protected void setupView(Context context, final ViewGroup parent, String name) {
+    protected void setupView(Context context, final ViewGroup parent, String name, TargetList eachTarget) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.youtube_list_view, parent, true);
@@ -80,7 +80,7 @@ public class BalloonOverlayView extends FrameLayout {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         listView.setLayoutManager(layoutManager);
 
-        adapter = new YoutubeAdapter(getContext(), items, onClickItem);
+        adapter = new YoutubeAdapter(getContext(), eachTarget.youtubeItems, onClickItem);
         adapter.notifyDataSetChanged();
         listView.setAdapter(adapter);
 

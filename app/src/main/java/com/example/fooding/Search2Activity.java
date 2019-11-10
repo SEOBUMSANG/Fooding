@@ -330,11 +330,19 @@ public class Search2Activity extends MapActivity {
         TMapMarkerItem2 marker = null;
         for (int i = 0; i < markerList.size(); i++) {
             Location.distanceBetween(markerList.get(i).latitude,markerList.get(i).longitude,centerPoint.getLatitude(),centerPoint.getLongitude(),dist);
-            if(dist[0]>500){
-                continue;
+
+            if (bigMode == true) {
+                if (dist[0] > 2000)
+                    continue;
+                marker = markerList.get(i);
+                tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
+            } else {
+                if(dist[0]>500){
+                    continue;
+                }
+                marker = markerList.get(i);
+                tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
             }
-            marker = markerList.get(i);
-            tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
         }
     }
 
