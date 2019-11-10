@@ -47,6 +47,9 @@ public class Search2Activity extends MapActivity {
 
     TargetList[] targetList;
 
+    boolean bigMode = true;
+    float[] dist = new float[1];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +61,7 @@ public class Search2Activity extends MapActivity {
         markerList = new ArrayList<>();
         partMarkerList = new ArrayList<>();
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
-        TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
+        final TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
         // 전체 음식점 정보 json으로 받아오기
         SearchDB searchDB = new SearchDB();
@@ -107,8 +110,14 @@ public class Search2Activity extends MapActivity {
         tMapView.setOnDisableScrollWithZoomLevelListener(new TMapView.OnDisableScrollWithZoomLevelCallback() {
             @Override
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
-                //Toast.makeText(getApplicationContext(), "zoomLevel=" + zoom + "\nlon=" + centerPoint.getLongitude() + "\nlat=" + centerPoint.getLatitude(), Toast.LENGTH_SHORT).show();
-            }
+                if(bigMode) {
+                    deleteMarker(tMapView, bigMarkerList);
+                    showMarker(bigMarkerList, centerPoint);
+                }
+                else{
+                    deleteMarker(tMapView, markerList);
+                    showMarker(markerList,centerPoint);
+                }    }
         });
         tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
             @Override
@@ -139,7 +148,7 @@ public class Search2Activity extends MapActivity {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                refreshMarker();
+
             }
         });
 
@@ -223,7 +232,8 @@ public class Search2Activity extends MapActivity {
                 tMapView.MapZoomIn();
                 Log.v("MapZoomIn", "zoomlevel : " + tMapView.getZoomLevel());
                 if (tMapView.getZoomLevel() == 15) {
-                    parseBigMarker();
+                    parseBigMarker(tMapView.getCenterPoint());
+                    bigMode = false;
                 }
             }
         });
@@ -234,8 +244,9 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 tMapView.MapZoomOut();
                 Log.v("MapZoomOut", "zoomlevel : " + tMapView.getZoomLevel());
-                if (tMapView.getZoomLevel() == 15) {
-                    mergeMarker();
+                if (tMapView.getZoomLevel() == 16) {
+                    mergeMarker(tMapView.getCenterPoint());
+                    bigMode = true;
                 }
             }
         });
@@ -252,7 +263,7 @@ public class Search2Activity extends MapActivity {
                 Log.e("getTargeList 완료", "완료");
 
                 if ( makeBigMarker(targetList, bigMarkerList) ) {    // 마커 생성
-                    showMarker(bigMarkerList);
+                    showMarker(bigMarkerList,centerPoint);
                     makeMarker(targetList, markerList);
                 }
             }
@@ -289,41 +300,45 @@ public class Search2Activity extends MapActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    public void mergeMarker() {
+    public void mergeMarker(TMapPoint centerPoint) {
         Log.d("mergeMarker", "delete Marker & makeBigMarker");
 
         deleteMarker(tMapView, markerList);
 
 //        if (partMarkerList.isEmpty()){
-            showMarker(bigMarkerList);
+            showMarker(bigMarkerList,centerPoint);
 //        } else {
 //            showMarker(partMarkerList);
 //        }
 
     }
 
-    public void parseBigMarker() {
+    public void parseBigMarker(TMapPoint centerPoint) {
         Log.d("parseBigMarker", "delete BigMarker & makeMarker");
 
         deleteMarker(tMapView, bigMarkerList);
 
 //        if (partMarkerList.isEmpty()){
-            showMarker(markerList);
+            showMarker(markerList,centerPoint);
 //        } else {
 //            showMarker(partMarkerList);
 //        }
 
     }
 
-    public void showMarker(ArrayList<TMapMarkerItem2> markerList) {
+    public void showMarker(ArrayList<TMapMarkerItem2> markerList,TMapPoint centerPoint) {
         TMapMarkerItem2 marker = null;
         for (int i = 0; i < markerList.size(); i++) {
+            Location.distanceBetween(markerList.get(i).latitude,markerList.get(i).longitude,centerPoint.getLatitude(),centerPoint.getLongitude(),dist);
+            if(dist[0]>500){
+                continue;
+            }
             marker = markerList.get(i);
             tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
         }
     }
 
-    public void refreshMarker(){
+    /*public void refreshMarker(){
 
         if (tMapView.getZoomLevel() >= 15) {
             deleteMarker(tMapView, markerList);
@@ -356,5 +371,5 @@ public class Search2Activity extends MapActivity {
             showMarker(partMarkerList);
         }
 
-    }
+    }*/
 }
