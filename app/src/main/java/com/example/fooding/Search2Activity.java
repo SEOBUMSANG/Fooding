@@ -17,6 +17,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.example.fooding.Target.TargetList;
 
+import com.example.fooding.Youtube.YoutubeItem;
+import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
@@ -38,6 +40,28 @@ public class Search2Activity extends mapActivity {
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem2> markerList;
+    TargetList[] targetList;
+
+    // db에 유튜브 리스트 요청 및 정제 refactorJS
+    public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList){
+
+        Gson gson = new Gson();
+        JSONObject jsonObject;
+
+        YoutubeItem[] temptubeItems;
+        targetList = new TargetList[jsonObjectArrayList.size()];
+        for (int i = 0; i < jsonObjectArrayList.size(); i++) {
+            jsonObject = jsonObjectArrayList.get(i);
+            String response = jsonObject.toString();
+
+            targetList[i] = gson.fromJson(response, TargetList.class);
+            temptubeItems = gson.fromJson(targetList[i].youtube, YoutubeItem[].class);
+
+            for (int j = 0; j < temptubeItems.length; i++) {
+                targetList[i].youtubeItems.add(temptubeItems[i]);
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +73,11 @@ public class Search2Activity extends mapActivity {
         markerList = new ArrayList<>();
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
+
+        // 전체 음식점 정보 json으로 받아오기
+        SearchDB searchDB = new SearchDB();
+        searchDB.returnData(jsonObjectArrayList,centerPoint);
+        getTargetList(jsonObjectArrayList);
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
         tMapView = new TMapView(this);
@@ -159,13 +188,17 @@ public class Search2Activity extends mapActivity {
                 intent = new Intent(getApplicationContext(), YoutuberActivity.class);
                 intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("point", centerPointList);
+                //intent.putParcelableArrayListExtra("jsonArray", jsonObjectArrayList);
                 startActivityForResult(intent, 202);
             }
         });
         worldcupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                intent = new Intent(getApplicationContext(), WorldcupActivity.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("point", centerPointList);
+                startActivityForResult(intent, 202);
             }
         });
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -213,10 +246,7 @@ public class Search2Activity extends mapActivity {
             }
         });
 
-        // db에 유튜브 리스트 요청
-        jsonObjectArrayList = new ArrayList<>();
-        SearchDB searchDB = new SearchDB();
-        searchDB.returnData(jsonObjectArrayList,centerPoint);   // 전체 음식점 정보 json으로 받아오기
+
 
 
         // 잠시 시간 필요함
@@ -225,7 +255,7 @@ public class Search2Activity extends mapActivity {
             @Override
             public void run()
             {
-                if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
+                if ( makeMarker(targetList, markerList) ) {    // 마커 생성
                     TMapMarkerItem2 markerItem = null;
                     for (int i = 0; i < markerList.size(); i++) {
                         markerItem = markerList.get(i);
@@ -252,7 +282,7 @@ public class Search2Activity extends mapActivity {
             @Override
             public void run()
             {
-                if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
+                if ( makeMarker(targetList, markerList) ) {    // 마커 생성
                     TMapMarkerItem2 markerItem = null;
                     for (int i = 0; i < markerList.size(); i++) {
                         markerItem = markerList.get(i);

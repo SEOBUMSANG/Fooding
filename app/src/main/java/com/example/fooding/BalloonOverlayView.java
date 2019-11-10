@@ -33,7 +33,7 @@ public class BalloonOverlayView extends FrameLayout {
     //ListView listView;
     RecyclerView listView;
 
-    TargetList targetList;
+    //refactorJS
     YoutubeItem[] youtubeItems;
     ArrayList<YoutubeItem> items = new ArrayList<>();
 
@@ -42,7 +42,7 @@ public class BalloonOverlayView extends FrameLayout {
     TMapPoint markerPoint;
     String uri[];
 
-    public BalloonOverlayView(Context context, String response) {
+    public BalloonOverlayView(Context context, TargetList eachTarget) {
         super(context);
 
         final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
@@ -52,13 +52,11 @@ public class BalloonOverlayView extends FrameLayout {
         layout = new LinearLayout(context);
         layout.setVisibility(VISIBLE);
 
-        // json 파싱
-        if ( processResponse(response) ) {
-            // 좌표 만들기
-            markerPoint = new TMapPoint(Double.parseDouble(targetList.lat), Double.parseDouble(targetList.lng));
-            // 뷰 설정
-            setupView(context, layout, targetList.name);
-        }
+        // 좌표 만들기
+        markerPoint = new TMapPoint(Double.parseDouble(eachTarget.lat), Double.parseDouble(eachTarget.lng));
+        // 뷰 설정
+        setupView(context, layout, eachTarget.name);
+
 
 
         // 풍선뷰 크기
@@ -99,6 +97,7 @@ public class BalloonOverlayView extends FrameLayout {
         }
     };
 
+    /*refactorJS
     public boolean processResponse(String response) {
         Gson gson = new Gson();
 
@@ -108,7 +107,7 @@ public class BalloonOverlayView extends FrameLayout {
         setYoutubeList();
 
         return true;
-    }
+    }*/
 
     public void setYoutubeList() {
         for (int i = 0; i < youtubeItems.length; i++) {

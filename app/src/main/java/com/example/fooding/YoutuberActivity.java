@@ -29,7 +29,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class YoutuberActivity extends mapActivity {
+public class YoutuberActivity extends Search2Activity {
     TMapView tMapView;
     Intent intent;
 
@@ -165,7 +165,7 @@ public class YoutuberActivity extends mapActivity {
             {
                 Log.e("TAG", "check");
 
-                if ( makeMarker(jsonObjectArrayList, markerList) ) {    // 마커 생성
+                if ( makeMarker(targetList, markerList) ) {    // 마커 생성
                     TMapMarkerItem2 markerItem = null;
                     for (int i = 0; i < markerList.size(); i++) {
                         markerItem = markerList.get(i);
