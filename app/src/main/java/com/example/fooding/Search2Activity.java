@@ -252,7 +252,7 @@ public class Search2Activity extends mapActivity {
     public void mergeMarker() {
         Log.d("mergeMarker", "deleteMarker & makeBigMarker");
 
-        deleteMarker(tMapView, jsonObjectArrayList, markerList);
+        deleteMarker(tMapView, markerList);
 
         showMarker(bigMarkerList);
     }
@@ -260,7 +260,7 @@ public class Search2Activity extends mapActivity {
     public void parseBigMarker() {
         Log.d("parseBigMarker", "deleteBigMarker & makeMarker");
 
-        deleteBigMarker(tMapView, jsonObjectArrayList, bigMarkerList);
+        deleteMarker(tMapView, bigMarkerList);
 
         showMarker(markerList);
     }
@@ -274,7 +274,7 @@ public class Search2Activity extends mapActivity {
     }
 
     public void refreshMarker(){
-        deleteMarker(tMapView, jsonObjectArrayList, markerList);
+        deleteMarker(tMapView, markerList);
         SearchDB searchDB = new SearchDB();
         searchDB.returnData(jsonObjectArrayList,tMapView.getCenterPoint());
         new Handler().postDelayed(new Runnable()

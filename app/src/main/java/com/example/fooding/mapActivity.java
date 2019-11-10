@@ -61,7 +61,7 @@ public class mapActivity extends AppCompatActivity {
 
         for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_red);
-            bigMarkerItem.setIcon(resizeBigBitmap(bitmap)); // 마커 아이콘 지정
+            bigMarkerItem.setIcon(resizeBitmap(bitmap, 100)); // 마커 아이콘 지정
             bigMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
         }
 
@@ -91,7 +91,7 @@ public class mapActivity extends AppCompatActivity {
             String sID = "markerItem" + i;
 
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
-            markerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
+            markerItem.setIcon(resizeBitmap(bitmap, 200)); // 마커 아이콘 지정
             markerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
             markerItem.setID(sID); // 마커의 id 지정
 
@@ -105,40 +105,17 @@ public class mapActivity extends AppCompatActivity {
         return true;
     }
 
-    public void deleteMarker(TMapView tMapView, ArrayList<JSONObject> jsonObjectArrayList, ArrayList<TMapMarkerItem2> markerList){
+    public void deleteMarker(TMapView tMapView, ArrayList<TMapMarkerItem2> markerList){
 
         for(int i=0;i<markerList.size();i++) {
             tMapView.removeMarkerItem2(markerList.get(i).getID());
         }
         //markerList.clear();
-        Log.d("deleteMarker","마커 삭제");
+        Log.d("deleteMarker","지도에서 (빅)마커 삭제");
     }
 
-    public void deleteBigMarker(TMapView tMapView, ArrayList<JSONObject> jsonObjectArrayList, ArrayList<TMapMarkerItem2> bigMarkerList){
-
-        for(int i=0;i<bigMarkerList.size();i++) {
-            tMapView.removeMarkerItem2(bigMarkerList.get(i).getID());
-        }
-        //bigMarkerList.clear();
-        Log.d("deleteBigMarker","빅마커 삭제");
-    }
-
-
-    public Bitmap resizeBitmap(Bitmap original) {
-        int resizeWidth = 200;
-
-        double aspectRatio = (double) original.getHeight() / (double) original.getWidth();
-        int targetHeight = (int) (resizeWidth * aspectRatio);
-
-        Bitmap result = Bitmap.createScaledBitmap(original, resizeWidth, targetHeight, false);
-        if( result != original) {
-            original.recycle();
-        }
-        return result;
-    }
-
-    public Bitmap resizeBigBitmap(Bitmap original) {
-        int resizeWidth = 100;
+    public Bitmap resizeBitmap(Bitmap original, int width) {
+        int resizeWidth = width;
 
         double aspectRatio = (double) original.getHeight() / (double) original.getWidth();
         int targetHeight = (int) (resizeWidth * aspectRatio);
