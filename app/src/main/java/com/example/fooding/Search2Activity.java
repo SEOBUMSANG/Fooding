@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,7 +31,7 @@ import android.location.Address;
 import org.json.JSONObject;
 
 
-public class Search2Activity extends mapActivity {
+public class Search2Activity extends MapActivity {
     TMapView tMapView;
     Intent intent;
 
@@ -39,6 +40,7 @@ public class Search2Activity extends mapActivity {
 
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
+    ArrayList<TMapMarkerItem2> bigMarkerList;
     ArrayList<TMapMarkerItem2> markerList;
     TargetList[] targetList;
 
@@ -63,6 +65,9 @@ public class Search2Activity extends mapActivity {
         }
     }
 
+    ArrayList<TMapMarkerItem2> partMarkerList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,13 +75,16 @@ public class Search2Activity extends mapActivity {
 
         Intent getIntent = getIntent();
         jsonObjectArrayList = new ArrayList<>();
+        bigMarkerList = new ArrayList<>();
         markerList = new ArrayList<>();
+        partMarkerList = new ArrayList<>();
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
         // 전체 음식점 정보 json으로 받아오기
         SearchDB searchDB = new SearchDB();
         searchDB.returnData(jsonObjectArrayList,centerPoint);
+
         getTargetList(jsonObjectArrayList);
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
@@ -235,6 +243,10 @@ public class Search2Activity extends mapActivity {
             @Override
             public void onClick(View v) {
                 tMapView.MapZoomIn();
+                Log.v("MapZoomIn", "zoomlevel : " + tMapView.getZoomLevel());
+                if (tMapView.getZoomLevel() == 15) {
+                    parseBigMarker();
+                }
             }
         });
 
@@ -243,6 +255,10 @@ public class Search2Activity extends mapActivity {
             @Override
             public void onClick(View v) {
                 tMapView.MapZoomOut();
+                Log.v("MapZoomOut", "zoomlevel : " + tMapView.getZoomLevel());
+                if (tMapView.getZoomLevel() == 15) {
+                    mergeMarker();
+                }
             }
         });
 
@@ -263,7 +279,7 @@ public class Search2Activity extends mapActivity {
                     }
                 }
             }
-        }, 3000);
+        }, 5000);
 
     }
 
@@ -272,25 +288,70 @@ public class Search2Activity extends mapActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void mergeMarker() {
+        Log.d("mergeMarker", "delete Marker & makeBigMarker");
+
+        deleteMarker(tMapView, markerList);
+
+//        if (partMarkerList.isEmpty()){
+            showMarker(bigMarkerList);
+//        } else {
+//            showMarker(partMarkerList);
+//        }
+
+    }
+
+    public void parseBigMarker() {
+        Log.d("parseBigMarker", "delete BigMarker & makeMarker");
+
+        deleteMarker(tMapView, bigMarkerList);
+
+//        if (partMarkerList.isEmpty()){
+            showMarker(markerList);
+//        } else {
+//            showMarker(partMarkerList);
+//        }
+
+    }
+
+    public void showMarker(ArrayList<TMapMarkerItem2> markerList) {
+        TMapMarkerItem2 marker = null;
+        for (int i = 0; i < markerList.size(); i++) {
+            marker = markerList.get(i);
+            tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
+        }
+    }
 
     public void refreshMarker(){
-        deleteMarker(tMapView, jsonObjectArrayList, markerList);
-        SearchDB searchDB = new SearchDB();
-        searchDB.returnData(jsonObjectArrayList,tMapView.getCenterPoint());
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                if ( makeMarker(targetList, markerList) ) {    // 마커 생성
-                    TMapMarkerItem2 markerItem = null;
-                    for (int i = 0; i < markerList.size(); i++) {
-                        markerItem = markerList.get(i);
-                        tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
-                    }
+        if (tMapView.getZoomLevel() >= 15) {
+            deleteMarker(tMapView, markerList);
+        } else {
+            deleteMarker(tMapView, bigMarkerList);
+        }
+
+        float[] distance = new float[1];
+        TMapPoint centerPoint = tMapView.getCenterPoint();
+        if (tMapView.getZoomLevel() >= 15) {
+            partMarkerList.clear();
+            for (TMapMarkerItem2 markerItem : markerList) {
+                Location.distanceBetween(centerPoint.getLatitude(), centerPoint.getLongitude(), markerItem.latitude, markerItem.longitude, distance);
+
+                if (distance[0] <= 2000) {
+                    partMarkerList.add(markerItem);
                 }
             }
-        }, 5000);
+            showMarker(partMarkerList);
+        } else {
+            partMarkerList.clear();
+            for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
+                Location.distanceBetween(centerPoint.getLatitude(), centerPoint.getLongitude(), bigMarkerItem.latitude, bigMarkerItem.longitude, distance);
+
+                if (distance[0] <= 2000) {
+                    partMarkerList.add(bigMarkerItem);
+                }
+            }
+            showMarker(partMarkerList);
+        }
 
     }
 }

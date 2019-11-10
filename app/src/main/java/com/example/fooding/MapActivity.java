@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class mapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity {
     MarkerOverlay firstMarkerItem;
     float[] distance = new float[1];
 
@@ -36,30 +36,34 @@ public class mapActivity extends AppCompatActivity {
         }
 
         MarkerOverlay markerItem;
-            for (int i = 0; i < targetList.length; i++) {
+        for (int i = 0; i < targetList.length; i++) {
 
-                // 마커 생성
-                markerItem = new MarkerOverlay(this, targetList[i]);
-                markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
-                markerItem.setID("markerItem" + i);
+            // 마커 생성
+            markerItem = new MarkerOverlay(this, targetList[i]);
+            markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
+            markerItem.setID("markerItem" + i);
 
-                // 거리 계산
-                Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
+            // 거리 계산
+            Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
 
-                if (distance[0] <= 500) {
-                    firstMarkerItem.markerList.add(markerItem);
-                } else {
-                    firstMarkerItem = markerItem;
-                    firstMarkerItem.markerList.add(markerItem); // 자기 자신도 추가
-                    bigMarkerList.add(firstMarkerItem);
-                }
+            if (distance[0] <= 3000) {
+                firstMarkerItem.markerList.add(markerItem);
+            } else {
+                firstMarkerItem = markerItem;
+                firstMarkerItem.markerList.add(markerItem); // 자기 자신도 추가
+                bigMarkerList.add(firstMarkerItem);
             }
+        }
 
-            for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
-                Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_red);
-                bigMarkerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
-                bigMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
-            }
+
+
+
+
+        for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
+            Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_red);
+            bigMarkerItem.setIcon(resizeBitmap(bitmap, 150)); // 마커 아이콘 지정
+            bigMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
+        }
 
 
         if (bigMarkerList.isEmpty()) {
@@ -88,7 +92,7 @@ public class mapActivity extends AppCompatActivity {
             String sID = "markerItem" + i;
 
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
-            markerItem.setIcon(resizeBitmap(bitmap)); // 마커 아이콘 지정
+            markerItem.setIcon(resizeBitmap(bitmap, 200)); // 마커 아이콘 지정
             markerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
             markerItem.setID(sID); // 마커의 id 지정
 
@@ -98,22 +102,22 @@ public class mapActivity extends AppCompatActivity {
         if (markerList.isEmpty()) {
             return false;
         }
+
         return true;
     }
 
-    public void deleteMarker(TMapView tMapView, TargetList targetList[], ArrayList<TMapMarkerItem2> markerList){
-        jsonObjectArrayList.clear();
+
+    public void deleteMarker(TMapView tMapView, ArrayList<TMapMarkerItem2> markerList){
+
         for(int i=0;i<markerList.size();i++) {
             tMapView.removeMarkerItem2(markerList.get(i).getID());
         }
-        markerList.clear();
-        Log.d("deleteMarker","마커 삭제");
+        //markerList.clear();
+        Log.d("deleteMarker","지도에서 (빅)마커 삭제");
     }
 
-
-
-    public Bitmap resizeBitmap(Bitmap original) {
-        int resizeWidth = 200;
+    public Bitmap resizeBitmap(Bitmap original, int width) {
+        int resizeWidth = width;
 
         double aspectRatio = (double) original.getHeight() / (double) original.getWidth();
         int targetHeight = (int) (resizeWidth * aspectRatio);

@@ -133,7 +133,11 @@ public class MarkerOverlay extends TMapMarkerItem2 {
             int nTempY =  y - marginY - balloonView.getMeasuredHeight();
 
             canvas.translate(nTempX, nTempY);
-            balloonView.draw(canvas);
+            try {
+                balloonView.draw(canvas);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             // 풍선뷰 영역 설정
             rect.left = nTempX;

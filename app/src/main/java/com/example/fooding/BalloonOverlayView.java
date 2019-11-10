@@ -30,7 +30,6 @@ public class BalloonOverlayView extends FrameLayout {
     private LinearLayout layout;
     private TextView title;
 
-    //ListView listView;
     RecyclerView listView;
 
     //refactorJS
@@ -41,6 +40,7 @@ public class BalloonOverlayView extends FrameLayout {
 
     TMapPoint markerPoint;
     String uri[];
+
 
     public BalloonOverlayView(Context context, TargetList eachTarget) {
         super(context);

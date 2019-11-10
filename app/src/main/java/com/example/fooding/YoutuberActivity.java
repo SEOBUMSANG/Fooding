@@ -29,7 +29,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
 public class YoutuberActivity extends Search2Activity {
+
     TMapView tMapView;
     Intent intent;
 
