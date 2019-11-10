@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import com.example.fooding.Target.TargetList;
 
+import com.example.fooding.Youtube.YoutubeItem;
+import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
@@ -40,7 +42,10 @@ public class Search2Activity extends MapActivity {
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem2> bigMarkerList;
     ArrayList<TMapMarkerItem2> markerList;
+
     ArrayList<TMapMarkerItem2> partMarkerList;
+
+    TargetList[] targetList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +59,11 @@ public class Search2Activity extends MapActivity {
         partMarkerList = new ArrayList<>();
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
+
+        // 전체 음식점 정보 json으로 받아오기
+        SearchDB searchDB = new SearchDB();
+        searchDB.returnData(jsonObjectArrayList, centerPoint);
+
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
         tMapView = new TMapView(this);
@@ -164,13 +174,17 @@ public class Search2Activity extends MapActivity {
                 intent = new Intent(getApplicationContext(), YoutuberActivity.class);
                 intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("point", centerPointList);
+                //intent.putParcelableArrayListExtra("jsonArray", jsonObjectArrayList);
                 startActivityForResult(intent, 202);
             }
         });
         worldcupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                intent = new Intent(getApplicationContext(), WorldcupActivity.class);
+                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("point", centerPointList);
+                startActivityForResult(intent, 202);
             }
         });
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -226,11 +240,6 @@ public class Search2Activity extends MapActivity {
             }
         });
 
-        // db에 유튜브 리스트 요청
-        jsonObjectArrayList = new ArrayList<>();
-        SearchDB searchDB = new SearchDB();
-        searchDB.returnData(jsonObjectArrayList,centerPoint);   // 전체 음식점 정보 json으로 받아오기
-
 
         // 잠시 시간 필요함
         new Handler().postDelayed(new Runnable()
@@ -238,13 +247,41 @@ public class Search2Activity extends MapActivity {
             @Override
             public void run()
             {
-                if ( makeBigMarker(jsonObjectArrayList, bigMarkerList) ) {    // 빅마커 생성
+                Log.e("getTargeList 시작 전", "시작 전");
+                getTargetList(jsonObjectArrayList);
+                Log.e("getTargeList 완료", "완료");
+
+                if ( makeBigMarker(targetList, bigMarkerList) ) {    // 마커 생성
                     showMarker(bigMarkerList);
-                    makeMarker(jsonObjectArrayList, markerList);    // 그냥 마커도 미리 생성
+                    makeMarker(targetList, markerList);
                 }
             }
         }, 5000);
 
+    }
+
+    // db에 유튜브 리스트 요청 및 정제 refactorJS
+    public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList){
+        Log.e("getTargetList", "시작");
+        Gson gson = new Gson();
+        JSONObject jsonObject;
+
+        Log.e("getTaretList", "array size : "+jsonObjectArrayList.size());
+
+        YoutubeItem[] temptubeItems;
+        targetList = new TargetList[jsonObjectArrayList.size()];
+        for (int i = 0; i < jsonObjectArrayList.size(); i++) {
+            jsonObject = jsonObjectArrayList.get(i);
+            String response = jsonObject.toString();
+
+            targetList[i] = gson.fromJson(response, TargetList.class);
+            temptubeItems = gson.fromJson(targetList[i].youtube, YoutubeItem[].class);
+
+            for (int j = 0; j < temptubeItems.length; j++) {
+                targetList[i].youtubeItems.add(temptubeItems[j]);
+            }
+            Log.e("getWTargetList", "z"+targetList[i].youtubeItems);
+        }
     }
 
     @Override
@@ -287,6 +324,7 @@ public class Search2Activity extends MapActivity {
     }
 
     public void refreshMarker(){
+
         if (tMapView.getZoomLevel() >= 15) {
             deleteMarker(tMapView, markerList);
         } else {
@@ -302,6 +340,7 @@ public class Search2Activity extends MapActivity {
 
                 if (distance[0] <= 2000) {
                     partMarkerList.add(markerItem);
+
                 }
             }
             showMarker(partMarkerList);

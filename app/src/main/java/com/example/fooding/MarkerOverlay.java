@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.example.fooding.Target.TargetList;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
@@ -60,7 +61,9 @@ public class MarkerOverlay extends TMapMarkerItem2 {
         super.setCalloutRect(rect);
     }
 
-    public MarkerOverlay(Context context, String response) {
+
+
+    public MarkerOverlay(Context context, TargetList eachTarget) {
         this.mContext = context;
         markerList = new ArrayList<>();
 
@@ -68,7 +71,9 @@ public class MarkerOverlay extends TMapMarkerItem2 {
         WindowManager wmgr = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
         wmgr.getDefaultDisplay().getMetrics(dm);
 
-        balloonView = new BalloonOverlayView(mContext, response);
+
+        //refactorJS
+        balloonView = new BalloonOverlayView(mContext, eachTarget);
         markerPoint = balloonView.markerPoint;
 
         balloonView.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED),

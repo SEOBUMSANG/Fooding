@@ -32,7 +32,7 @@ public class BalloonOverlayView extends FrameLayout {
 
     RecyclerView listView;
 
-    TargetList targetList;
+    //refactorJS
     YoutubeItem[] youtubeItems;
     ArrayList<YoutubeItem> items = new ArrayList<>();
 
@@ -41,9 +41,8 @@ public class BalloonOverlayView extends FrameLayout {
     TMapPoint markerPoint;
     String uri[];
 
-    int flag = 0;
 
-    public BalloonOverlayView(Context context, String response) {
+    public BalloonOverlayView(Context context, TargetList eachTarget) {
         super(context);
 
         final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
@@ -54,25 +53,16 @@ public class BalloonOverlayView extends FrameLayout {
         layout.setVisibility(VISIBLE);
 
 
-        if (response.isEmpty()) {
-            flag = 1;
-            Log.wtf("reponse is empty", "don't click marker");
-        }
-
-        // json 파싱
-        if ( processResponse(response) ) {
-            // 좌표 만들기
-            markerPoint = new TMapPoint(Double.parseDouble(targetList.lat), Double.parseDouble(targetList.lng));
-            // 뷰 설정
-            setupView(context, layout, targetList.name);
-        }
+        // 좌표 만들기
+        markerPoint = new TMapPoint(Double.parseDouble(eachTarget.lat), Double.parseDouble(eachTarget.lng));
+        // 뷰 설정
+        setupView(context, layout, eachTarget.name);
 
 
         // 풍선뷰 크기
         LayoutParams param = new LayoutParams(width, height);
         param.gravity = Gravity.NO_GRAVITY;
         addView(layout, param);
-        flag = 0;
     }
 
 
@@ -107,6 +97,7 @@ public class BalloonOverlayView extends FrameLayout {
         }
     };
 
+    /*refactorJS
     public boolean processResponse(String response) {
         Gson gson = new Gson();
 
@@ -116,7 +107,7 @@ public class BalloonOverlayView extends FrameLayout {
         setYoutubeList();
 
         return true;
-    }
+    }*/
 
     public void setYoutubeList() {
         for (int i = 0; i < youtubeItems.length; i++) {

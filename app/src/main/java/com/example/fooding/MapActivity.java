@@ -7,6 +7,7 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.fooding.Target.TargetList;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapView;
 
@@ -18,34 +19,28 @@ public class MapActivity extends AppCompatActivity {
     MarkerOverlay firstMarkerItem;
     float[] distance = new float[1];
 
-    public boolean makeBigMarker(ArrayList<JSONObject> jsonObjectArrayList, ArrayList<TMapMarkerItem2> bigMarkerList) {
 
-        if (jsonObjectArrayList.isEmpty()) {
+    public boolean makeBigMarker(TargetList[] targetList, ArrayList<TMapMarkerItem2> bigMarkerList) {
+
+        if (targetList.length == 0) {
             Log.e("makeBigMarker", "json 어레이 비어있음");
             return false;
         }
 
         // 첫 번째 빅마커 생성
         if (bigMarkerList.isEmpty()) {
-            JSONObject firstJsonObject = jsonObjectArrayList.get(0);
-            String firstResponse = firstJsonObject.toString();
-            firstMarkerItem = new MarkerOverlay(this, firstResponse);
+            TargetList firstTarget = targetList[0];
+            firstMarkerItem = new MarkerOverlay(this, firstTarget);
             firstMarkerItem.setID("firstBigMarkerItem");
             bigMarkerList.add(firstMarkerItem);
         }
 
-        JSONObject jsonObject;
-        String response;
         MarkerOverlay markerItem;
-        for (int i = 0; i < jsonObjectArrayList.size(); i++) {
-            jsonObject = jsonObjectArrayList.get(i);
-            response = jsonObject.toString();
-
+        for (int i = 0; i < targetList.length; i++) {
             // 마커 생성
-            markerItem = new MarkerOverlay(this, response);
+            markerItem = new MarkerOverlay(this, targetList[i]);
             markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
             markerItem.setID("markerItem" + i);
-
 
             // 거리 계산
             Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
@@ -74,19 +69,20 @@ public class MapActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean makeMarker(ArrayList<JSONObject> jsonObjectArrayList, ArrayList<TMapMarkerItem2> markerList) {
 
-        if (jsonObjectArrayList.isEmpty())
+    public boolean makeMarker(TargetList[] targetList, ArrayList<TMapMarkerItem2> markerList) {
+
+        if (targetList.length == 0)
             Log.e("makeMarker", "어레이 비어있음");
 
-        JSONObject jsonObject;
-        for (int i = 0; i < jsonObjectArrayList.size(); i++) {
-            jsonObject = jsonObjectArrayList.get(i);
-            String response = jsonObject.toString();
-            Log.i("makeMarker", response);
+        //refactorJS
+        TargetList eachTarget;
+        for (int i = 0; i < targetList.length; i++) {
+            eachTarget = targetList[i];
+            Log.i("makeMarker", eachTarget.name);
 
             // 마커 생성
-            MarkerOverlay markerItem = new MarkerOverlay(this, response);
+            MarkerOverlay markerItem = new MarkerOverlay(this, eachTarget);
             markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
             String sID = "markerItem" + i;
 
@@ -105,8 +101,8 @@ public class MapActivity extends AppCompatActivity {
         return true;
     }
 
-    public void deleteMarker(TMapView tMapView, ArrayList<TMapMarkerItem2> markerList){
 
+    public void deleteMarker(TMapView tMapView, ArrayList<TMapMarkerItem2> markerList){
         for(int i=0;i<markerList.size();i++) {
             tMapView.removeMarkerItem2(markerList.get(i).getID());
         }
