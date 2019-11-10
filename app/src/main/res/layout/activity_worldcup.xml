@@ -226,7 +226,7 @@
                             android:background="@drawable/radius_background_white"
                             android:layout_centerHorizontal="true"
                             android:text="키워드" />
-                    </RelativeLayout>
+                   ₩ </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_width="wrap_content"
