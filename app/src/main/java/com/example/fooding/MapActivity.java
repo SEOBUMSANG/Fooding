@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class mapActivity extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity {
     MarkerOverlay firstMarkerItem;
     float[] distance = new float[1];
 
@@ -50,7 +50,7 @@ public class mapActivity extends AppCompatActivity {
             // 거리 계산
             Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
 
-            if (distance[0] <= 500) {
+            if (distance[0] <= 3000) {
                 firstMarkerItem.markerList.add(markerItem);
             } else {
                 firstMarkerItem = markerItem;
@@ -61,7 +61,7 @@ public class mapActivity extends AppCompatActivity {
 
         for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_red);
-            bigMarkerItem.setIcon(resizeBitmap(bitmap, 100)); // 마커 아이콘 지정
+            bigMarkerItem.setIcon(resizeBitmap(bitmap, 150)); // 마커 아이콘 지정
             bigMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
         }
 

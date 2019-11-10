@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +29,7 @@ import android.location.Address;
 import org.json.JSONObject;
 
 
-public class Search2Activity extends mapActivity {
+public class Search2Activity extends MapActivity {
     TMapView tMapView;
     Intent intent;
 
@@ -219,7 +220,7 @@ public class Search2Activity extends mapActivity {
             public void onClick(View v) {
                 tMapView.MapZoomOut();
                 Log.v("MapZoomOut", "zoomlevel : " + tMapView.getZoomLevel());
-                if (tMapView.getZoomLevel() == 14) {
+                if (tMapView.getZoomLevel() == 15) {
                     mergeMarker();
                 }
             }
@@ -256,7 +257,12 @@ public class Search2Activity extends mapActivity {
 
         deleteMarker(tMapView, markerList);
 
-        showMarker(bigMarkerList);
+//        if (partMarkerList.isEmpty()){
+            showMarker(bigMarkerList);
+//        } else {
+//            showMarker(partMarkerList);
+//        }
+
     }
 
     public void parseBigMarker() {
@@ -264,7 +270,12 @@ public class Search2Activity extends mapActivity {
 
         deleteMarker(tMapView, bigMarkerList);
 
-        showMarker(markerList);
+//        if (partMarkerList.isEmpty()){
+            showMarker(markerList);
+//        } else {
+//            showMarker(partMarkerList);
+//        }
+
     }
 
     public void showMarker(ArrayList<TMapMarkerItem2> markerList) {
@@ -282,23 +293,29 @@ public class Search2Activity extends mapActivity {
             deleteMarker(tMapView, bigMarkerList);
         }
 
+        float[] distance = new float[1];
         TMapPoint centerPoint = tMapView.getCenterPoint();
         if (tMapView.getZoomLevel() >= 15) {
+            partMarkerList.clear();
+            for (TMapMarkerItem2 markerItem : markerList) {
+                Location.distanceBetween(centerPoint.getLatitude(), centerPoint.getLongitude(), markerItem.latitude, markerItem.longitude, distance);
 
-            showMarker(markerList);
-        } else {
-            showMarker(bigMarkerList);
-        }
-
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-
-
+                if (distance[0] <= 2000) {
+                    partMarkerList.add(markerItem);
+                }
             }
-        }, 5000);
+            showMarker(partMarkerList);
+        } else {
+            partMarkerList.clear();
+            for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
+                Location.distanceBetween(centerPoint.getLatitude(), centerPoint.getLongitude(), bigMarkerItem.latitude, bigMarkerItem.longitude, distance);
+
+                if (distance[0] <= 2000) {
+                    partMarkerList.add(bigMarkerItem);
+                }
+            }
+            showMarker(partMarkerList);
+        }
 
     }
 }

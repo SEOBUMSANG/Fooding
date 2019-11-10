@@ -31,11 +31,11 @@ public class SearchDB {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                double distance = checkDistance(document,centerPoint);
-                                if(distance>10000000) {
-                                    continue;
-                                }
-                                else {
+//                                double distance = checkDistance(document,centerPoint);
+//                                if(distance>10000000) {
+//                                    continue;
+//                                }
+//                                else {
                                     JSONObject jsonObject = new JSONObject();
 
                                     Log.d("returnData", document.getId() + " => " + document.getData().get("name"));
@@ -54,7 +54,7 @@ public class SearchDB {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
-                                }
+//                                }
                             }
                         } else {
                             Log.e("returnData", "Error getting documents: ", task.getException());

@@ -29,7 +29,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class YoutuberActivity extends mapActivity {
+public class YoutuberActivity extends MapActivity {
     TMapView tMapView;
     Intent intent;
 
