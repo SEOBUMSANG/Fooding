@@ -52,6 +52,7 @@ public class BalloonOverlayView extends FrameLayout {
         layout = new LinearLayout(context);
         layout.setVisibility(VISIBLE);
 
+        items = eachTarget.youtubeItems;
 
         // 좌표 만들기
         markerPoint = new TMapPoint(Double.parseDouble(eachTarget.lat), Double.parseDouble(eachTarget.lng));
@@ -62,6 +63,7 @@ public class BalloonOverlayView extends FrameLayout {
         // 풍선뷰 크기
         LayoutParams param = new LayoutParams(width, height);
         param.gravity = Gravity.NO_GRAVITY;
+        //layout.bringToFront();
         addView(layout, param);
     }
 
@@ -96,25 +98,6 @@ public class BalloonOverlayView extends FrameLayout {
             Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
         }
     };
-
-    /*refactorJS
-    public boolean processResponse(String response) {
-        Gson gson = new Gson();
-
-        targetList = gson.fromJson(response, TargetList.class);
-        youtubeItems = gson.fromJson(targetList.youtube, YoutubeItem[].class);
-
-        setYoutubeList();
-
-        return true;
-    }*/
-
-    public void setYoutubeList() {
-        for (int i = 0; i < youtubeItems.length; i++) {
-            YoutubeItem youtubeItem = youtubeItems[i];
-            items.add(youtubeItem);
-        }
-    }
 
     public void setTitle(String str) {
         title.setText(str);

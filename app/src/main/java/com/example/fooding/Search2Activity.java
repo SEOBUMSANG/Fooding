@@ -47,6 +47,8 @@ public class Search2Activity extends MapActivity {
 
     TargetList[] targetList;
 
+    SearchDB searchDB;
+
     boolean bigMode = true;
     float[] dist = new float[1];
 
@@ -63,10 +65,7 @@ public class Search2Activity extends MapActivity {
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         final TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
-        // 전체 음식점 정보 json으로 받아오기
-        SearchDB searchDB = new SearchDB();
-        searchDB.returnData(jsonObjectArrayList, centerPoint);
-
+        init(centerPoint);
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
         tMapView = new TMapView(this);
@@ -125,7 +124,7 @@ public class Search2Activity extends MapActivity {
                 Toast.makeText(getApplicationContext(), "marker", Toast.LENGTH_SHORT).show();
                 MarkerOverlay marker = (MarkerOverlay) tMapMarkerItem2;
 
-                Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.youtubeItems[0].URL));
+                Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.items.get(0).URL));
                 startActivity(myintent);
             }
         });
@@ -251,7 +250,7 @@ public class Search2Activity extends MapActivity {
             }
         });
 
-
+        // 시작
         // 잠시 시간 필요함
         new Handler().postDelayed(new Runnable()
         {
@@ -269,6 +268,13 @@ public class Search2Activity extends MapActivity {
             }
         }, 5000);
 
+    }
+
+    public void init(final TMapPoint centerPoint) {
+        // 전체 음식점 정보 json으로 받아오기
+        searchDB = new SearchDB();
+        if (jsonObjectArrayList.isEmpty())
+            searchDB.returnData(jsonObjectArrayList, centerPoint);
     }
 
     // db에 유튜브 리스트 요청 및 정제 refactorJS

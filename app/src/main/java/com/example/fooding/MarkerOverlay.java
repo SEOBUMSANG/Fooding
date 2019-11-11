@@ -100,6 +100,7 @@ public class MarkerOverlay extends TMapMarkerItem2 {
         int marginX = 0;
         int marginY = 0;
 
+        //
         nMarkerIconWidth = getIcon().getWidth();
         nMarkerIconHeight = getIcon().getHeight();
 
