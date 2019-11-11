@@ -309,7 +309,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_fill">
+                    android:background="@drawable/oval_background_orange_blank">
 
                     <Button
                         android:id="@+id/search_button"
@@ -357,7 +357,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_blank">
+                    android:background="@drawable/oval_background_orange_fill">
 
                     <Button
                         android:id="@+id/worldcup_button"
