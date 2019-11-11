@@ -15,12 +15,6 @@ public class WorldcupActivity extends Search2Activity {
 
         TextView candidate1Title = findViewById(R.id.candidate1_title);
 
-
-
-
-
-
-
     }
 
 
