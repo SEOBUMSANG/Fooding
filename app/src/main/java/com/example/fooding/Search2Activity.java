@@ -291,13 +291,12 @@ public class Search2Activity extends MapActivity {
             String response = jsonObject.toString();
 
             targetList[i] = gson.fromJson(response, TargetList.class);
+            targetList[i].youtubeItems = new ArrayList<>();
             temptubeItems = gson.fromJson(targetList[i].youtube, YoutubeItem[].class);
 
             for (int j = 0; j < temptubeItems.length; j++) {
-                targetList[i].youtubeItems = new ArrayList<>();
                 targetList[i].youtubeItems.add(temptubeItems[j]);
             }
-            Log.e("getWTargetList", "z"+targetList[i].youtubeItems);
         }
     }
 

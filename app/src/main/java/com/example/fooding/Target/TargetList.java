@@ -2,9 +2,6 @@ package com.example.fooding.Target;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.example.fooding.Youtube.YoutubeItem;
 
 import java.util.ArrayList;

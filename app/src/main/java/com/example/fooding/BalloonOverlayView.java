@@ -63,7 +63,6 @@ public class BalloonOverlayView extends FrameLayout {
         // 풍선뷰 크기
         LayoutParams param = new LayoutParams(width, height);
         param.gravity = Gravity.NO_GRAVITY;
-        //layout.bringToFront();
         addView(layout, param);
     }
 
@@ -81,8 +80,6 @@ public class BalloonOverlayView extends FrameLayout {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         listView.setLayoutManager(layoutManager);
-
-        eachTarget.youtubeItems = new ArrayList<>();
 
         adapter = new YoutubeAdapter(getContext(), eachTarget.youtubeItems, onClickItem);
         adapter.notifyDataSetChanged();
