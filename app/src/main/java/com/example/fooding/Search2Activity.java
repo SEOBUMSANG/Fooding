@@ -21,8 +21,10 @@ import com.example.fooding.Target.TargetList;
 import com.example.fooding.Youtube.YoutubeItem;
 import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
+import com.skt.Tmap.TMapData;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
+import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
 import java.util.ArrayList;
@@ -42,7 +44,6 @@ public class Search2Activity extends MapActivity {
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem2> bigMarkerList;
     ArrayList<TMapMarkerItem2> markerList;
-
     ArrayList<TMapMarkerItem2> partMarkerList;
 
     TargetList[] targetList;
@@ -64,8 +65,10 @@ public class Search2Activity extends MapActivity {
         final TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
         // 전체 음식점 정보 json으로 받아오기
-        SearchDB searchDB = new SearchDB();
-        searchDB.returnData(jsonObjectArrayList, centerPoint);
+        if (jsonObjectArrayList.isEmpty()) {
+            SearchDB searchDB = new SearchDB();
+            searchDB.returnData(jsonObjectArrayList, centerPoint);
+        }
 
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
@@ -192,8 +195,10 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), WorldcupActivity.class);
                 intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("point", centerPointList);
-                startActivityForResult(intent, 202);
+                intent.putExtra("lat", tMapView.getCenterPoint().getLatitude());
+                intent.putExtra("lng", tMapView.getCenterPoint().getLongitude());
+                intent.putExtra("targetList",targetList);
+                startActivityForResult(intent, 203);
             }
         });
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -253,21 +258,21 @@ public class Search2Activity extends MapActivity {
 
 
         // 잠시 시간 필요함
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Log.e("getTargeList 시작 전", "시작 전");
-                getTargetList(jsonObjectArrayList);
-                Log.e("getTargeList 완료", "완료");
+        if(markerList.isEmpty()) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Log.e("getTargeList 시작 전", "시작 전");
+                    getTargetList(jsonObjectArrayList);
+                    Log.e("getTargeList 완료", "완료");
 
-                if ( makeBigMarker(targetList, bigMarkerList) ) {    // 마커 생성
-                    showMarker(bigMarkerList,centerPoint);
-                    makeMarker(targetList, markerList);
+                    if (makeBigMarker(targetList, bigMarkerList)) {    // 마커 생성
+                        showMarker(bigMarkerList, centerPoint);
+                        makeMarker(targetList, markerList);
+                    }
                 }
-            }
-        }, 5000);
+            }, 5000);
+        }
 
     }
 
@@ -344,6 +349,27 @@ public class Search2Activity extends MapActivity {
                 tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
             }
         }
+
+    }
+
+    public void getWalkPath(TMapPoint startPoint,TMapPoint endPoint){
+        TMapData tMapData = new TMapData();
+        tMapData.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, startPoint, endPoint, new TMapData.FindPathDataListenerCallback() {
+            @Override
+            public void onFindPathData(TMapPolyLine polyLine) {
+                tMapView.addTMapPath(polyLine);
+            }
+        });
+    }
+
+    public void getCarPath(TMapPoint startPoint,TMapPoint endPoint){
+        TMapData tMapData = new TMapData();
+        tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, startPoint, endPoint, new TMapData.FindPathDataListenerCallback() {
+            @Override
+            public void onFindPathData(TMapPolyLine polyLine) {
+                tMapView.addTMapPath(polyLine);
+            }
+        });
     }
 
     /*public void refreshMarker(){
