@@ -136,7 +136,7 @@ public class MarkerOverlay extends TMapMarkerItem2 {
             try {
                 balloonView.draw(canvas);
             } catch (Exception e) {
-                e.printStackTrace();
+               e.printStackTrace();
             }
 
             // 풍선뷰 영역 설정
