@@ -19,7 +19,6 @@ public class MapActivity extends AppCompatActivity {
     MarkerOverlay firstMarkerItem;
     float[] distance = new float[1];
 
-    TargetList[] targetList;
 
     public boolean makeBigMarker(TargetList[] targetList, ArrayList<TMapMarkerItem2> bigMarkerList) {
 

@@ -2,12 +2,17 @@ package com.example.fooding.Target;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.example.fooding.Youtube.YoutubeItem;
 
 import java.util.ArrayList;
 
 
-public class TargetList implements Parcelable{
+
+public class TargetList implements Parcelable {
+
     public String name;
     public String lat;
     public String lng;
@@ -15,7 +20,7 @@ public class TargetList implements Parcelable{
     public String resAddress;
     public String resImageURL;
     public String youtube;
-    public ArrayList<YoutubeItem> youtubeItems;
+    public ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
 
     public TargetList(String name, String lat, String lng, String description, String resAddress, String resImageURL, String youtube, ArrayList<YoutubeItem> youtubeItems) {
         this.name = name;
@@ -40,12 +45,12 @@ public class TargetList implements Parcelable{
     }
 
     public static final Creator CREATOR = new Creator() {
-        public YoutubeItem createFromParcel(Parcel src) {
-            return new YoutubeItem(src);
+        public TargetList createFromParcel(Parcel src) {
+            return new TargetList(src);
         }
 
-        public YoutubeItem[] newArray(int size) {
-            return new YoutubeItem[size];
+        public TargetList[] newArray(int size) {
+            return new TargetList[size];
         }
     };
 
@@ -131,3 +136,4 @@ public class TargetList implements Parcelable{
         this.youtubeItems = youtubeItems;
     }
 }
+

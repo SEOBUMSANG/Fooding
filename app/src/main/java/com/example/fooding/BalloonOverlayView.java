@@ -82,6 +82,8 @@ public class BalloonOverlayView extends FrameLayout {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         listView.setLayoutManager(layoutManager);
 
+        eachTarget.youtubeItems = new ArrayList<>();
+
         adapter = new YoutubeAdapter(getContext(), eachTarget.youtubeItems, onClickItem);
         adapter.notifyDataSetChanged();
         listView.setAdapter(adapter);
