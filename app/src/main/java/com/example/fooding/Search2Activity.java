@@ -139,17 +139,9 @@ public class Search2Activity extends MapActivity {
         Button buttonZoomOut = findViewById(R.id.button_zoom_out);
 
         youtuberButton = findViewById(R.id.youtuber_button);
-        refreshButton = findViewById(R.id.refresh_button);
         Button worldcupButton = findViewById(R.id.worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
 
-        //갱신 버튼
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
 
         //현재위치 버튼
         mylocationButton.setOnClickListener(new View.OnClickListener() {
@@ -192,7 +184,7 @@ public class Search2Activity extends MapActivity {
                 intent = new Intent(getApplicationContext(), WorldcupActivity.class);
                 intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("point", centerPointList);
-                startActivityForResult(intent, 202);
+                startActivityForResult(intent, 203);
             }
         });
         likeButton.setOnClickListener(new View.OnClickListener() {
