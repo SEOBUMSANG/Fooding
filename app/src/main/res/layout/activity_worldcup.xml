@@ -58,8 +58,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <!-- 여기에 후보 1 넣어 -->
 
+            <LinearLayout
+                android:id="@+id/candidate1_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- vs -->
@@ -79,9 +85,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <!-- 여기에 후보 2 넣어 -->
 
-
+            <!--후보2 내용물-->
+            <LinearLayout
+                android:id="@+id/candidate2_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+            </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

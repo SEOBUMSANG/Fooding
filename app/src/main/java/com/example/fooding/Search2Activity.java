@@ -258,9 +258,7 @@ public class Search2Activity extends MapActivity {
             @Override
             public void run()
             {
-                Log.e("getTargeList 시작 전", "시작 전");
                 getTargetList(jsonObjectArrayList);
-                Log.e("getTargeList 완료", "완료");
 
                 if ( makeBigMarker(targetList, bigMarkerList) ) {    // 마커 생성
                     showMarker(bigMarkerList,centerPoint);

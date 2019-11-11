@@ -15,5 +15,9 @@ public class TargetList {
     public String youtube;
     public ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
 
+    public TargetList(){
+
+    }
+
 
 }
