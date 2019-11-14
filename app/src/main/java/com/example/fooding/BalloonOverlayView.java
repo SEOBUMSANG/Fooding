@@ -52,13 +52,13 @@ public class BalloonOverlayView extends FrameLayout {
         layout = new LinearLayout(context);
         layout.setVisibility(VISIBLE);
 
-        items = eachTarget.youtubeItems;
-
-        // 좌표 만들기
-        markerPoint = new TMapPoint(Double.parseDouble(eachTarget.lat), Double.parseDouble(eachTarget.lng));
-        // 뷰 설정
-        setupView(context, layout, eachTarget.name, eachTarget);
-
+        if (eachTarget != null) {
+            items = eachTarget.youtubeItems;
+            // 좌표 만들기
+            markerPoint = new TMapPoint(Double.parseDouble(eachTarget.lat), Double.parseDouble(eachTarget.lng));
+            // 뷰 설정
+            setupView(context, layout, eachTarget.name, eachTarget);
+        }
 
         // 풍선뷰 크기
         LayoutParams param = new LayoutParams(width, height);

@@ -3,6 +3,8 @@ package com.example.fooding;
 import androidx.annotation.Nullable;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Geocoder;
@@ -23,6 +25,7 @@ import com.example.fooding.Youtube.YoutubeItem;
 import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapData;
+import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
@@ -53,6 +56,7 @@ public class Search2Activity extends MapActivity {
     SearchDB searchDB;
 
     boolean bigMode = true;
+    boolean worldcupMode = false;
     float[] dist = new float[1];
 
     @Override
@@ -84,6 +88,14 @@ public class Search2Activity extends MapActivity {
         tMapCircle.setAreaColor(Color.GRAY);
         tMapCircle.setAreaAlpha(100);
         tMapView.addTMapCircle("circle1", tMapCircle);
+
+        //월드컵용 가운데 마커
+        final TMapMarkerItem centerMarkerItem = new TMapMarkerItem();
+        final String sID = "centerMarkerItem";
+        centerMarkerItem.setID(sID); // 마커의 id 지정
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_green);
+        centerMarkerItem.setIcon(resizeBitmap(bitmap, 150)); // 마커 아이콘 지정
+        centerMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
 
 
         //지도 이벤트 설정
@@ -119,7 +131,13 @@ public class Search2Activity extends MapActivity {
                 else{
                     deleteMarker(tMapView, markerList);
                     showMarker(markerList,centerPoint);
-                }    }
+                }
+
+                if(worldcupMode) {
+                    centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
+                }
+
+            }
         });
         tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
             @Override
@@ -186,6 +204,11 @@ public class Search2Activity extends MapActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (worldcupMode) {
+                    worldcupMode = false;
+                    tMapView.removeMarkerItem(centerMarkerItem.getID());
+                }
+
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
                 layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 worldcupStartButton.setVisibility(View.INVISIBLE);
@@ -204,9 +227,14 @@ public class Search2Activity extends MapActivity {
         worldcupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                worldcupMode = true;
+
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
                 worldcupStartButton.setVisibility(View.VISIBLE);
+
+                centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
+                tMapView.addMarkerItem(centerMarkerItem.getID(), centerMarkerItem);
             }
         });
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -354,7 +382,7 @@ public class Search2Activity extends MapActivity {
 
     }
 
-    public void showMarker(ArrayList<TMapMarkerItem2> markerList,TMapPoint centerPoint) {
+    public void showMarker(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint) {
         TMapMarkerItem2 marker = null;
         for (int i = 0; i < markerList.size(); i++) {
             Location.distanceBetween(markerList.get(i).latitude,markerList.get(i).longitude,centerPoint.getLatitude(),centerPoint.getLongitude(),dist);

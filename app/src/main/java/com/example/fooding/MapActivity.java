@@ -22,7 +22,7 @@ public class MapActivity extends AppCompatActivity {
 
     public boolean makeBigMarker(TargetList[] targetList, ArrayList<TMapMarkerItem2> bigMarkerList) {
 
-        if (targetList.length == 0) {
+        if (targetList == null || targetList.length == 0) {
             Log.e("makeBigMarker", "json 어레이 비어있음");
             return false;
         }
@@ -55,6 +55,7 @@ public class MapActivity extends AppCompatActivity {
         }
 
         for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
+            bigMarkerItem.setMarkerTouch(false);
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_red);
             bigMarkerItem.setIcon(resizeBitmap(bitmap, 150)); // 마커 아이콘 지정
             bigMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
@@ -72,8 +73,10 @@ public class MapActivity extends AppCompatActivity {
 
     public boolean makeMarker(TargetList[] targetList, ArrayList<TMapMarkerItem2> markerList) {
 
-        if (targetList.length == 0)
+        if (targetList == null || targetList.length == 0) {
             Log.e("makeMarker", "어레이 비어있음");
+            return false;
+        }
 
         //refactorJS
         TargetList eachTarget;

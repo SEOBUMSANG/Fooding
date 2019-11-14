@@ -49,6 +49,7 @@ public class SearchDB {
                                         jsonObject.put("resImageURL",document.getData().get("resImageURL"));
                                         jsonObject.put("youtube",document.getData().get("youtube"));
 
+                                        Log.w("getTargetList", ""+jsonObject);
 
                                         jsonObjectArrayList.add(jsonObject);
                                     } catch (JSONException e) {
