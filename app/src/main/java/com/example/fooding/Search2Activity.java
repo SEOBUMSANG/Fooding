@@ -48,6 +48,7 @@ public class Search2Activity extends MapActivity {
     ArrayList<TMapMarkerItem2> partMarkerList;
 
     TargetList[] targetList;
+    ArrayList<TargetList> targetListForIntent;
 
     SearchDB searchDB;
 
@@ -273,6 +274,11 @@ public class Search2Activity extends MapActivity {
                     getTargetList(jsonObjectArrayList);
                     Log.e("getTargeList 완료", "완료");
 
+                    targetListForIntent = new ArrayList<>();
+                    for(int i = 0 ; i<targetList.length;i++){
+                        targetListForIntent.add(targetList[i]);
+                    }
+
                     if (makeBigMarker(targetList, bigMarkerList)) {    // 마커 생성
                         showMarker(bigMarkerList, centerPoint);
                         makeMarker(targetList, markerList);
@@ -373,7 +379,7 @@ public class Search2Activity extends MapActivity {
         intent = new Intent(getApplicationContext(), WorldcupActivity.class);
         intent.putExtra("lat", tMapView.getCenterPoint().getLatitude());
         intent.putExtra("lng", tMapView.getCenterPoint().getLongitude());
-        intent.putExtra("targetList", targetList);
+        intent.putExtra("targetList", targetListForIntent);
 
         startActivityForResult(intent, 203);
     }
