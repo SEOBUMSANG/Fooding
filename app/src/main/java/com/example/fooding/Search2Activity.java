@@ -138,7 +138,9 @@ public class Search2Activity extends MapActivity {
 
         Button buttonZoomIn = findViewById(R.id.button_zoom_in);
         Button buttonZoomOut = findViewById(R.id.button_zoom_out);
+        final Button worldcupStartButton = findViewById(R.id.worldcup_start_button);
 
+        //Button searchButton = findViewById(R.id.se)
         youtuberButton = findViewById(R.id.youtuber_button);
         Button worldcupButton = findViewById(R.id.worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
@@ -168,6 +170,14 @@ public class Search2Activity extends MapActivity {
             }
         });
 
+        //월드컵 시작 버튼
+        worldcupStartButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                worldcupStart();
+            }
+        });
+
         //아래 toolbar 버튼 설정
         youtuberButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,13 +192,8 @@ public class Search2Activity extends MapActivity {
         worldcupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), WorldcupActivity.class);
-                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("lat", tMapView.getCenterPoint().getLatitude());
-                intent.putExtra("lng", tMapView.getCenterPoint().getLongitude());
-                intent.putExtra("targetList",targetList);
 
-                startActivityForResult(intent, 203);
+                worldcupStartButton.setVisibility(View.VISIBLE);
             }
         });
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -350,6 +355,16 @@ public class Search2Activity extends MapActivity {
             }
         }
 
+    }
+
+    public void worldcupStart() {
+        intent = new Intent(getApplicationContext(), WorldcupActivity.class);
+        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("lat", tMapView.getCenterPoint().getLatitude());
+        intent.putExtra("lng", tMapView.getCenterPoint().getLongitude());
+        intent.putExtra("targetList", targetList);
+
+        startActivityForResult(intent, 203);
     }
 
     public void getWalkPath(TMapPoint startPoint,TMapPoint endPoint){

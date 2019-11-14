@@ -57,7 +57,7 @@ public class TargetList implements Parcelable {
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) { ;
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(lat);
         dest.writeString(lng);
@@ -66,7 +66,6 @@ public class TargetList implements Parcelable {
         dest.writeString(resImageURL);
         dest.writeString(youtube);
         dest.writeList(youtubeItems);
-
     }
 
     public String getName() {
