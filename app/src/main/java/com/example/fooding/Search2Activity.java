@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.example.fooding.Target.TargetList;
 
@@ -140,9 +141,11 @@ public class Search2Activity extends MapActivity {
         Button buttonZoomOut = findViewById(R.id.button_zoom_out);
         final Button worldcupStartButton = findViewById(R.id.worldcup_start_button);
 
-        //Button searchButton = findViewById(R.id.se)
+        final Button searchButton = findViewById(R.id.search_button);
+        final RelativeLayout layoutSearchButton = findViewById(R.id.layout_search_button);
         youtuberButton = findViewById(R.id.youtuber_button);
-        Button worldcupButton = findViewById(R.id.worldcup_button);
+        final Button worldcupButton = findViewById(R.id.worldcup_button);
+        final RelativeLayout layoutWorldcupButton = findViewById(R.id.layout_worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
 
 
@@ -179,6 +182,14 @@ public class Search2Activity extends MapActivity {
         });
 
         //아래 toolbar 버튼 설정
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
+                layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                worldcupStartButton.setVisibility(View.INVISIBLE);
+            }
+        });
         youtuberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,7 +203,8 @@ public class Search2Activity extends MapActivity {
         worldcupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
                 worldcupStartButton.setVisibility(View.VISIBLE);
             }
         });
