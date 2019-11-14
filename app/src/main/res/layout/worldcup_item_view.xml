@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/candidate2_title_view"
+            android:id="@+id/candidate_title_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="음식점 이름"
@@ -33,6 +33,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/candidate_image_view_left"
                 android:layout_width="160dp"
                 android:layout_height="140dp"
                 android:src="@android:color/darker_gray" />
@@ -43,6 +44,7 @@
                 android:text=" "/>
 
             <ImageView
+                android:id="@+id/candidate_image_view_right"
                 android:layout_width="160dp"
                 android:layout_height="140dp"
                 android:src="@android:color/darker_gray" />
@@ -51,7 +53,7 @@
 
     </RelativeLayout>
 
-    <!--키워드, 상세 버튼 레이아웃-->
+    <!--선택 버튼 레이아웃-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,23 +65,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
             <Button
+                android:id="@+id/candidate_select_button"
                 android:layout_width="70dp"
                 android:layout_height="50dp"
                 android:background="@drawable/radius_background_white"
                 android:layout_centerHorizontal="true"
-                android:text="키워드" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-            <Button
-                android:layout_width="70dp"
-                android:layout_height="50dp"
-                android:background="@drawable/radius_background_white"
-                android:layout_centerHorizontal="true"
-                android:text="상세" />
+                android:text="선택" />
         </RelativeLayout>
 
     </LinearLayout>
