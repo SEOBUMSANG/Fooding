@@ -371,7 +371,6 @@ public class Search2Activity extends MapActivity {
 
     public void worldcupStart() {
         intent = new Intent(getApplicationContext(), WorldcupActivity.class);
-        intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("lat", tMapView.getCenterPoint().getLatitude());
         intent.putExtra("lng", tMapView.getCenterPoint().getLongitude());
         intent.putExtra("targetList", targetList);

@@ -38,7 +38,7 @@ public class TargetList implements Parcelable {
         resAddress = src.readString();
         resImageURL = src.readString();
         youtube = src.readString();
-        youtubeItems = src.readArrayList(null);
+        youtubeItems = src.readArrayList(getClass().getClassLoader());
     }
 
     public static final Creator CREATOR = new Creator() {

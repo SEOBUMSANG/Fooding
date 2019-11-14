@@ -4,10 +4,13 @@ package com.example.fooding;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.fooding.Target.TargetList;
 import java.util.ArrayList;
 
-public class WorldcupActivity extends Search2Activity {
+public class WorldcupActivity extends AppCompatActivity {
 
     ArrayList<TargetList> candidate;
     Intent intent;
@@ -23,8 +26,5 @@ public class WorldcupActivity extends Search2Activity {
         Intent getIntent = getIntent();
 
     }
-
-
-
 
 }
