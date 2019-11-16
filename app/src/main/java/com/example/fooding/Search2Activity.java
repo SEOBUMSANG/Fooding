@@ -123,10 +123,26 @@ public class Search2Activity extends MapActivity {
                 //Toast.makeText(MapEvent.this, "onLongPress~!", Toast.LENGTH_SHORT).show();
             }
         });
-            // 지도 스크롤 종료
+
+
+        tMapView.setOnEnableScrollWithZoomLevelListener(new TMapView.OnEnableScrollWithZoomLevelCallback() {
+            @Override
+            public void onEnableScrollWithZoomLevelEvent(float v, TMapPoint tMapPoint) {
+
+            }
+        });
+        // 지도 스크롤 종료
         tMapView.setOnDisableScrollWithZoomLevelListener(new TMapView.OnDisableScrollWithZoomLevelCallback() {
             @Override
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
+                boolean result = false;
+                for(int i =0;i<markerList.size();i++){
+                    result = markerList.get(i).getMarkerTouch();
+                    if (result == true){
+                        markerList.get(i).setMarkerTouch(false);
+                    }
+                }
+
                 if(bigMode) {
                     deleteMarker(tMapView, bigMarkerList);
                     showMarker(bigMarkerList, centerPoint);
