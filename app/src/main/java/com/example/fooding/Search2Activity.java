@@ -48,7 +48,7 @@ public class Search2Activity extends MapActivity {
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem2> bigMarkerList;
-    ArrayList<TMapMarkerItem2> markerList;
+    static ArrayList<TMapMarkerItem2> markerList;
     ArrayList<TMapMarkerItem2> partMarkerList;
 
     TargetList[] targetList;

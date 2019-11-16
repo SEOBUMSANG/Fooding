@@ -72,7 +72,7 @@ public class WorldcupActivity extends AppCompatActivity {
         centerLat = intent.getExtras().getDouble("lat");
         centerLng = intent.getExtras().getDouble("lng");
         targetListArray = intent.getParcelableArrayListExtra("targetList");
-        //Log.d("타겟리스트사이즈","" + targetListArray.size() +"");
+        Log.d("타겟리스트사이즈","" + targetListArray.size() +"");
         rand = new Random();
         Log.d("랜덤",rand.nextInt(100)+" "+rand.nextInt(100));
 
@@ -157,7 +157,9 @@ public class WorldcupActivity extends AppCompatActivity {
             candidateLayout2.addView(candidatesList.get(index++), params);
         } else {
             Log.v("checkStep", "최종 하나 선택됨");
-            intent = new Intent(getApplicationContext(), WorldcupActivity.class);
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent = new Intent(getApplicationContext(), ResultActivity.class);
             intent.putExtra("result", worldcupRandomItem.get(0));
             startActivityForResult(intent, 301);
         }
