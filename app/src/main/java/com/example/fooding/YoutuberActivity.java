@@ -1,6 +1,7 @@
 package com.example.fooding;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -8,8 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,8 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.fooding.Target.TargetList;
 import com.example.fooding.Youtuber.MyListDecoration;
 import com.example.fooding.Youtuber.YoutuberAdapter;
+import com.google.common.collect.Multiset;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
@@ -27,10 +32,18 @@ import com.skt.Tmap.TMapView;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 
-public class YoutuberActivity extends Search2Activity {
+public class YoutuberActivity extends MapActivity {
     TMapView tMapView;
     Intent intent;
 
@@ -39,6 +52,10 @@ public class YoutuberActivity extends Search2Activity {
 
     private RecyclerView listview;
     private YoutuberAdapter adapter;
+    ArrayList<TargetList> targetListArray;
+
+    String[] top10YoutuberChannel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +68,9 @@ public class YoutuberActivity extends Search2Activity {
         layoutTmap.addView( tMapView );
 
         Intent getIntent = getIntent();
+        targetListArray = intent.getParcelableArrayListExtra("targetList");
+
+
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
@@ -148,38 +168,17 @@ public class YoutuberActivity extends Search2Activity {
         TMapPoint tMapPoint1 = tMapView.getCenterPoint();
 
         //youtuber listview 셋팅
-        init();
-
-        // 마커
-            // db에 유튜브 리스트 요청
-        jsonObjectArrayList = new ArrayList<>();
-        markerList = new ArrayList<>();
-        SearchDB searchDB = new SearchDB();
-        searchDB.returnData(jsonObjectArrayList,centerPoint);   // 전체 음식점 정보 json으로 받아오기
-
-
-            // 잠시 시간 필요함
-        new Handler().postDelayed(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                Log.e("TAG", "check");
-
-                if ( makeMarker(targetList, markerList) ) {    // 마커 생성
-                    TMapMarkerItem2 markerItem = null;
-                    for (int i = 0; i < markerList.size(); i++) {
-                        markerItem = markerList.get(i);
-                        Log.d("TAG", "markerPoint : " + markerItem.getTMapPoint());
-                        tMapView.addMarkerItem2(markerItem.getID(), markerItem);    // 지도에 추가
-                    }
-                }
-            }
-        }, 3000);
+        init(targetListArray);
 
     }
 
-    private void init() {
+    private void init(ArrayList<TargetList> targetListArray) {
+
+        ArrayList<TargetList> youtuberList;
+        youtuberList.add(targetListArray.get(0));
+        for(int i=0; i<targetListArray.size(); i++){
+            youtuberList =
+        }
 
         listview = findViewById(R.id.youtuber_listview2);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -204,6 +203,29 @@ public class YoutuberActivity extends Search2Activity {
 
         MyListDecoration decoration = new MyListDecoration();
         listview.addItemDecoration(decoration);
+    }
+
+    //TODO 이거 시간복잡도좀...
+    private void youtuberFilter(ArrayList<TargetList> targetListArray){
+
+        Map<String,Integer> tempArray = new HashMap<String,Integer>();
+
+
+        for(int i=0; i<targetListArray.size();i++){
+            for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++){
+                if(!(tempArray.containsKey(targetListArray.get(i).youtubeItems.get(j).channel))){
+                    tempArray.put(targetListArray.get(i).youtubeItems.get(j).channel, 1);
+                }
+                else{
+                    tempArray.put(targetListArray.get(i).youtubeItems.get(j).channel, tempArray.get(targetListArray.get(i).youtubeItems.get(j).channel)+1);
+                }
+            }
+        }
+        tempArray = 
+
+        top10YoutuberChannel = new String[10];
+
+
     }
 
 

@@ -181,7 +181,12 @@ public class Search2Activity extends MapActivity {
                 worldcupStart();
             }
         });
-
+        youtuberButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                youtuberStart();
+            }
+        });
         //아래 toolbar 버튼 설정
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -370,6 +375,12 @@ public class Search2Activity extends MapActivity {
             }
         }
 
+    }
+    public void youtuberStart() {
+        intent = new Intent(getApplicationContext(), YoutuberActivity.class);
+        intent.putExtra("targetList", targetListForIntent);
+
+        startActivityForResult(intent, 203);
     }
 
     public void worldcupStart() {

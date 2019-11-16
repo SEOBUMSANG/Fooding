@@ -54,8 +54,8 @@ public class WorldcupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worldcup);
-        candidateLayout1 = findViewById(R.id.candidate1_layout);
-        candidateLayout2 = findViewById(R.id.candidate2_layout);
+        //candidateLayout1 = findViewById(R.id.candidate1_layout);
+        //candidateLayout2 = findViewById(R.id.candidate2_layout);
         candidate1_select_button = findViewById(R.id.candidate1_select_button);
         candidate2_select_button = findViewById(R.id.candidate2_select_button);
 
@@ -78,8 +78,8 @@ public class WorldcupActivity extends AppCompatActivity {
         context = getApplicationContext();
         index = 0;
 
-        candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
-        candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
+       // candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
+        //candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
         index = 2;
 
         candidate1_select_button.setOnClickListener(new Button.OnClickListener() {
@@ -107,8 +107,8 @@ public class WorldcupActivity extends AppCompatActivity {
 
     public int clickSelectButtonEvent(){
         if(index < 8) {
-            candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
-            candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
+            //candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
+            //candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
             index+=2;
         }
         else{
