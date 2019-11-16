@@ -84,12 +84,12 @@ public class RouteActivity extends MapActivity {
         // 마커 생성
         MarkerOverlay markerItem = new MarkerOverlay(this, result);
         markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
-
+        markerItem.setID("result");
         Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
         markerItem.setIcon(resizeBitmap(bitmap, 200)); // 마커 아이콘 지정
         markerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
 
-        tMapView.addMarkerItem2("result",markerItem);
+        tMapView.addMarkerItem2(markerItem.getID(), markerItem);
 
         getCarPath(centerPoint, endPoint);
 

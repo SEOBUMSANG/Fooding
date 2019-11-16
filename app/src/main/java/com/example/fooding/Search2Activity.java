@@ -32,6 +32,7 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -301,11 +302,15 @@ public class Search2Activity extends MapActivity {
                 @Override
                 public void run() {
                     Log.e("getTargeList 시작 전", "시작 전");
-                    getTargetList(jsonObjectArrayList);
+                    try {
+                        getTargetList(jsonObjectArrayList);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
                     Log.e("getTargeList 완료", "완료");
 
                     targetListForIntent = new ArrayList<>();
-                    for(int i = 0 ; i<targetList.length;i++){
+                    for(int i = 0 ; i<targetList.length; i++){
                         targetListForIntent.add(targetList[i]);
                     }
 
@@ -330,7 +335,7 @@ public class Search2Activity extends MapActivity {
     }
 
     // db에 유튜브 리스트 요청 및 정제 refactorJS
-    public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList){
+    public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList) throws MalformedURLException {
         Gson gson = new Gson();
         JSONObject jsonObject;
 
@@ -353,8 +358,8 @@ public class Search2Activity extends MapActivity {
             }
             //에러 발생 부분
             for (int j = 0; j < tempUrls.length; j++) {
-                if (URLUtil.isValidUrl(tempUrls[j])) {
-                    targetList[i].resImageUrlList.add(tempUrls[j].toString());
+                if (URLUtil.isValidUrl( tempUrls[j].toString() ) ) {
+                    //targetList[i].resImageUrlList.add( new URL(tempUrls[j]) );
                     //Log.i("url", "" + tempUrls[j]);
                 }
             }
