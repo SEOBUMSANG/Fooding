@@ -84,8 +84,8 @@ public class MarkerOverlay extends TMapMarkerItem2 {
 
     @Override
     public void draw(Canvas canvas, TMapView mapView, boolean showCallout) {
-        int x = mapView.getRotatedMapXForPoint(getTMapPoint().getLatitude(), getTMapPoint().getLongitude());
-        int y = mapView.getRotatedMapYForPoint(getTMapPoint().getLatitude(), getTMapPoint().getLongitude());
+            int x = mapView.getRotatedMapXForPoint(getTMapPoint().getLatitude(), getTMapPoint().getLongitude());
+            int y = mapView.getRotatedMapYForPoint(getTMapPoint().getLatitude(), getTMapPoint().getLongitude());
 
         canvas.save();
         canvas.rotate(-mapView.getRotate(), mapView.getCenterPointX(), mapView.getCenterPointY());
