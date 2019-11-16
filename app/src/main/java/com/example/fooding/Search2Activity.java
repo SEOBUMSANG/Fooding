@@ -312,6 +312,8 @@ public class Search2Activity extends MapActivity {
                     targetListForIntent = new ArrayList<>();
                     for(int i = 0 ; i<targetList.length; i++){
                         targetListForIntent.add(targetList[i]);
+//                        if ( !targetListForIntent.get(i).resImageUrlList.isEmpty() )
+//                            Log.i("intent용 target으로 옮길 때 ", "" + targetListForIntent.get(i).resImageUrlList.get(0) );
                     }
 
                     if (makeBigMarker(targetList, bigMarkerList)) {    // 마커 생성
@@ -357,12 +359,12 @@ public class Search2Activity extends MapActivity {
                 targetList[i].youtubeItems.add(temptubeItems[j]);
             }
             //에러 발생 부분
-            for (int j = 0; j < tempUrls.length; j++) {
-                if (URLUtil.isValidUrl( tempUrls[j].toString() ) ) {
-                    //targetList[i].resImageUrlList.add( new URL(tempUrls[j]) );
-                    //Log.i("url", "" + tempUrls[j]);
-                }
-            }
+//            for (int j = 0; j < tempUrls.length; j++) {
+//                if (URLUtil.isValidUrl( tempUrls[j] ) ) {
+//                    targetList[i].resImageUrlList.add( tempUrls[j] );
+//                }
+//            }
+
         }
     }
 

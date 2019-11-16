@@ -18,10 +18,10 @@ public class TargetList implements Parcelable {
     public String resAddress;
     public String resImageURL;
     public String youtube;
-    public ArrayList<URL> resImageUrlList;
+    public ArrayList<String> resImageUrlList;
     public ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
 
-    public TargetList(String name, String lat, String lng, String description, String resAddress, String resImageURL, String youtube, ArrayList<URL> resImageUrlList, ArrayList<YoutubeItem> youtubeItems) {
+    public TargetList(String name, String lat, String lng, String description, String resAddress, String resImageURL, String youtube, ArrayList<String> resImageUrlList, ArrayList<YoutubeItem> youtubeItems) {
         this.name = name;
         this.lat = lat;
         this.lng = lng;
@@ -129,11 +129,11 @@ public class TargetList implements Parcelable {
         this.youtube = youtube;
     }
 
-    public ArrayList<URL> getResImageUrlList() {
+    public ArrayList<String> getResImageUrlList() {
         return resImageUrlList;
     }
 
-    public void setResImageUrlList(ArrayList<URL> resImageUrlList) {
+    public void setResImageUrlList(ArrayList<String> resImageUrlList) {
         this.resImageUrlList = resImageUrlList;
     }
 

@@ -2,6 +2,7 @@ package com.example.fooding.WorldCup;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +24,21 @@ public class WorldcupItemView extends LinearLayout {
     ImageView candidateImageViewRight;
     TextView candidateTitleView;
     TextView candidateDescriptionView;
+    ImageLoadTask imageLoadTask1;
+    ImageLoadTask imageLoadTask2;
 
     public WorldcupItemView(Context context, TargetList candidateTarget) {
         super(context);
+
+        if ( !candidateTarget.resImageUrlList.isEmpty() ) {
+            Log.e("WorldcupItemView", "이 씨발");
+            //imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
+            Log.e("WorldcupItemView", "개새");
+            //imageLoadTask1.execute();
+//            imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
+//            imageLoadTask2.execute();
+        }
+
         init(context, candidateTarget);
     }
 
@@ -50,11 +63,6 @@ public class WorldcupItemView extends LinearLayout {
 
         candidateTitleView.setText(candidateTarget.name);
         candidateDescriptionView.setText(candidateTarget.description);
-
-//        ImageLoadTask imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
-//        imageLoadTask1.execute();
-//        ImageLoadTask imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
-//        imageLoadTask2.execute();
     }
 
 
