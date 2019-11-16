@@ -2,6 +2,7 @@ package com.example.fooding.WorldCup;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -19,13 +20,25 @@ import java.lang.annotation.Target;
 public class WorldcupItemView extends LinearLayout {
     Context mcontext;
 
-    ImageLoadTask imageLoadTask;
     ImageView candidateImageViewLeft;
     ImageView candidateImageViewRight;
     TextView candidateTitleView;
+    TextView candidateDescriptionView;
+    ImageLoadTask imageLoadTask1;
+    ImageLoadTask imageLoadTask2;
 
     public WorldcupItemView(Context context, TargetList candidateTarget) {
         super(context);
+
+        if ( !candidateTarget.resImageUrlList.isEmpty() ) {
+            Log.e("WorldcupItemView", "이 씨발");
+            //imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
+            Log.e("WorldcupItemView", "개새");
+            //imageLoadTask1.execute();
+//            imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
+//            imageLoadTask2.execute();
+        }
+
         init(context, candidateTarget);
     }
 
@@ -46,12 +59,10 @@ public class WorldcupItemView extends LinearLayout {
         candidateImageViewLeft = findViewById(R.id.candidate_image_view_left);
         candidateImageViewRight = findViewById(R.id.candidate_image_view_right);
         candidateTitleView = findViewById(R.id.candidate_title_view);
+        candidateDescriptionView = findViewById(R.id.candidate_description_view);
 
         candidateTitleView.setText(candidateTarget.name);
-        imageLoadTask = new ImageLoadTask(candidateTarget.resImageURL, candidateImageViewLeft);
-        imageLoadTask.execute();
-        imageLoadTask = new ImageLoadTask(candidateTarget.resImageURL, candidateImageViewRight);
-        imageLoadTask.execute();
+        candidateDescriptionView.setText(candidateTarget.description);
     }
 
 

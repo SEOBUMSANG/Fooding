@@ -19,7 +19,6 @@ import androidx.annotation.NonNull;
 
 public class SearchDB {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
     public SearchDB() {
     }
 
@@ -37,18 +36,18 @@ public class SearchDB {
 //                                }
 //                                else {
                                     JSONObject jsonObject = new JSONObject();
-
-                                    Log.d("returnData", document.getId() + " => " + document.getData().get("name"));
                                     try {
-                                        jsonObject.put("name",document.getData().get("name"));
+                                        String imageURL = document.getData().get("resImageURL").toString();
+
                                         jsonObject.put("name",document.getData().get("name"));
                                         jsonObject.put("lat",document.getData().get("lat"));
                                         jsonObject.put("lng",document.getData().get("lng"));
                                         jsonObject.put("description",document.getData().get("description"));
                                         jsonObject.put("resAddress",document.getData().get("resAddress"));
-                                        jsonObject.put("resImageURL",document.getData().get("resImageURL"));
+                                        jsonObject.put("resImageURL",setImageArray(imageURL));
                                         jsonObject.put("youtube",document.getData().get("youtube"));
 
+                                        Log.w("getTargetList", jsonObject + "");
 
                                         jsonObjectArrayList.add(jsonObject);
                                     } catch (JSONException e) {
@@ -121,6 +120,24 @@ public class SearchDB {
         double distance = locationA.distanceTo(locationB);
 
         return distance;
+    }
+
+    public String setImageArray(String str){
+        String[] array = str.substring(1,str.length()-1).split(",");
+        String imageArray = new String();
+        for(int i = 0 ;i<array.length;i++){
+            if(i == 0) {
+                array[i] = "[\"" + array[i] + "\",";
+            }
+            else if(i==array.length-1){
+                array[i] = "\"" + array[i].substring(1) + "\"]";
+            }
+            else{
+                array[i] = "\"" + array[i].substring(1) + "\",";
+            }
+            imageArray = imageArray + array[i];
+        }
+        return imageArray;
     }
 
 

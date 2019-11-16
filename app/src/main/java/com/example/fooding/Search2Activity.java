@@ -3,6 +3,8 @@ package com.example.fooding;
 import androidx.annotation.Nullable;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
 import android.location.Geocoder;
@@ -12,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -23,11 +26,14 @@ import com.example.fooding.Youtube.YoutubeItem;
 import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
 import com.skt.Tmap.TMapData;
+import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import android.location.Address;
@@ -43,8 +49,8 @@ public class Search2Activity extends MapActivity {
 
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
-    ArrayList<TMapMarkerItem2> bigMarkerList;
-    ArrayList<TMapMarkerItem2> markerList;
+    ArrayList<TMapMarkerItem> bigMarkerList;
+    static ArrayList<TMapMarkerItem2> markerList;
     ArrayList<TMapMarkerItem2> partMarkerList;
 
     TargetList[] targetList;
@@ -53,6 +59,7 @@ public class Search2Activity extends MapActivity {
     SearchDB searchDB;
 
     boolean bigMode = true;
+    boolean worldcupMode = false;
     float[] dist = new float[1];
 
     @Override
@@ -85,6 +92,14 @@ public class Search2Activity extends MapActivity {
         tMapCircle.setAreaAlpha(100);
         tMapView.addTMapCircle("circle1", tMapCircle);
 
+        //월드컵용 가운데 마커
+        final TMapMarkerItem centerMarkerItem = new TMapMarkerItem();
+        final String sID = "centerMarkerItem";
+        centerMarkerItem.setID(sID); // 마커의 id 지정
+        Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_green);
+        centerMarkerItem.setIcon(resizeBitmap(bitmap, 150)); // 마커 아이콘 지정
+        centerMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
+
 
         //지도 이벤트 설정
             // 클릭 이벤트 설정
@@ -108,18 +123,40 @@ public class Search2Activity extends MapActivity {
                 //Toast.makeText(MapEvent.this, "onLongPress~!", Toast.LENGTH_SHORT).show();
             }
         });
-            // 지도 스크롤 종료
+
+
+        tMapView.setOnEnableScrollWithZoomLevelListener(new TMapView.OnEnableScrollWithZoomLevelCallback() {
+            @Override
+            public void onEnableScrollWithZoomLevelEvent(float v, TMapPoint tMapPoint) {
+
+            }
+        });
+        // 지도 스크롤 종료
         tMapView.setOnDisableScrollWithZoomLevelListener(new TMapView.OnDisableScrollWithZoomLevelCallback() {
             @Override
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
+                boolean result = false;
+                for(int i =0;i<markerList.size();i++){
+                    result = markerList.get(i).getMarkerTouch();
+                    if (result == true){
+                        markerList.get(i).setMarkerTouch(false);
+                    }
+                }
+
                 if(bigMode) {
                     deleteMarker(tMapView, bigMarkerList);
                     showMarker(bigMarkerList, centerPoint);
                 }
                 else{
-                    deleteMarker(tMapView, markerList);
-                    showMarker(markerList,centerPoint);
-                }    }
+                    deleteMarker2(tMapView, markerList);
+                    showMarker2(markerList, centerPoint);
+                }
+
+                if(worldcupMode) {
+                    centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
+                }
+
+            }
         });
         tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
             @Override
@@ -191,6 +228,11 @@ public class Search2Activity extends MapActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (worldcupMode) {
+                    worldcupMode = false;
+                    tMapView.removeMarkerItem(centerMarkerItem.getID());
+                }
+
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
                 layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 worldcupStartButton.setVisibility(View.INVISIBLE);
@@ -209,9 +251,14 @@ public class Search2Activity extends MapActivity {
         worldcupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                worldcupMode = true;
+
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
                 worldcupStartButton.setVisibility(View.VISIBLE);
+
+                centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
+                tMapView.addMarkerItem(centerMarkerItem.getID(), centerMarkerItem);
             }
         });
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -276,12 +323,18 @@ public class Search2Activity extends MapActivity {
                 @Override
                 public void run() {
                     Log.e("getTargeList 시작 전", "시작 전");
-                    getTargetList(jsonObjectArrayList);
+                    try {
+                        getTargetList(jsonObjectArrayList);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
                     Log.e("getTargeList 완료", "완료");
 
                     targetListForIntent = new ArrayList<>();
-                    for(int i = 0 ; i<targetList.length;i++){
+                    for(int i = 0 ; i<targetList.length; i++){
                         targetListForIntent.add(targetList[i]);
+//                        if ( !targetListForIntent.get(i).resImageUrlList.isEmpty() )
+//                            Log.i("intent용 target으로 옮길 때 ", "" + targetListForIntent.get(i).resImageUrlList.get(0) );
                     }
 
                     if (makeBigMarker(targetList, bigMarkerList)) {    // 마커 생성
@@ -305,11 +358,12 @@ public class Search2Activity extends MapActivity {
     }
 
     // db에 유튜브 리스트 요청 및 정제 refactorJS
-    public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList){
+    public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList) throws MalformedURLException {
         Gson gson = new Gson();
         JSONObject jsonObject;
 
         YoutubeItem[] temptubeItems;
+        String[] tempUrls;
         targetList = new TargetList[jsonObjectArrayList.size()];
         for (int i = 0; i < jsonObjectArrayList.size(); i++) {
             jsonObject = jsonObjectArrayList.get(i);
@@ -317,11 +371,21 @@ public class Search2Activity extends MapActivity {
 
             targetList[i] = gson.fromJson(response, TargetList.class);
             targetList[i].youtubeItems = new ArrayList<>();
+            targetList[i].resImageUrlList = new ArrayList<>();
+
             temptubeItems = gson.fromJson(targetList[i].youtube, YoutubeItem[].class);
+            tempUrls = gson.fromJson(targetList[i].resImageURL, String[].class);
 
             for (int j = 0; j < temptubeItems.length; j++) {
                 targetList[i].youtubeItems.add(temptubeItems[j]);
             }
+            //에러 발생 부분
+//            for (int j = 0; j < tempUrls.length; j++) {
+//                if (URLUtil.isValidUrl( tempUrls[j] ) ) {
+//                    targetList[i].resImageUrlList.add( tempUrls[j] );
+//                }
+//            }
+
         }
     }
 
@@ -333,7 +397,7 @@ public class Search2Activity extends MapActivity {
     public void mergeMarker(TMapPoint centerPoint) {
         Log.d("mergeMarker", "delete Marker & makeBigMarker");
 
-        deleteMarker(tMapView, markerList);
+        deleteMarker2(tMapView, markerList);
 
 //        if (partMarkerList.isEmpty()){
             showMarker(bigMarkerList,centerPoint);
@@ -349,14 +413,35 @@ public class Search2Activity extends MapActivity {
         deleteMarker(tMapView, bigMarkerList);
 
 //        if (partMarkerList.isEmpty()){
-            showMarker(markerList,centerPoint);
+            showMarker2(markerList, centerPoint);
 //        } else {
 //            showMarker(partMarkerList);
 //        }
 
     }
 
-    public void showMarker(ArrayList<TMapMarkerItem2> markerList,TMapPoint centerPoint) {
+    public void showMarker(ArrayList<TMapMarkerItem> markerList, TMapPoint centerPoint) {
+        TMapMarkerItem marker = null;
+        for (int i = 0; i < markerList.size(); i++) {
+            Location.distanceBetween(markerList.get(i).latitude,markerList.get(i).longitude,centerPoint.getLatitude(),centerPoint.getLongitude(),dist);
+
+            if (bigMode == true) {
+                if (dist[0] > 2000)
+                    continue;
+                marker = markerList.get(i);
+                tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
+            } else {
+                if(dist[0]>500){
+                    continue;
+                }
+                marker = markerList.get(i);
+                tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
+            }
+        }
+
+    }
+
+    public void showMarker2(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint) {
         TMapMarkerItem2 marker = null;
         for (int i = 0; i < markerList.size(); i++) {
             Location.distanceBetween(markerList.get(i).latitude,markerList.get(i).longitude,centerPoint.getLatitude(),centerPoint.getLongitude(),dist);
@@ -390,26 +475,6 @@ public class Search2Activity extends MapActivity {
         intent.putExtra("targetList", targetListForIntent);
 
         startActivityForResult(intent, 203);
-    }
-
-    public void getWalkPath(TMapPoint startPoint,TMapPoint endPoint){
-        TMapData tMapData = new TMapData();
-        tMapData.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, startPoint, endPoint, new TMapData.FindPathDataListenerCallback() {
-            @Override
-            public void onFindPathData(TMapPolyLine polyLine) {
-                tMapView.addTMapPath(polyLine);
-            }
-        });
-    }
-
-    public void getCarPath(TMapPoint startPoint,TMapPoint endPoint){
-        TMapData tMapData = new TMapData();
-        tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, startPoint, endPoint, new TMapData.FindPathDataListenerCallback() {
-            @Override
-            public void onFindPathData(TMapPolyLine polyLine) {
-                tMapView.addTMapPath(polyLine);
-            }
-        });
     }
 
     /*public void refreshMarker(){

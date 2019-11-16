@@ -8,7 +8,9 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fooding.Target.TargetList;
+import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
+import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
 import org.json.JSONObject;
@@ -16,13 +18,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MapActivity extends AppCompatActivity {
-    MarkerOverlay firstMarkerItem;
+    TMapMarkerItem firstMarkerItem;
     float[] distance = new float[1];
 
 
-    public boolean makeBigMarker(TargetList[] targetList, ArrayList<TMapMarkerItem2> bigMarkerList) {
+    public boolean makeBigMarker(TargetList[] targetList, ArrayList<TMapMarkerItem> bigMarkerList) {
 
-        if (targetList.length == 0) {
+        if (targetList == null || targetList.length == 0) {
             Log.e("makeBigMarker", "json 어레이 비어있음");
             return false;
         }
@@ -30,31 +32,33 @@ public class MapActivity extends AppCompatActivity {
         // 첫 번째 빅마커 생성
         if (bigMarkerList.isEmpty()) {
             TargetList firstTarget = targetList[0];
-            firstMarkerItem = new MarkerOverlay(this, firstTarget);
+            firstMarkerItem = new TMapMarkerItem();
             firstMarkerItem.setID("firstBigMarkerItem");
             bigMarkerList.add(firstMarkerItem);
         }
 
-        MarkerOverlay markerItem;
+        TMapMarkerItem markerItem;
+        TMapPoint tMapPoint;
         for (int i = 0; i < targetList.length; i++) {
             // 마커 생성
-            markerItem = new MarkerOverlay(this, targetList[i]);
-            markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
+            markerItem = new TMapMarkerItem();
+            tMapPoint = new TMapPoint(Double.parseDouble(targetList[i].lat), Double.parseDouble(targetList[i].lng));
+            markerItem.setTMapPoint( tMapPoint ); // 마커의 좌표 지정
             markerItem.setID("markerItem" + i);
 
             // 거리 계산
             Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
 
             if (distance[0] <= 3000) {
-                firstMarkerItem.markerList.add(markerItem);
+                //firstMarkerItem.markerList.add(markerItem);
             } else {
                 firstMarkerItem = markerItem;
-                firstMarkerItem.markerList.add(markerItem); // 자기 자신도 추가
+                //firstMarkerItem.markerList.add(markerItem); // 자기 자신도 추가
                 bigMarkerList.add(firstMarkerItem);
             }
         }
 
-        for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
+        for (TMapMarkerItem bigMarkerItem : bigMarkerList) {
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_red);
             bigMarkerItem.setIcon(resizeBitmap(bitmap, 150)); // 마커 아이콘 지정
             bigMarkerItem.setPosition(0.5f, 1.0f); // 마커의 중심점을 중앙, 하단으로 설정
@@ -72,8 +76,10 @@ public class MapActivity extends AppCompatActivity {
 
     public boolean makeMarker(TargetList[] targetList, ArrayList<TMapMarkerItem2> markerList) {
 
-        if (targetList.length == 0)
+        if (targetList == null || targetList.length == 0) {
             Log.e("makeMarker", "어레이 비어있음");
+            return false;
+        }
 
         //refactorJS
         TargetList eachTarget;
@@ -102,12 +108,20 @@ public class MapActivity extends AppCompatActivity {
     }
 
 
-    public void deleteMarker(TMapView tMapView, ArrayList<TMapMarkerItem2> markerList){
+    public void deleteMarker(TMapView tMapView, ArrayList<TMapMarkerItem> markerList){
+        for(int i=0;i<markerList.size();i++) {
+            tMapView.removeMarkerItem(markerList.get(i).getID());
+        }
+        //markerList.clear();
+        Log.d("deleteMarker","지도에서 빅마커 삭제");
+    }
+
+    public void deleteMarker2(TMapView tMapView, ArrayList<TMapMarkerItem2> markerList){
         for(int i=0;i<markerList.size();i++) {
             tMapView.removeMarkerItem2(markerList.get(i).getID());
         }
         //markerList.clear();
-        Log.d("deleteMarker","지도에서 (빅)마커 삭제");
+        Log.d("deleteMarker","지도에서 마커 삭제");
     }
 
     public Bitmap resizeBitmap(Bitmap original, int width) {

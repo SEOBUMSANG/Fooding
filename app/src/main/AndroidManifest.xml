@@ -14,6 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
 
+        <activity android:name=".RouteActivity" />
+        <activity android:name=".ResultActivity" />
         <activity android:name=".WorldcupActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".YoutuberActivity" />

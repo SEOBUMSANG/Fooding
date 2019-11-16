@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,7 +22,6 @@ import android.service.autofill.TextValueSanitizer;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.example.fooding.Target.TargetList;
 import com.example.fooding.WorldCup.WorldcupItemView;
 import com.google.api.Distribution;
@@ -43,12 +44,20 @@ public class WorldcupActivity extends AppCompatActivity {
     double centerLng;
     float[] dist = new float[1];
 
-    ArrayList <LinearLayout> candidatesLayout;
+    ArrayList <WorldcupItemView> candidatesList;
+
+    FrameLayout.LayoutParams params;
+    LinearLayout candidate1;
+    LinearLayout candidate2;
+    FrameLayout candidateLayout1;
+    FrameLayout candidateLayout2;
     Button candidate1_select_button;
     Button candidate2_select_button;
 
     Context context;
     int index;
+
+    int candidateListSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,42 +71,62 @@ public class WorldcupActivity extends AppCompatActivity {
         intent = getIntent();
         centerLat = intent.getExtras().getDouble("lat");
         centerLng = intent.getExtras().getDouble("lng");
-        parcelableArray = intent.getParcelableArrayExtra("targetList");
-        test = intent.getParcelableArrayListExtra("targetList");
         targetListArray = intent.getParcelableArrayListExtra("targetList");
-        Log.d("타겟리스트사이즈","" + targetListArray.get(0) +"");
+        Log.d("타겟리스트사이즈","" + targetListArray.size() +"");
         rand = new Random();
         Log.d("랜덤",rand.nextInt(100)+" "+rand.nextInt(100));
 
         worldcupItem = new ArrayList<>();
         worldcupRandomItem = new ArrayList<>();
+        candidatesList = new ArrayList<>();
 
+        // 후보로 뽑을 음식점 리스트 세팅
         setUpWorldCupItem();
         setUpWorldCupRandomItem();
 
         context = getApplicationContext();
         index = 0;
 
-       // candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
-        //candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
-        index = 2;
+        // layout parameter 세팅
+        params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 
+        if (!worldcupRandomItem.isEmpty()) {
+            candidateListSize = worldcupRandomItem.size();
+            // 후보들 만들어두기
+            for (TargetList target : worldcupRandomItem) {
+                candidatesList.add(new WorldcupItemView(context, target));
+            }
+
+            // 첫 후보 둘 띄우기
+            candidateLayout1.addView(candidatesList.get(index++), params);
+            candidateLayout2.addView(candidatesList.get(index++), params);
+        }
+
+        // 후보 선택 시 다음
         candidate1_select_button.setOnClickListener(new Button.OnClickListener() {
             @Override
 
             public void onClick(View view) {
-                if(index != 0)
-                    index = clickSelectButtonEvent();
+                if(index != 0) {
+                    candidatesList.remove(index-1);
+                    worldcupRandomItem.remove(index-1);
+                    index -= 1;
+                    clickSelectButtonEvent();
+                }
                 else{
                     //Worldcup 결과창
                 }
             }
         }) ;
-        candidate1_select_button.setOnClickListener(new Button.OnClickListener() {
+        candidate2_select_button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(index != 0)
-                    index = clickSelectButtonEvent();
+                if(index != 0) {
+                    candidatesList.remove(index-2);
+                    worldcupRandomItem.remove(index-2);
+                    index -= 1;
+                    clickSelectButtonEvent();
+                }
                 else{
                     //Worldcup 결과창
                 }
@@ -105,17 +134,36 @@ public class WorldcupActivity extends AppCompatActivity {
         }) ;
     }
 
-    public int clickSelectButtonEvent(){
-        if(index < 8) {
-            //candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
-            //candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
-            index+=2;
+
+    public boolean checkStep() {
+        Log.v("checkStep", "candidatesList.size() == " + candidatesList.size());
+        if (candidatesList.size() == 1) {
+            //결과창으로 넘어가기
+            return true;
+        } else {
+            if (candidatesList.size() <= candidateListSize/2) {
+                candidateListSize = candidatesList.size();
+                index = 0;
+            }
+            return false;
         }
-        else{
-            //끝났다는 신호
-            index = 0;
+    }
+
+    public void clickSelectButtonEvent(){
+        if (!checkStep()) {
+            candidateLayout1.removeAllViewsInLayout();
+            candidateLayout2.removeAllViewsInLayout();
+            candidateLayout1.addView(candidatesList.get(index++), params);
+            candidateLayout2.addView(candidatesList.get(index++), params);
+        } else {
+            Log.v("checkStep", "최종 하나 선택됨");
+            finish();
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TASK);
+            intent = new Intent(getApplicationContext(), ResultActivity.class);
+            intent.putExtra("result", worldcupRandomItem.get(0));
+            startActivityForResult(intent, 301);
+            finish();
         }
-        return index;
     }
 
     public void setUpWorldCupItem() {
@@ -135,7 +183,7 @@ public class WorldcupActivity extends AppCompatActivity {
     public void setUpWorldCupRandomItem() {
         boolean[] checkDup = new boolean[worldcupItem.size()];
         int temp;
-        while(worldcupRandomItem.size()<8&&worldcupItem.size()>worldcupRandomItem.size()) {
+        while(worldcupRandomItem.size()<8 && worldcupItem.size()>worldcupRandomItem.size()) {
             temp = rand.nextInt(worldcupItem.size());
             Log.d("하하",temp + "");
             if (checkDup[temp] == false) {
@@ -145,4 +193,5 @@ public class WorldcupActivity extends AppCompatActivity {
         }
 
     }
+
 }

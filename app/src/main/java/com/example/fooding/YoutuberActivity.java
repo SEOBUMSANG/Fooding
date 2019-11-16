@@ -221,7 +221,7 @@ public class YoutuberActivity extends MapActivity {
                 }
             }
         }
-        tempArray = 
+        tempArray =
 
         top10YoutuberChannel = new String[10];
 
