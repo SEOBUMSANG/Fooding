@@ -57,6 +57,8 @@ public class WorldcupActivity extends AppCompatActivity {
     Context context;
     int index;
 
+    int candidateListSize;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,11 +93,13 @@ public class WorldcupActivity extends AppCompatActivity {
         params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 
         if (!worldcupRandomItem.isEmpty()) {
+            candidateListSize = worldcupRandomItem.size();
+            // 후보들 만들어두기
             for (TargetList target : worldcupRandomItem) {
                 candidatesList.add(new WorldcupItemView(context, target));
             }
 
-            // 첫 후보 둘
+            // 첫 후보 둘 띄우기
             candidateLayout1.addView(candidatesList.get(index++), params);
             candidateLayout2.addView(candidatesList.get(index++), params);
         }
@@ -105,8 +109,11 @@ public class WorldcupActivity extends AppCompatActivity {
             @Override
 
             public void onClick(View view) {
-                if(index != 0)
-                    index = clickSelectButtonEvent();
+                if(index != 0) {
+                    candidatesList.remove(index-1);
+                    index -= 1;
+                    clickSelectButtonEvent();
+                }
                 else{
                     //Worldcup 결과창
                 }
@@ -115,8 +122,11 @@ public class WorldcupActivity extends AppCompatActivity {
         candidate2_select_button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(index != 0)
-                    index = clickSelectButtonEvent();
+                if(index != 0) {
+                    candidatesList.remove(index-2);
+                    index -= 1;
+                    clickSelectButtonEvent();
+                }
                 else{
                     //Worldcup 결과창
                 }
@@ -124,16 +134,26 @@ public class WorldcupActivity extends AppCompatActivity {
         }) ;
     }
 
-    public int clickSelectButtonEvent(){
-        if(index < 8) {
-            candidateLayout1.addView(candidatesList.get(index++), params);
-            candidateLayout2.addView(candidatesList.get(index++), params);
+
+    public void checkStep() {
+        if (candidatesList.size() == 1) {
+            //결과창으로 넘어가기
+            Log.v("checkStep", "최종 하나 선택됨");
+        } else {
+            if (candidatesList.size() <= candidateListSize/2) {
+                candidateListSize = candidatesList.size();
+                index = 0;
+            }
         }
-        else{
-            //끝났다는 신호
-            index = 0;
-        }
-        return index;
+    }
+
+    public void clickSelectButtonEvent(){
+        checkStep();
+
+        candidateLayout1.removeAllViewsInLayout();
+        candidateLayout2.removeAllViewsInLayout();
+        candidateLayout1.addView(candidatesList.get(index++), params);
+        candidateLayout2.addView(candidatesList.get(index++), params);
     }
 
     public void setUpWorldCupItem() {

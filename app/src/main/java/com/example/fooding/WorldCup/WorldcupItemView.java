@@ -48,9 +48,9 @@ public class WorldcupItemView extends LinearLayout {
         candidateTitleView = findViewById(R.id.candidate_title_view);
 
         candidateTitleView.setText(candidateTarget.name);
-        //imageLoadTask = new ImageLoadTask(candidateTarget.resImageURL, candidateImageViewLeft);
+        //imageLoadTask = new ImageLoadTask(candidateTarget.resImageUrlList.get(0).toString(), candidateImageViewLeft);
         //imageLoadTask.execute();
-        //imageLoadTask = new ImageLoadTask(candidateTarget.resImageURL, candidateImageViewRight);
+        //imageLoadTask = new ImageLoadTask(candidateTarget.resImageUrlList.get(1).toString(), candidateImageViewRight);
         //imageLoadTask.execute();
     }
 

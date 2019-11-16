@@ -31,6 +31,7 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import android.location.Address;
@@ -333,6 +334,7 @@ public class Search2Activity extends MapActivity {
         JSONObject jsonObject;
 
         YoutubeItem[] temptubeItems;
+        URL[] tempUrls;
         targetList = new TargetList[jsonObjectArrayList.size()];
         for (int i = 0; i < jsonObjectArrayList.size(); i++) {
             jsonObject = jsonObjectArrayList.get(i);
@@ -341,10 +343,14 @@ public class Search2Activity extends MapActivity {
             targetList[i] = gson.fromJson(response, TargetList.class);
             targetList[i].youtubeItems = new ArrayList<>();
             temptubeItems = gson.fromJson(targetList[i].youtube, YoutubeItem[].class);
+//            tempUrls = gson.fromJson(targetList[i].resImageURL, URL[].class);
 
             for (int j = 0; j < temptubeItems.length; j++) {
                 targetList[i].youtubeItems.add(temptubeItems[j]);
             }
+//            for (int j = 0; j < tempUrls.length; j++) {
+//                targetList[i].resImageUrlList.add(tempUrls[j]);
+//            }
         }
     }
 

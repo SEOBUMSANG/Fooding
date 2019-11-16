@@ -4,6 +4,7 @@ import android.os.Parcelable;
 
 import com.example.fooding.Youtube.YoutubeItem;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -17,9 +18,10 @@ public class TargetList implements Parcelable {
     public String resAddress;
     public String resImageURL;
     public String youtube;
+    public ArrayList<URL> resImageUrlList;
     public ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
 
-    public TargetList(String name, String lat, String lng, String description, String resAddress, String resImageURL, String youtube, ArrayList<YoutubeItem> youtubeItems) {
+    public TargetList(String name, String lat, String lng, String description, String resAddress, String resImageURL, String youtube, ArrayList<URL> resImageUrlList,ArrayList<YoutubeItem> youtubeItems) {
         this.name = name;
         this.lat = lat;
         this.lng = lng;
@@ -27,6 +29,7 @@ public class TargetList implements Parcelable {
         this.resAddress = resAddress;
         this.resImageURL = resImageURL;
         this.youtube = youtube;
+        this.resImageUrlList = resImageUrlList;
         this.youtubeItems = youtubeItems;
     }
 
@@ -38,6 +41,7 @@ public class TargetList implements Parcelable {
         resAddress = src.readString();
         resImageURL = src.readString();
         youtube = src.readString();
+        resImageUrlList = src.readArrayList(getClass().getClassLoader());
         youtubeItems = src.readArrayList(getClass().getClassLoader());
     }
 
@@ -65,6 +69,7 @@ public class TargetList implements Parcelable {
         dest.writeString(resAddress);
         dest.writeString(resImageURL);
         dest.writeString(youtube);
+        dest.writeList(resImageUrlList);
         dest.writeList(youtubeItems);
     }
 
@@ -122,6 +127,14 @@ public class TargetList implements Parcelable {
 
     public void setYoutube(String youtube) {
         this.youtube = youtube;
+    }
+
+    public ArrayList<URL> getResImageUrlList() {
+        return resImageUrlList;
+    }
+
+    public void setResImageUrlList(ArrayList<URL> resImageUrlList) {
+        this.resImageUrlList = resImageUrlList;
     }
 
     public ArrayList<YoutubeItem> getYoutubeItems() {
