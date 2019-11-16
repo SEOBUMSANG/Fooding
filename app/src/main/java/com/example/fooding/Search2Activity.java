@@ -334,7 +334,7 @@ public class Search2Activity extends MapActivity {
         JSONObject jsonObject;
 
         YoutubeItem[] temptubeItems;
-        URL[] tempUrls;
+        String[] tempUrls;
         targetList = new TargetList[jsonObjectArrayList.size()];
         for (int i = 0; i < jsonObjectArrayList.size(); i++) {
             jsonObject = jsonObjectArrayList.get(i);
@@ -342,12 +342,15 @@ public class Search2Activity extends MapActivity {
 
             targetList[i] = gson.fromJson(response, TargetList.class);
             targetList[i].youtubeItems = new ArrayList<>();
+            targetList[i].resImageUrlList = new ArrayList<>();
+
             temptubeItems = gson.fromJson(targetList[i].youtube, YoutubeItem[].class);
-//            tempUrls = gson.fromJson(targetList[i].resImageURL, URL[].class);
+            tempUrls = gson.fromJson(targetList[i].resImageURL, String[].class);
 
             for (int j = 0; j < temptubeItems.length; j++) {
                 targetList[i].youtubeItems.add(temptubeItems[j]);
             }
+            //에러 발생 부분
 //            for (int j = 0; j < tempUrls.length; j++) {
 //                targetList[i].resImageUrlList.add(tempUrls[j]);
 //            }

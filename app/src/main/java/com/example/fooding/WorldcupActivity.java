@@ -71,10 +71,8 @@ public class WorldcupActivity extends AppCompatActivity {
         intent = getIntent();
         centerLat = intent.getExtras().getDouble("lat");
         centerLng = intent.getExtras().getDouble("lng");
-        parcelableArray = intent.getParcelableArrayExtra("targetList");
-        test = intent.getParcelableArrayListExtra("targetList");
         targetListArray = intent.getParcelableArrayListExtra("targetList");
-        Log.d("타겟리스트사이즈","" + targetListArray.get(0) +"");
+        //Log.d("타겟리스트사이즈","" + targetListArray.size() +"");
         rand = new Random();
         Log.d("랜덤",rand.nextInt(100)+" "+rand.nextInt(100));
 
@@ -111,6 +109,7 @@ public class WorldcupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(index != 0) {
                     candidatesList.remove(index-1);
+                    worldcupRandomItem.remove(index-1);
                     index -= 1;
                     clickSelectButtonEvent();
                 }
@@ -124,6 +123,7 @@ public class WorldcupActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(index != 0) {
                     candidatesList.remove(index-2);
+                    worldcupRandomItem.remove(index-2);
                     index -= 1;
                     clickSelectButtonEvent();
                 }
@@ -135,25 +135,32 @@ public class WorldcupActivity extends AppCompatActivity {
     }
 
 
-    public void checkStep() {
+    public boolean checkStep() {
+        Log.v("checkStep", "candidatesList.size() == " + candidatesList.size());
         if (candidatesList.size() == 1) {
             //결과창으로 넘어가기
-            Log.v("checkStep", "최종 하나 선택됨");
+            return true;
         } else {
             if (candidatesList.size() <= candidateListSize/2) {
                 candidateListSize = candidatesList.size();
                 index = 0;
             }
+            return false;
         }
     }
 
     public void clickSelectButtonEvent(){
-        checkStep();
-
-        candidateLayout1.removeAllViewsInLayout();
-        candidateLayout2.removeAllViewsInLayout();
-        candidateLayout1.addView(candidatesList.get(index++), params);
-        candidateLayout2.addView(candidatesList.get(index++), params);
+        if (!checkStep()) {
+            candidateLayout1.removeAllViewsInLayout();
+            candidateLayout2.removeAllViewsInLayout();
+            candidateLayout1.addView(candidatesList.get(index++), params);
+            candidateLayout2.addView(candidatesList.get(index++), params);
+        } else {
+            Log.v("checkStep", "최종 하나 선택됨");
+            intent = new Intent(getApplicationContext(), WorldcupActivity.class);
+            intent.putExtra("result", worldcupRandomItem.get(0));
+            startActivityForResult(intent, 301);
+        }
     }
 
     public void setUpWorldCupItem() {
@@ -173,7 +180,7 @@ public class WorldcupActivity extends AppCompatActivity {
     public void setUpWorldCupRandomItem() {
         boolean[] checkDup = new boolean[worldcupItem.size()];
         int temp;
-        while(worldcupRandomItem.size()<8&&worldcupItem.size()>worldcupRandomItem.size()) {
+        while(worldcupRandomItem.size()<8 && worldcupItem.size()>worldcupRandomItem.size()) {
             temp = rand.nextInt(worldcupItem.size());
             Log.d("하하",temp + "");
             if (checkDup[temp] == false) {

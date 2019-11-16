@@ -60,7 +60,7 @@
             <FrameLayout
                 android:id="@+id/candidate1_layout"
                 android:layout_width="380dp"
-                android:layout_height="220dp"
+                android:layout_height="240dp"
 
                 app:layout_constraintBottom_toTopOf="@+id/linear_layout2"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,8 @@
                         android:layout_height="50dp"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/radius_background_white"
-                        android:text="선택" />
+                        android:text="선택"
+                        android:textColor="@color/black" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -121,7 +122,7 @@
             <FrameLayout
                 android:id="@+id/candidate2_layout"
                 android:layout_width="380dp"
-                android:layout_height="220dp"
+                android:layout_height="240dp"
                 app:layout_constraintBottom_toTopOf="@+id/linear_layout3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -149,7 +150,8 @@
                         android:layout_height="50dp"
                         android:layout_centerHorizontal="true"
                         android:background="@drawable/radius_background_white"
-                        android:text="선택" />
+                        android:text="선택"
+                        android:textColor="@color/black" />
                 </RelativeLayout>
 
             </LinearLayout>

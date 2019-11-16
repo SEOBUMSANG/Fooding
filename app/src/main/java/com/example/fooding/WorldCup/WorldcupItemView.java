@@ -19,10 +19,10 @@ import java.lang.annotation.Target;
 public class WorldcupItemView extends LinearLayout {
     Context mcontext;
 
-    ImageLoadTask imageLoadTask;
     ImageView candidateImageViewLeft;
     ImageView candidateImageViewRight;
     TextView candidateTitleView;
+    TextView candidateDescriptionView;
 
     public WorldcupItemView(Context context, TargetList candidateTarget) {
         super(context);
@@ -46,12 +46,15 @@ public class WorldcupItemView extends LinearLayout {
         candidateImageViewLeft = findViewById(R.id.candidate_image_view_left);
         candidateImageViewRight = findViewById(R.id.candidate_image_view_right);
         candidateTitleView = findViewById(R.id.candidate_title_view);
+        candidateDescriptionView = findViewById(R.id.candidate_description_view);
 
         candidateTitleView.setText(candidateTarget.name);
-        //imageLoadTask = new ImageLoadTask(candidateTarget.resImageUrlList.get(0).toString(), candidateImageViewLeft);
-        //imageLoadTask.execute();
-        //imageLoadTask = new ImageLoadTask(candidateTarget.resImageUrlList.get(1).toString(), candidateImageViewRight);
-        //imageLoadTask.execute();
+        candidateDescriptionView.setText(candidateTarget.description);
+
+//        ImageLoadTask imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
+//        imageLoadTask1.execute();
+//        ImageLoadTask imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
+//        imageLoadTask2.execute();
     }
 
 
