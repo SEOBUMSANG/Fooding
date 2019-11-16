@@ -157,8 +157,8 @@ public class WorldcupActivity extends AppCompatActivity {
             candidateLayout2.addView(candidatesList.get(index++), params);
         } else {
             Log.v("checkStep", "최종 하나 선택됨");
-            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
+            finish();
+            intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent = new Intent(getApplicationContext(), ResultActivity.class);
             intent.putExtra("result", worldcupRandomItem.get(0));
             startActivityForResult(intent, 301);

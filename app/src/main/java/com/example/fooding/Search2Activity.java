@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -47,7 +48,7 @@ public class Search2Activity extends MapActivity {
 
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
-    ArrayList<TMapMarkerItem2> bigMarkerList;
+    ArrayList<TMapMarkerItem> bigMarkerList;
     static ArrayList<TMapMarkerItem2> markerList;
     ArrayList<TMapMarkerItem2> partMarkerList;
 
@@ -130,8 +131,8 @@ public class Search2Activity extends MapActivity {
                     showMarker(bigMarkerList, centerPoint);
                 }
                 else{
-                    deleteMarker(tMapView, markerList);
-                    showMarker(markerList,centerPoint);
+                    deleteMarker2(tMapView, markerList);
+                    showMarker2(markerList, centerPoint);
                 }
 
                 if(worldcupMode) {
@@ -351,9 +352,12 @@ public class Search2Activity extends MapActivity {
                 targetList[i].youtubeItems.add(temptubeItems[j]);
             }
             //에러 발생 부분
-//            for (int j = 0; j < tempUrls.length; j++) {
-//                targetList[i].resImageUrlList.add(tempUrls[j]);
-//            }
+            for (int j = 0; j < tempUrls.length; j++) {
+                if (URLUtil.isValidUrl(tempUrls[j])) {
+                    targetList[i].resImageUrlList.add(tempUrls[j].toString());
+                    //Log.i("url", "" + tempUrls[j]);
+                }
+            }
         }
     }
 
@@ -365,7 +369,7 @@ public class Search2Activity extends MapActivity {
     public void mergeMarker(TMapPoint centerPoint) {
         Log.d("mergeMarker", "delete Marker & makeBigMarker");
 
-        deleteMarker(tMapView, markerList);
+        deleteMarker2(tMapView, markerList);
 
 //        if (partMarkerList.isEmpty()){
             showMarker(bigMarkerList,centerPoint);
@@ -381,14 +385,35 @@ public class Search2Activity extends MapActivity {
         deleteMarker(tMapView, bigMarkerList);
 
 //        if (partMarkerList.isEmpty()){
-            showMarker(markerList,centerPoint);
+            showMarker2(markerList, centerPoint);
 //        } else {
 //            showMarker(partMarkerList);
 //        }
 
     }
 
-    public void showMarker(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint) {
+    public void showMarker(ArrayList<TMapMarkerItem> markerList, TMapPoint centerPoint) {
+        TMapMarkerItem marker = null;
+        for (int i = 0; i < markerList.size(); i++) {
+            Location.distanceBetween(markerList.get(i).latitude,markerList.get(i).longitude,centerPoint.getLatitude(),centerPoint.getLongitude(),dist);
+
+            if (bigMode == true) {
+                if (dist[0] > 2000)
+                    continue;
+                marker = markerList.get(i);
+                tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
+            } else {
+                if(dist[0]>500){
+                    continue;
+                }
+                marker = markerList.get(i);
+                tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
+            }
+        }
+
+    }
+
+    public void showMarker2(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint) {
         TMapMarkerItem2 marker = null;
         for (int i = 0; i < markerList.size(); i++) {
             Location.distanceBetween(markerList.get(i).latitude,markerList.get(i).longitude,centerPoint.getLatitude(),centerPoint.getLongitude(),dist);
