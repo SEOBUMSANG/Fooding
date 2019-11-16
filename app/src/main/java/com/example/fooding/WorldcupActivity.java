@@ -6,24 +6,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
-=======
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.service.autofill.TextValueSanitizer;
 import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
->>>>>>> dba71e66bc56e2100198e6d7b51a048e2c2ab21b
 
 import com.example.fooding.Target.TargetList;
+import com.example.fooding.WorldCup.WorldcupItemView;
+import com.google.api.Distribution;
 import com.skt.Tmap.TMapPoint;
 
 import java.util.ArrayList;
@@ -43,14 +43,22 @@ public class WorldcupActivity extends AppCompatActivity {
     double centerLng;
     float[] dist = new float[1];
 
+    ArrayList <LinearLayout> candidatesLayout;
+    Button candidate1_select_button;
+    Button candidate2_select_button;
+
+    Context context;
+    int index;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worldcup);
+        candidateLayout1 = findViewById(R.id.candidate1_layout);
+        candidateLayout2 = findViewById(R.id.candidate2_layout);
+        candidate1_select_button = findViewById(R.id.candidate1_select_button);
+        candidate2_select_button = findViewById(R.id.candidate2_select_button);
 
-        LinearLayout candidateLayout1 = findViewById(R.id.candidate1_layout);
-        LinearLayout candidateLayout2 = findViewById(R.id.candidate2_layout);
         intent = getIntent();
         centerLat = intent.getExtras().getDouble("lat");
         centerLng = intent.getExtras().getDouble("lng");
@@ -66,13 +74,49 @@ public class WorldcupActivity extends AppCompatActivity {
 
         setUpWorldCupItem();
         setUpWorldCupRandomItem();
-        for(int i = 0 ;i<worldcupRandomItem.size();i++) {
-            Log.d("헤헤",worldcupRandomItem.get(i).name+"");
-        }
 
+        context = getApplicationContext();
+        index = 0;
 
+        candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
+        candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
+        index = 2;
+
+        candidate1_select_button.setOnClickListener(new Button.OnClickListener() {
+            @Override
+
+            public void onClick(View view) {
+                if(index != 0)
+                    index = clickSelectButtonEvent();
+                else{
+                    //Worldcup 결과창
+                }
+            }
+        }) ;
+        candidate1_select_button.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(index != 0)
+                    index = clickSelectButtonEvent();
+                else{
+                    //Worldcup 결과창
+                }
+            }
+        }) ;
     }
 
+    public int clickSelectButtonEvent(){
+        if(index < 8) {
+            candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
+            candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
+            index+=2;
+        }
+        else{
+            //끝났다는 신호
+            index = 0;
+        }
+        return index;
+    }
 
     public void setUpWorldCupItem() {
         Log.d("사이즈","" + targetListArray +"");

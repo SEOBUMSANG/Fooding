@@ -301,11 +301,8 @@ public class Search2Activity extends MapActivity {
 
     // db에 유튜브 리스트 요청 및 정제 refactorJS
     public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList){
-        Log.e("getTargetList", "시작");
         Gson gson = new Gson();
         JSONObject jsonObject;
-
-        Log.e("getTaretList", "array size : "+jsonObjectArrayList.size());
 
         YoutubeItem[] temptubeItems;
         targetList = new TargetList[jsonObjectArrayList.size()];

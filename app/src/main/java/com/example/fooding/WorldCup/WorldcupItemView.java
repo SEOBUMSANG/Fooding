@@ -11,24 +11,22 @@ import android.widget.TextView;
 
 import com.example.fooding.ImageLoadTask;
 import com.example.fooding.R;
+import com.example.fooding.Target.TargetList;
 import com.example.fooding.WorldcupActivity;
+
+import java.lang.annotation.Target;
 
 public class WorldcupItemView extends LinearLayout {
     Context mcontext;
 
-    Button candidateSelectButton;
+    ImageLoadTask imageLoadTask;
     ImageView candidateImageViewLeft;
     ImageView candidateImageViewRight;
     TextView candidateTitleView;
 
-    public WorldcupItemView(Context context) {
+    public WorldcupItemView(Context context, TargetList candidateTarget) {
         super(context);
-        init(context);
-    }
-
-    public WorldcupItemView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        init(context, candidateTarget);
     }
 
     @Override
@@ -40,22 +38,20 @@ public class WorldcupItemView extends LinearLayout {
 //        }
     }
 
-    private void init(Context context) {
+    private void init(Context context, TargetList candidateTarget) {
         mcontext = context;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.worldcup_item_view, this, true);
 
-        candidateSelectButton = findViewById(R.id.candidate_select_button);
         candidateImageViewLeft = findViewById(R.id.candidate_image_view_left);
         candidateImageViewRight = findViewById(R.id.candidate_image_view_right);
         candidateTitleView = findViewById(R.id.candidate_title_view);
 
-        candidateSelectButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        candidateTitleView.setText(candidateTarget.name);
+        imageLoadTask = new ImageLoadTask(candidateTarget.resImageURL, candidateImageViewLeft);
+        imageLoadTask.execute();
+        imageLoadTask = new ImageLoadTask(candidateTarget.resImageURL, candidateImageViewRight);
+        imageLoadTask.execute();
     }
 
 
