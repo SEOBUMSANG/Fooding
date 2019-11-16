@@ -417,7 +417,6 @@ public class Search2Activity extends MapActivity {
 
         startActivityForResult(intent, 203);
     }
-    
 
     /*public void refreshMarker(){
 
