@@ -54,7 +54,7 @@ public class ResultActivity extends AppCompatActivity {
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //
+                finish();
             }
         });
 
