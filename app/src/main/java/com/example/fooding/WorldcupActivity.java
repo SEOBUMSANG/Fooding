@@ -63,8 +63,8 @@ public class WorldcupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_worldcup);
-        //candidateLayout1 = findViewById(R.id.candidate1_layout);
-        //candidateLayout2 = findViewById(R.id.candidate2_layout);
+        candidateLayout1 = findViewById(R.id.candidate1_layout);
+        candidateLayout2 = findViewById(R.id.candidate2_layout);
         candidate1_select_button = findViewById(R.id.candidate1_select_button);
         candidate2_select_button = findViewById(R.id.candidate2_select_button);
 
@@ -191,7 +191,6 @@ public class WorldcupActivity extends AppCompatActivity {
                 worldcupRandomItem.add(worldcupItem.get(temp));
             }
         }
-
     }
 
 }

@@ -32,6 +32,7 @@ import com.skt.Tmap.TMapView;
 
 import org.json.JSONObject;
 
+import java.lang.annotation.Target;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,6 +40,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,10 +51,11 @@ public class YoutuberActivity extends MapActivity {
 
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem2> markerList;
+    ArrayList<TargetList> targetListArray;
 
     private RecyclerView listview;
     private YoutuberAdapter adapter;
-    ArrayList<TargetList> targetListArray;
+
 
     String[] top10YoutuberChannel;
 
@@ -61,17 +64,19 @@ public class YoutuberActivity extends MapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_youtuber);
+        intent = getIntent();
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
         tMapView = new TMapView(this);
         tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");   //API key setting
         layoutTmap.addView( tMapView );
 
-        Intent getIntent = getIntent();
-        targetListArray = intent.getParcelableArrayListExtra("targetList");
+        targetListArray = new ArrayList<TargetList>();
+        targetListArray = intent.getParcelableArrayListExtra("targetListForYoutuberActivity");
 
 
-        final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
+
+        final double[] centerPointList = intent.getDoubleArrayExtra("point");
         TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
         tMapView.setCenterPoint(centerPointList[1], centerPointList[0], true);
@@ -129,10 +134,7 @@ public class YoutuberActivity extends MapActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), Search2Activity.class);
-                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("point", centerPointList);
-                startActivityForResult(intent, 201);
+                finish();
             }
         });
         worldcupButton.setOnClickListener(new View.OnClickListener() {
@@ -174,29 +176,19 @@ public class YoutuberActivity extends MapActivity {
 
     private void init(ArrayList<TargetList> targetListArray) {
 
-        ArrayList<TargetList> youtuberList;
-        youtuberList.add(targetListArray.get(0));
-        for(int i=0; i<targetListArray.size(); i++){
-            youtuberList =
-        }
 
         listview = findViewById(R.id.youtuber_listview2);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listview.setLayoutManager(layoutManager);
 
+        youtuberFilter(targetListArray);
+
         ArrayList<String> itemList = new ArrayList<>();
-        itemList.add("햇님");
-        itemList.add("범준");
-        itemList.add("재상");
-        itemList.add("3");
-        itemList.add("4");
-        itemList.add("5");
-        itemList.add("6");
-        itemList.add("7");
-        itemList.add("8");
-        itemList.add("9");
-        itemList.add("10");
-        itemList.add("11");
+        for(int i=0; i<10; i++) {
+            itemList.add(top10YoutuberChannel[i]);
+        }
+        //TODO top10YoutuberChannel 스트링배열이 상위 10명 유튜버 TargetList.YoutubeItems.Channel 명임
+
 
         adapter = new YoutuberAdapter(this, itemList, onClickItem);
         listview.setAdapter(adapter);
@@ -205,7 +197,6 @@ public class YoutuberActivity extends MapActivity {
         listview.addItemDecoration(decoration);
     }
 
-    //TODO 이거 시간복잡도좀...
     private void youtuberFilter(ArrayList<TargetList> targetListArray){
 
         Map<String,Integer> tempArray = new HashMap<String,Integer>();
@@ -221,9 +212,32 @@ public class YoutuberActivity extends MapActivity {
                 }
             }
         }
-        tempArray =
+
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(tempArray.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                int comparision = (o1.getValue() - o2.getValue()) * -1;
+                return comparision == 0 ? o1.getKey().compareTo(o2.getKey()) : comparision;
+            }
+        });
+
+        // 순서유지를 위해 LinkedHashMap을 사용
+        Map<String, Integer> sortedTempArray = new LinkedHashMap<>();
+        for(Iterator<Map.Entry<String, Integer>> iter = list.iterator(); iter.hasNext();){
+            Map.Entry<String, Integer> entry = iter.next();
+            sortedTempArray.put(entry.getKey(), entry.getValue());
+        }
+
+        Iterator iterator = sortedTempArray.entrySet().iterator();
 
         top10YoutuberChannel = new String[10];
+
+        for(int i=0; i<10; i++){
+            Map.Entry entry = (Map.Entry)iterator.next();
+            top10YoutuberChannel[i] = (String)entry.getKey();
+        }
 
 
     }

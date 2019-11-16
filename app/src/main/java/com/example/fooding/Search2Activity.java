@@ -44,7 +44,6 @@ public class Search2Activity extends MapActivity {
     TMapView tMapView;
     Intent intent;
 
-    Button youtuberButton;
     Button refreshButton;
 
     CurrentGps currentGps;
@@ -181,7 +180,7 @@ public class Search2Activity extends MapActivity {
 
         final Button searchButton = findViewById(R.id.search_button);
         final RelativeLayout layoutSearchButton = findViewById(R.id.layout_search_button);
-        youtuberButton = findViewById(R.id.youtuber_button);
+        final Button youtuberButton = findViewById(R.id.youtuber_button);
         final Button worldcupButton = findViewById(R.id.worldcup_button);
         final RelativeLayout layoutWorldcupButton = findViewById(R.id.layout_worldcup_button);
         Button likeButton = findViewById(R.id.like_button);
@@ -218,12 +217,6 @@ public class Search2Activity extends MapActivity {
                 worldcupStart();
             }
         });
-        youtuberButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                youtuberStart();
-            }
-        });
         //아래 toolbar 버튼 설정
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,14 +231,16 @@ public class Search2Activity extends MapActivity {
                 worldcupStartButton.setVisibility(View.INVISIBLE);
             }
         });
+
         youtuberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), YoutuberActivity.class);
-                intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("point", centerPointList);
-                //intent.putParcelableArrayListExtra("jsonArray", jsonObjectArrayList);
-                startActivityForResult(intent, 202);
+                intent.putParcelableArrayListExtra("targetListForYoutuberActivity", targetListForIntent);
+                Log.i("Youtuber Button 검사", "들어가긴 했니?");
+
+                startActivityForResult(intent, 203);
             }
         });
         worldcupButton.setOnClickListener(new View.OnClickListener() {
@@ -460,12 +455,6 @@ public class Search2Activity extends MapActivity {
             }
         }
 
-    }
-    public void youtuberStart() {
-        intent = new Intent(getApplicationContext(), YoutuberActivity.class);
-        intent.putExtra("targetList", targetListForIntent);
-
-        startActivityForResult(intent, 203);
     }
 
     public void worldcupStart() {
