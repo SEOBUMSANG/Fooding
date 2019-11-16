@@ -162,6 +162,7 @@ public class WorldcupActivity extends AppCompatActivity {
             intent = new Intent(getApplicationContext(), ResultActivity.class);
             intent.putExtra("result", worldcupRandomItem.get(0));
             startActivityForResult(intent, 301);
+            finish();
         }
     }
 
