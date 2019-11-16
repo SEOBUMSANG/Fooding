@@ -417,26 +417,7 @@ public class Search2Activity extends MapActivity {
 
         startActivityForResult(intent, 203);
     }
-
-    public void getWalkPath(TMapPoint startPoint,TMapPoint endPoint){
-        TMapData tMapData = new TMapData();
-        tMapData.findPathDataWithType(TMapData.TMapPathType.CAR_PATH, startPoint, endPoint, new TMapData.FindPathDataListenerCallback() {
-            @Override
-            public void onFindPathData(TMapPolyLine polyLine) {
-                tMapView.addTMapPath(polyLine);
-            }
-        });
-    }
-
-    public void getCarPath(TMapPoint startPoint,TMapPoint endPoint){
-        TMapData tMapData = new TMapData();
-        tMapData.findPathDataWithType(TMapData.TMapPathType.PEDESTRIAN_PATH, startPoint, endPoint, new TMapData.FindPathDataListenerCallback() {
-            @Override
-            public void onFindPathData(TMapPolyLine polyLine) {
-                tMapView.addTMapPath(polyLine);
-            }
-        });
-    }
+    
 
     /*public void refreshMarker(){
 
