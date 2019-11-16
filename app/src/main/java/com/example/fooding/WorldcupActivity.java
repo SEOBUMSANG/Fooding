@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,10 +44,13 @@ public class WorldcupActivity extends AppCompatActivity {
     double centerLng;
     float[] dist = new float[1];
 
-    ArrayList <LinearLayout> candidatesLayout;
+    ArrayList <WorldcupItemView> candidatesList;
 
-    LinearLayout candidateLayout1;
-    LinearLayout candidateLayout2;
+    FrameLayout.LayoutParams params;
+    LinearLayout candidate1;
+    LinearLayout candidate2;
+    FrameLayout candidateLayout1;
+    FrameLayout candidateLayout2;
     Button candidate1_select_button;
     Button candidate2_select_button;
 
@@ -73,17 +78,29 @@ public class WorldcupActivity extends AppCompatActivity {
 
         worldcupItem = new ArrayList<>();
         worldcupRandomItem = new ArrayList<>();
+        candidatesList = new ArrayList<>();
 
+        // 후보로 뽑을 음식점 리스트 세팅
         setUpWorldCupItem();
         setUpWorldCupRandomItem();
 
         context = getApplicationContext();
         index = 0;
 
-        candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
-        candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
-        index = 2;
+        // layout parameter 세팅
+        params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
 
+        if (!worldcupRandomItem.isEmpty()) {
+            for (TargetList target : worldcupRandomItem) {
+                candidatesList.add(new WorldcupItemView(context, target));
+            }
+
+            // 첫 후보 둘
+            candidateLayout1.addView(candidatesList.get(index++), params);
+            candidateLayout2.addView(candidatesList.get(index++), params);
+        }
+
+        // 후보 선택 시 다음
         candidate1_select_button.setOnClickListener(new Button.OnClickListener() {
             @Override
 
@@ -95,7 +112,7 @@ public class WorldcupActivity extends AppCompatActivity {
                 }
             }
         }) ;
-        candidate1_select_button.setOnClickListener(new Button.OnClickListener() {
+        candidate2_select_button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(index != 0)
@@ -109,9 +126,8 @@ public class WorldcupActivity extends AppCompatActivity {
 
     public int clickSelectButtonEvent(){
         if(index < 8) {
-            candidateLayout1 = new WorldcupItemView(context, worldcupRandomItem.get(index));
-            candidateLayout2 = new WorldcupItemView(context, worldcupRandomItem.get(index + 1));
-            index+=2;
+            candidateLayout1.addView(candidatesList.get(index++), params);
+            candidateLayout2.addView(candidatesList.get(index++), params);
         }
         else{
             //끝났다는 신호
