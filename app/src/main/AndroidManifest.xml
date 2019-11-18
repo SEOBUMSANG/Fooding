@@ -18,7 +18,6 @@
         <activity android:name=".ResultActivity" />
         <activity android:name=".WorldcupActivity" />
         <activity android:name=".SearchActivity" />
-        <activity android:name=".YoutuberActivity" />
         <activity android:name=".Search2Activity" />
         <activity android:name=".MainActivity">
             <intent-filter>
