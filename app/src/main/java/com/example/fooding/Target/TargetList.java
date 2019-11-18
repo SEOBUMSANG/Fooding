@@ -19,7 +19,7 @@ public class TargetList implements Parcelable {
     public String resImageURL;
     public String youtube;
     public ArrayList<String> resImageUrlList;
-    public ArrayList<YoutubeItem> youtubeItems = new ArrayList<>();
+    public ArrayList<YoutubeItem> youtubeItems;
 
     public TargetList(String name, String lat, String lng, String description, String resAddress, String resImageURL, String youtube, ArrayList<String> resImageUrlList, ArrayList<YoutubeItem> youtubeItems) {
         this.name = name;
