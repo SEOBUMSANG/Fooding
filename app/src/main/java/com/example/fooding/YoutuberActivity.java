@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,6 +59,7 @@ public class YoutuberActivity extends MapActivity {
 
 
     String[] top10YoutuberChannel;
+    boolean[] checkClicked;
 
 
     @Override
@@ -73,6 +75,8 @@ public class YoutuberActivity extends MapActivity {
 
         targetListArray = new ArrayList<TargetList>();
         targetListArray = intent.getParcelableArrayListExtra("targetListForYoutuberActivity");
+
+        checkClicked = new boolean[10];
 
 
 
@@ -246,15 +250,36 @@ public class YoutuberActivity extends MapActivity {
     private View.OnClickListener onClickItem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            String str = (String) v.getTag();
             //v.setBackgroundResource(R.drawable.radius_background_black);
+            YoutuberAdapter.ViewHolder textViewList;
             TextView textView = (TextView) v;
-
+            TextView clickedTextView;
+            String str = (String)textView.getText();
+            int position = Integer.parseInt(textView.getTag().toString());
+            int clickedPosition = -1;
             //adapter.setInitial();
 
-            textView.setBackgroundResource(R.drawable.radius_background_black);
-            textView.setTextColor(getResources().getColor(android.R.color.white));
-            Toast.makeText(YoutuberActivity.this, str, Toast.LENGTH_SHORT).show();
+            for(int i = 0 ;i<10;i++){
+                if(checkClicked[i]==true){
+                    clickedPosition = i;
+                }
+            }
+
+            if(clickedPosition!=-1) {
+                textViewList = (YoutuberAdapter.ViewHolder) listview.findViewHolderForLayoutPosition(clickedPosition);
+                clickedTextView = textViewList.textview;
+                clickedTextView.getText();
+                clickedTextView.setBackgroundResource(R.drawable.radius_background_orange);
+                clickedTextView.setTextColor(getResources().getColor(android.R.color.black));
+                checkClicked[clickedPosition] = false;
+            }
+
+            if(position != clickedPosition) {
+                textView.setBackgroundResource(R.drawable.radius_background_black);
+                textView.setTextColor(getResources().getColor(android.R.color.white));
+                checkClicked[position] = true;
+                Toast.makeText(YoutuberActivity.this, str, Toast.LENGTH_SHORT).show();
+            }
         }
     };
 
