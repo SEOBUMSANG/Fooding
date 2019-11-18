@@ -1,6 +1,8 @@
 package com.example.fooding;
 
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,28 +16,37 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.fooding.Target.TargetList;
 
+import com.example.fooding.Youtube.Top10YoutuberList;
 import com.example.fooding.Youtube.YoutubeItem;
+import com.example.fooding.Youtuber.MyListDecoration;
+import com.example.fooding.Youtuber.YoutuberAdapter;
 import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
-import com.skt.Tmap.TMapData;
+
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
-import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
 import android.location.Address;
 import org.json.JSONObject;
 
@@ -43,8 +54,6 @@ import org.json.JSONObject;
 public class Search2Activity extends MapActivity {
     TMapView tMapView;
     Intent intent;
-
-    Button refreshButton;
 
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
@@ -58,8 +67,15 @@ public class Search2Activity extends MapActivity {
     SearchDB searchDB;
 
     boolean bigMode = true;
+    boolean youtuberMode = false;
     boolean worldcupMode = false;
     float[] dist = new float[1];
+
+    //Youtuber Activity
+    private RecyclerView youtuberListview;
+    private YoutuberAdapter adapter;
+    Top10YoutuberList[] top10YoutuberList;
+    boolean[] checkClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +89,8 @@ public class Search2Activity extends MapActivity {
         partMarkerList = new ArrayList<>();
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         final TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
+
+        checkClicked = new boolean[10];
 
         init(centerPoint);
 
@@ -134,27 +152,30 @@ public class Search2Activity extends MapActivity {
         tMapView.setOnDisableScrollWithZoomLevelListener(new TMapView.OnDisableScrollWithZoomLevelCallback() {
             @Override
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
-                boolean result = false;
-                for(int i =0;i<markerList.size();i++){
-                    result = markerList.get(i).getMarkerTouch();
-                    if (result == true){
-                        markerList.get(i).setMarkerTouch(false);
+                if (youtuberMode) {
+
+                } else {
+                    boolean result = false;
+                    for(int i =0;i<markerList.size();i++){
+                        result = markerList.get(i).getMarkerTouch();
+                        if (result == true){
+                            markerList.get(i).setMarkerTouch(false);
+                        }
+                    }
+
+                    if(bigMode) {
+                        deleteMarker(tMapView, bigMarkerList);
+                        showMarker(bigMarkerList, centerPoint);
+                    }
+                    else{
+                        deleteMarker2(tMapView, markerList);
+                        showMarker2(markerList, centerPoint);
+                    }
+
+                    if(worldcupMode) {
+                        centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
                     }
                 }
-
-                if(bigMode) {
-                    deleteMarker(tMapView, bigMarkerList);
-                    showMarker(bigMarkerList, centerPoint);
-                }
-                else{
-                    deleteMarker2(tMapView, markerList);
-                    showMarker2(markerList, centerPoint);
-                }
-
-                if(worldcupMode) {
-                    centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
-                }
-
             }
         });
         tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
@@ -171,6 +192,7 @@ public class Search2Activity extends MapActivity {
         //화면 설정
         Button settingButton = findViewById(R.id.setting_button);
         Button mylocationButton = findViewById(R.id.my_location_button);
+        final LinearLayout linearLayoutLocationInput = findViewById(R.id.linear_layout_location_input);
         final EditText locationInput = findViewById(R.id.location_input);
         Button locationInputButton = findViewById(R.id.location_input_button);
 
@@ -181,9 +203,11 @@ public class Search2Activity extends MapActivity {
         final Button searchButton = findViewById(R.id.search_button);
         final RelativeLayout layoutSearchButton = findViewById(R.id.layout_search_button);
         final Button youtuberButton = findViewById(R.id.youtuber_button);
+        final RelativeLayout layoutYoutuberButton = findViewById(R.id.layout_youtuber_button);
         final Button worldcupButton = findViewById(R.id.worldcup_button);
         final RelativeLayout layoutWorldcupButton = findViewById(R.id.layout_worldcup_button);
-        Button likeButton = findViewById(R.id.like_button);
+        final Button likeButton = findViewById(R.id.like_button);
+        final RelativeLayout layoutLikeButton = findViewById(R.id.layout_like_button);
 
 
         //현재위치 버튼
@@ -221,26 +245,49 @@ public class Search2Activity extends MapActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (youtuberMode) {
+                    youtuberMode = false;
+
+                    showMarker(bigMarkerList, centerPoint);
+
+                    layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                    youtuberListview.setVisibility(View.INVISIBLE);
+                    linearLayoutLocationInput.setVisibility(View.VISIBLE);
+                }
                 if (worldcupMode) {
                     worldcupMode = false;
+
                     tMapView.removeMarkerItem(centerMarkerItem.getID());
+
+                    layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                    worldcupStartButton.setVisibility(View.INVISIBLE);
                 }
 
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
-                layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
-                worldcupStartButton.setVisibility(View.INVISIBLE);
+
             }
         });
 
         youtuberButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), YoutuberActivity.class);
-                intent.putExtra("point", centerPointList);
-                intent.putParcelableArrayListExtra("targetListForYoutuberActivity", targetListForIntent);
-                Log.i("Youtuber Button 검사", "들어가긴 했니?");
+                youtuberMode = true;
 
-                startActivityForResult(intent, 203);
+                //위치검색창 invisible
+                linearLayoutLocationInput.setVisibility(View.INVISIBLE);
+                //리스트뷰 visible
+                youtuberListview.setVisibility(View.VISIBLE);
+                //서치 버튼 레이아웃 blank
+                layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                //유튜버 버튼 레이아웃 fill
+                layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
+                //지도 위의 마커 다 삭제
+                tMapView.removeAllMarkerItem();
+
+                if (worldcupMode) {
+                    worldcupStartButton.setVisibility(View.INVISIBLE);
+                    layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                }
             }
         });
         worldcupButton.setOnClickListener(new View.OnClickListener() {
@@ -254,6 +301,9 @@ public class Search2Activity extends MapActivity {
 
                 centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
                 tMapView.addMarkerItem(centerMarkerItem.getID(), centerMarkerItem);
+
+                if (youtuberMode)
+                    layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
             }
         });
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -336,9 +386,12 @@ public class Search2Activity extends MapActivity {
                         showMarker(bigMarkerList, centerPoint);
                         makeMarker(targetList, markerList);
                     }
+
+                    initYoutuber(targetListForIntent);
                 }
             }, 5000);
         }
+
 
     }
 
@@ -465,38 +518,142 @@ public class Search2Activity extends MapActivity {
         startActivityForResult(intent, 203);
     }
 
-    /*public void refreshMarker(){
+    private void initYoutuber(ArrayList<TargetList> targetListArray) {
 
-        if (tMapView.getZoomLevel() >= 15) {
-            deleteMarker(tMapView, markerList);
-        } else {
-            deleteMarker(tMapView, bigMarkerList);
+        youtuberListview = findViewById(R.id.youtuber_listview);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        youtuberListview.setLayoutManager(layoutManager);
+
+        youtuberFilter(targetListArray);
+
+        ArrayList<String> itemList = new ArrayList<>();
+        for(int i=0; i<10; i++) {
+            itemList.add(top10YoutuberList[i].channelName);
         }
+        //TODO top10YoutuberChannel 스트링배열이 상위 10명 유튜버 TargetList.YoutubeItems.Channel 명임
 
-        float[] distance = new float[1];
-        TMapPoint centerPoint = tMapView.getCenterPoint();
-        if (tMapView.getZoomLevel() >= 15) {
-            partMarkerList.clear();
-            for (TMapMarkerItem2 markerItem : markerList) {
-                Location.distanceBetween(centerPoint.getLatitude(), centerPoint.getLongitude(), markerItem.latitude, markerItem.longitude, distance);
 
-                if (distance[0] <= 2000) {
-                    partMarkerList.add(markerItem);
+        adapter = new YoutuberAdapter(this, itemList, onClickItem);
+        youtuberListview.setAdapter(adapter);
 
+        MyListDecoration decoration = new MyListDecoration();
+        youtuberListview.addItemDecoration(decoration);
+    }
+
+    private void youtuberFilter(ArrayList<TargetList> targetListArray){
+
+        Map<String,Integer> tempArray = new HashMap<String,Integer>();
+
+        //Hashmap 생성
+        for(int i=0; i<targetListArray.size();i++){
+            for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++){
+                if(!(tempArray.containsKey(targetListArray.get(i).youtubeItems.get(j).channel))){
+                    tempArray.put(targetListArray.get(i).youtubeItems.get(j).channel, 1);
+                }
+                else{
+                    tempArray.put(targetListArray.get(i).youtubeItems.get(j).channel, tempArray.get(targetListArray.get(i).youtubeItems.get(j).channel)+1);
                 }
             }
-            showMarker(partMarkerList);
-        } else {
-            partMarkerList.clear();
-            for (TMapMarkerItem2 bigMarkerItem : bigMarkerList) {
-                Location.distanceBetween(centerPoint.getLatitude(), centerPoint.getLongitude(), bigMarkerItem.latitude, bigMarkerItem.longitude, distance);
-
-                if (distance[0] <= 2000) {
-                    partMarkerList.add(bigMarkerItem);
-                }
-            }
-            showMarker(partMarkerList);
         }
 
-    }*/
+        //Hashmap sorting
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(tempArray.entrySet());
+
+        Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+            @Override
+            public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                int comparision = (o1.getValue() - o2.getValue()) * -1;
+                return comparision == 0 ? o1.getKey().compareTo(o2.getKey()) : comparision;
+            }
+        });
+
+        // 순서유지를 위해 LinkedHashMap을 사용
+        Map<String, Integer> sortedTempArray = new LinkedHashMap<>();
+        for(Iterator<Map.Entry<String, Integer>> iter = list.iterator(); iter.hasNext();){
+            Map.Entry<String, Integer> entry = iter.next();
+            sortedTempArray.put(entry.getKey(), entry.getValue());
+        }
+
+        Iterator iterator = sortedTempArray.entrySet().iterator();
+
+        top10YoutuberList = new Top10YoutuberList[10];
+        for(int i=0; i< 10; i++){
+            top10YoutuberList[i] = new Top10YoutuberList();
+        }
+
+        for(int i=0; i<10; i++){
+            Map.Entry entry = (Map.Entry)iterator.next();
+            top10YoutuberList[i].channelName = (String)entry.getKey();
+        }
+
+        for(int i=0; i<targetListArray.size(); i++){
+            for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++) {
+                for (int k = 0; k < top10YoutuberList.length; k++) {
+                    if (targetListArray.get(i).youtubeItems.get(j).channel == top10YoutuberList[k].channelName)
+                        top10YoutuberList[k].resNameList.add(targetListArray.get(i).name);
+                }
+
+            }
+        }
+
+    }
+
+    public void showYoutuberMarker(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint, Top10YoutuberList youtuber) {
+        TMapMarkerItem2 marker;
+        for (int i = 0; i < markerList.size(); i++) {
+            for(int j=0; j<youtuber.resNameList.size(); j++) {
+                if (youtuber.resNameList.get(j) == markerList.get(i).getID()) {
+                    marker = markerList.get(i);
+                    tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
+                }
+            }
+        }
+    }
+
+
+    private View.OnClickListener onClickItem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //v.setBackgroundResource(R.drawable.radius_background_black);
+            YoutuberAdapter.ViewHolder textViewList;
+            TextView textView = (TextView) v;
+            TextView clickedTextView;
+            String str = (String)textView.getText();
+            int position = Integer.parseInt(textView.getTag().toString());
+            int clickedPosition = -1;
+            //adapter.setInitial();
+
+
+
+            for(int i=0; i<top10YoutuberList.length; i++){
+                if(top10YoutuberList[i].channelName == str){
+//잠시 주석처리              //showYoutuberMarker(markerList, centerPoint, top10YoutuberList[i]);
+                }
+            }
+
+            for(int i = 0 ;i<10;i++){
+                if(checkClicked[i]==true){
+                    clickedPosition = i;
+                }
+            }
+
+            if(clickedPosition!=-1) {
+                textViewList = (YoutuberAdapter.ViewHolder) youtuberListview.findViewHolderForLayoutPosition(clickedPosition);
+                clickedTextView = textViewList.textview;
+                clickedTextView.getText();
+                clickedTextView.setBackgroundResource(R.drawable.radius_background_orange);
+                clickedTextView.setTextColor(getResources().getColor(android.R.color.black));
+                checkClicked[clickedPosition] = false;
+            }
+
+            if(position != clickedPosition) {
+                textView.setBackgroundResource(R.drawable.radius_background_black);
+                textView.setTextColor(getResources().getColor(android.R.color.white));
+                checkClicked[position] = true;
+                Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    };
+
 }
