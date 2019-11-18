@@ -44,7 +44,7 @@ public class MapActivity extends AppCompatActivity {
             markerItem = new TMapMarkerItem();
             tMapPoint = new TMapPoint(Double.parseDouble(targetList[i].lat), Double.parseDouble(targetList[i].lng));
             markerItem.setTMapPoint( tMapPoint ); // 마커의 좌표 지정
-            markerItem.setID("markerItem" + i);
+            markerItem.setID(targetList[i].name);
 
             // 거리 계산
             Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
@@ -90,7 +90,7 @@ public class MapActivity extends AppCompatActivity {
             // 마커 생성
             MarkerOverlay markerItem = new MarkerOverlay(this, eachTarget);
             markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
-            String sID = "markerItem" + i;
+            String sID = "markerItem" + eachTarget.name;
 
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
             markerItem.setIcon(resizeBitmap(bitmap, 200)); // 마커 아이콘 지정
@@ -115,6 +115,7 @@ public class MapActivity extends AppCompatActivity {
         //markerList.clear();
         Log.d("deleteMarker","지도에서 빅마커 삭제");
     }
+
 
     public void deleteMarker2(TMapView tMapView, ArrayList<TMapMarkerItem2> markerList){
         for(int i=0;i<markerList.size();i++) {

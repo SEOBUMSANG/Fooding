@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.fooding.Target.TargetList;
+import com.example.fooding.Youtube.Top10YoutuberList;
 import com.example.fooding.Youtuber.MyListDecoration;
 import com.example.fooding.Youtuber.YoutuberAdapter;
 import com.google.common.collect.Multiset;
@@ -45,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class YoutuberActivity extends MapActivity {
+public class YoutuberActivity extends Search2Activity {
     TMapView tMapView;
     Intent intent;
 
@@ -55,9 +57,9 @@ public class YoutuberActivity extends MapActivity {
 
     private RecyclerView listview;
     private YoutuberAdapter adapter;
+    TMapPoint centerPoint;
 
-
-    String[] top10YoutuberChannel;
+    Top10YoutuberList[] top10YoutuberList;
 
 
     @Override
@@ -176,7 +178,6 @@ public class YoutuberActivity extends MapActivity {
 
     private void init(ArrayList<TargetList> targetListArray) {
 
-
         listview = findViewById(R.id.youtuber_listview2);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listview.setLayoutManager(layoutManager);
@@ -185,9 +186,11 @@ public class YoutuberActivity extends MapActivity {
 
         ArrayList<String> itemList = new ArrayList<>();
         for(int i=0; i<10; i++) {
-            itemList.add(top10YoutuberChannel[i]);
+            itemList.add(top10YoutuberList[i].channelName);
         }
         //TODO top10YoutuberChannel 스트링배열이 상위 10명 유튜버 TargetList.YoutubeItems.Channel 명임
+
+
 
 
         adapter = new YoutuberAdapter(this, itemList, onClickItem);
@@ -201,7 +204,7 @@ public class YoutuberActivity extends MapActivity {
 
         Map<String,Integer> tempArray = new HashMap<String,Integer>();
 
-
+        //Hashmap 생성
         for(int i=0; i<targetListArray.size();i++){
             for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++){
                 if(!(tempArray.containsKey(targetListArray.get(i).youtubeItems.get(j).channel))){
@@ -213,6 +216,7 @@ public class YoutuberActivity extends MapActivity {
             }
         }
 
+        //Hashmap sorting
         List<Map.Entry<String, Integer>> list = new LinkedList<>(tempArray.entrySet());
 
         Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
@@ -232,14 +236,37 @@ public class YoutuberActivity extends MapActivity {
 
         Iterator iterator = sortedTempArray.entrySet().iterator();
 
-        top10YoutuberChannel = new String[10];
+        top10YoutuberList = new Top10YoutuberList[10];
+        for(int i=0; i< 10; i++){
+            top10YoutuberList[i] = new Top10YoutuberList();
+        }
 
         for(int i=0; i<10; i++){
             Map.Entry entry = (Map.Entry)iterator.next();
-            top10YoutuberChannel[i] = (String)entry.getKey();
+            top10YoutuberList[i].channelName = (String)entry.getKey();
         }
 
+        for(int i=0; i<targetListArray.size(); i++){
+            for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++) {
+                for (int k = 0; k < top10YoutuberList.length; k++) {
+                    if (targetListArray.get(i).youtubeItems.get(j).channel == top10YoutuberList[k].channelName)
+                        top10YoutuberList[k].resNameList.add(targetListArray.get(i).name);
+                }
 
+            }
+        }
+    }
+
+    public void showYoutuberMarker(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint, Top10YoutuberList youtuber) {
+        TMapMarkerItem2 marker = null;
+        for (int i = 0; i < markerList.size(); i++) {
+            for(int j=0; j<youtuber.resNameList.size(); j++) {
+                if (youtuber.resNameList.get(j) == markerList.get(i).getID()) {
+                    marker = markerList.get(i);
+                    tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
+                }
+            }
+        }
     }
 
 
@@ -255,6 +282,12 @@ public class YoutuberActivity extends MapActivity {
             textView.setBackgroundResource(R.drawable.radius_background_black);
             textView.setTextColor(getResources().getColor(android.R.color.white));
             Toast.makeText(YoutuberActivity.this, str, Toast.LENGTH_SHORT).show();
+
+            for(int i=0; i<top10YoutuberList.length; i++){
+                if(top10YoutuberList[i].channelName == str){
+                    showYoutuberMarker(markerList, centerPoint, top10YoutuberList[i]);
+                }
+            }
         }
     };
 

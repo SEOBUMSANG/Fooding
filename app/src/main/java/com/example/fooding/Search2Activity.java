@@ -433,8 +433,8 @@ public class Search2Activity extends MapActivity {
                 tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
             }
         }
-
     }
+
 
     public void showMarker2(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint) {
         TMapMarkerItem2 marker = null;
@@ -454,7 +454,6 @@ public class Search2Activity extends MapActivity {
                 tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
             }
         }
-
     }
 
     public void worldcupStart() {

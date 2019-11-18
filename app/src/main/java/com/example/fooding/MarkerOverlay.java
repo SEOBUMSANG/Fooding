@@ -80,6 +80,7 @@ public class MarkerOverlay extends TMapMarkerItem2 {
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
         balloonView.layout(0, 0, balloonView.getMeasuredWidth(), balloonView.getMeasuredHeight());
+
     }
 
     @Override
