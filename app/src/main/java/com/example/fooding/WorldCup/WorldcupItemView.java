@@ -30,16 +30,18 @@ public class WorldcupItemView extends LinearLayout {
     public WorldcupItemView(Context context, TargetList candidateTarget) {
         super(context);
 
+        init(context, candidateTarget);
+
         if ( !candidateTarget.resImageUrlList.isEmpty() ) {
             Log.e("WorldcupItemView", "이 씨발");
-            //imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
-            Log.e("WorldcupItemView", "개새");
-            //imageLoadTask1.execute();
-//            imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
-//            imageLoadTask2.execute();
-        }
+            imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
+            imageLoadTask1.execute();
 
-        init(context, candidateTarget);
+            if(candidateTarget.resImageUrlList.size()>=2) {
+                imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
+                imageLoadTask2.execute();
+            }
+        }
     }
 
     @Override

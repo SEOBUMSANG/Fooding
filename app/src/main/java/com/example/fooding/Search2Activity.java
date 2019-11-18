@@ -53,7 +53,7 @@ public class Search2Activity extends MapActivity {
     ArrayList<TMapMarkerItem2> partMarkerList;
 
     TargetList[] targetList;
-    ArrayList<TargetList> targetListForIntent;
+    static ArrayList<TargetList> targetListForIntent;
 
     SearchDB searchDB;
 
@@ -67,6 +67,7 @@ public class Search2Activity extends MapActivity {
         setContentView(R.layout.activity_search2);
 
         Intent getIntent = getIntent();
+        Global globalTargetList= ((Global)getApplicationContext());
         jsonObjectArrayList = new ArrayList<>();
         bigMarkerList = new ArrayList<>();
         markerList = new ArrayList<>();
@@ -325,6 +326,7 @@ public class Search2Activity extends MapActivity {
                     }
                     Log.e("getTargeList 완료", "완료");
 
+                    globalTargetList.setState(targetList);
                     targetListForIntent = new ArrayList<>();
                     for(int i = 0 ; i<targetList.length; i++){
                         targetListForIntent.add(targetList[i]);
@@ -375,11 +377,11 @@ public class Search2Activity extends MapActivity {
                 targetList[i].youtubeItems.add(temptubeItems[j]);
             }
             //에러 발생 부분
-//            for (int j = 0; j < tempUrls.length; j++) {
-//                if (URLUtil.isValidUrl( tempUrls[j] ) ) {
-//                    targetList[i].resImageUrlList.add( tempUrls[j] );
-//                }
-//            }
+            for (int j = 0; j < tempUrls.length; j++) {
+                if (URLUtil.isValidUrl( tempUrls[j] ) ) {
+                    targetList[i].resImageUrlList.add(tempUrls[j]);
+                }
+            }
 
         }
     }
@@ -460,7 +462,7 @@ public class Search2Activity extends MapActivity {
         intent = new Intent(getApplicationContext(), WorldcupActivity.class);
         intent.putExtra("lat", tMapView.getCenterPoint().getLatitude());
         intent.putExtra("lng", tMapView.getCenterPoint().getLongitude());
-        intent.putExtra("targetList", targetListForIntent);
+        //intent.putExtra("targetList", targetListForIntent);
 
         startActivityForResult(intent, 203);
     }
