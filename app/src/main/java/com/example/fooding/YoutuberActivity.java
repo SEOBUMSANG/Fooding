@@ -76,7 +76,7 @@ public class YoutuberActivity extends Search2Activity {
         tMapView = new TMapView(this);
         tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");   //API key setting
         layoutTmap.addView( tMapView );
-        Global globalTargetList= ((Global)getApplicationContext());
+        Global global= ((Global)getApplicationContext());
 
 
         checkClicked = new boolean[10];
@@ -177,7 +177,7 @@ public class YoutuberActivity extends Search2Activity {
         TMapPoint tMapPoint1 = tMapView.getCenterPoint();
 
         //youtuber listview 셋팅
-        init(globalTargetList.getState());
+        init(global.getTargetListArray());
 
     }
 

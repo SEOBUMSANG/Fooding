@@ -48,9 +48,9 @@ public class Search2Activity extends MapActivity {
     ArrayList<TMapMarkerItem> bigMarkerList;
     ArrayList<TMapMarkerItem2> markerList;
     ArrayList<TMapMarkerItem2> partMarkerList;
-    TargetList[] targetList;
     static ArrayList<TargetList> targetListForIntent;
     SearchDB searchDB;
+    Global global;
     boolean bigMode = true;
     boolean worldcupMode = false;
     float[] dist = new float[1];
@@ -63,7 +63,7 @@ public class Search2Activity extends MapActivity {
         setContentView(R.layout.activity_search2);
 
         Intent getIntent = getIntent();
-        Global globalTargetList= ((Global)getApplicationContext());
+        Global global= ((Global)getApplicationContext());
         jsonObjectArrayList = new ArrayList<>();
         bigMarkerList = new ArrayList<>();
         markerList = new ArrayList<>();
@@ -71,7 +71,7 @@ public class Search2Activity extends MapActivity {
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         final TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
-        init(centerPoint);
+        //init(centerPoint);
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
         tMapView = new TMapView(this);
@@ -304,7 +304,19 @@ public class Search2Activity extends MapActivity {
 
         // 시작
         // 잠시 시간 필요함
-        if(markerList.isEmpty()) {
+
+        new Thread(new Runnable() {
+            @Override public void run() {
+                Log.e("getTargeList 시작 전", "시작 전");
+                if (makeBigMarker(global.getTargetListArray(), bigMarkerList)) {    // 마커 생성
+                    showMarker(bigMarkerList, centerPoint);
+                    makeMarker(global.getTargetListArray(), markerList);
+                }
+            }
+        }).start();
+
+
+        /*if(markerList.isEmpty()) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -330,51 +342,52 @@ public class Search2Activity extends MapActivity {
                     }
                 }
             }, 5000);
-        }
+        }*/
 
     }
 
     public void init(final TMapPoint centerPoint) {
         // 전체 음식점 정보 json으로 받아오기
-        Log.w("init", "init");
+        /*Log.w("init", "init");
         searchDB = new SearchDB();
         if (jsonObjectArrayList.isEmpty()) {
             Log.w("init", "jsonObjectArrayList 비어있어서 searchDB.returnData");
-            searchDB.returnData(jsonObjectArrayList);
-        }
+            searchDB.returnData(jsonObjectArrayList,getApplicationContext());
+        }*/
     }
 
     // db에 유튜브 리스트 요청 및 정제 refactorJS
-    public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList) throws MalformedURLException {
+    /*public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList) throws MalformedURLException {
         Gson gson = new Gson();
         JSONObject jsonObject;
 
         YoutubeItem[] temptubeItems;
         String[] tempUrls;
-        targetList = new TargetList[jsonObjectArrayList.size()];
         for (int i = 0; i < jsonObjectArrayList.size(); i++) {
+            TargetList target;
             jsonObject = jsonObjectArrayList.get(i);
             String response = jsonObject.toString();
 
-            targetList[i] = gson.fromJson(response, TargetList.class);
-            targetList[i].youtubeItems = new ArrayList<>();
-            targetList[i].resImageUrlList = new ArrayList<>();
+            target = gson.fromJson(response, TargetList.class);
+            target.youtubeItems = new ArrayList<>();
+            target.resImageUrlList = new ArrayList<>();
 
-            temptubeItems = gson.fromJson(targetList[i].youtube, YoutubeItem[].class);
-            tempUrls = gson.fromJson(targetList[i].resImageURL, String[].class);
+            temptubeItems = gson.fromJson(target.youtube, YoutubeItem[].class);
+            tempUrls = gson.fromJson(target.resImageURL, String[].class);
 
             for (int j = 0; j < temptubeItems.length; j++) {
-                targetList[i].youtubeItems.add(temptubeItems[j]);
+                target.youtubeItems.add(temptubeItems[j]);
             }
             //에러 발생 부분
             for (int j = 0; j < tempUrls.length; j++) {
                 if (URLUtil.isValidUrl( tempUrls[j] ) ) {
-                    targetList[i].resImageUrlList.add(tempUrls[j]);
+                    target.resImageUrlList.add(tempUrls[j]);
                 }
             }
 
+            global.getTargetListArray().add(target);
         }
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
