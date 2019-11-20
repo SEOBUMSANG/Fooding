@@ -22,7 +22,7 @@ public class SearchDB {
     public SearchDB() {
     }
 
-    public void returnData(final ArrayList<JSONObject> jsonObjectArrayList,final TMapPoint centerPoint) {
+    public void returnData(final ArrayList<JSONObject> jsonObjectArrayList) {
         db.collection("GangNam")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

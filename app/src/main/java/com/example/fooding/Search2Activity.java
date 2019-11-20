@@ -43,23 +43,19 @@ import org.json.JSONObject;
 public class Search2Activity extends MapActivity {
     TMapView tMapView;
     Intent intent;
-
-    Button refreshButton;
-
     CurrentGps currentGps;
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem> bigMarkerList;
-    static ArrayList<TMapMarkerItem2> markerList;
+    ArrayList<TMapMarkerItem2> markerList;
     ArrayList<TMapMarkerItem2> partMarkerList;
-
     TargetList[] targetList;
     static ArrayList<TargetList> targetListForIntent;
-
     SearchDB searchDB;
-
     boolean bigMode = true;
     boolean worldcupMode = false;
     float[] dist = new float[1];
+
+    private TMapCircle tMapCircle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,14 +79,6 @@ public class Search2Activity extends MapActivity {
         layoutTmap.addView( tMapView );
 
         tMapView.setCenterPoint(centerPointList[1], centerPointList[0], true);
-        TMapCircle tMapCircle = new TMapCircle();
-        tMapCircle.setCenterPoint( centerPoint ); // 센터 설정
-        tMapCircle.setRadius(30);
-        tMapCircle.setCircleWidth(15);
-        tMapCircle.setLineColor(Color.BLUE);
-        tMapCircle.setAreaColor(Color.GRAY);
-        tMapCircle.setAreaAlpha(100);
-        tMapView.addTMapCircle("circle1", tMapCircle);
 
         //월드컵용 가운데 마커
         final TMapMarkerItem centerMarkerItem = new TMapMarkerItem();
@@ -153,7 +141,8 @@ public class Search2Activity extends MapActivity {
                 }
 
                 if(worldcupMode) {
-                    centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
+
+                    setWorldcupCircle();
                 }
 
             }
@@ -222,6 +211,7 @@ public class Search2Activity extends MapActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                tMapView.removeAllTMapCircle();
                 if (worldcupMode) {
                     worldcupMode = false;
                     tMapView.removeMarkerItem(centerMarkerItem.getID());
@@ -238,7 +228,6 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), YoutuberActivity.class);
                 intent.putExtra("point", centerPointList);
-                intent.putParcelableArrayListExtra("targetListForYoutuberActivity", targetListForIntent);
                 Log.i("Youtuber Button 검사", "들어가긴 했니?");
 
                 startActivityForResult(intent, 203);
@@ -252,9 +241,10 @@ public class Search2Activity extends MapActivity {
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
                 worldcupStartButton.setVisibility(View.VISIBLE);
+                setWorldcupCircle();
 
-                centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
-                tMapView.addMarkerItem(centerMarkerItem.getID(), centerMarkerItem);
+                //centerMarkerItem.setTMapPoint(tMapView.getCenterPoint());
+                //tMapView.addMarkerItem(centerMarkerItem.getID(), centerMarkerItem);
             }
         });
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -350,7 +340,7 @@ public class Search2Activity extends MapActivity {
         searchDB = new SearchDB();
         if (jsonObjectArrayList.isEmpty()) {
             Log.w("init", "jsonObjectArrayList 비어있어서 searchDB.returnData");
-            searchDB.returnData(jsonObjectArrayList, centerPoint);
+            searchDB.returnData(jsonObjectArrayList);
         }
     }
 
@@ -465,6 +455,18 @@ public class Search2Activity extends MapActivity {
         //intent.putExtra("targetList", targetListForIntent);
 
         startActivityForResult(intent, 203);
+    }
+
+    public void setWorldcupCircle(){
+        tMapView.removeAllTMapCircle();
+        tMapCircle = new TMapCircle();
+        tMapCircle.setCenterPoint( tMapView.getCenterPoint() ); // 센터 설정
+        tMapCircle.setRadius(3000);
+        tMapCircle.setCircleWidth(15);
+        tMapCircle.setLineColor(Color.BLUE);
+        tMapCircle.setAreaColor(Color.GRAY);
+        tMapCircle.setAreaAlpha(100);
+        tMapView.addTMapCircle("circle", tMapCircle);
     }
 
     /*public void refreshMarker(){
