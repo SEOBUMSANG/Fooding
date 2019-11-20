@@ -3,25 +3,45 @@ package com.example.fooding;
 import android.app.Application;
 
 import com.example.fooding.Target.TargetList;
+import com.google.gson.JsonObject;
+import com.skt.Tmap.TMapMarkerItem2;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
 public class Global extends Application {
-    private ArrayList<TargetList> targetListArray = new ArrayList<>();
+    private ArrayList<TargetList> targetListArray = new ArrayList<>(100);
+    private ArrayList<TMapMarkerItem2> markerList = new ArrayList<>(100);
 
-    public ArrayList<TargetList> getState(){
+    public ArrayList<TargetList> getTargetListArray(){
         return targetListArray;
     }
-    public void setState(ArrayList<TargetList> targetA){
+    public ArrayList<TMapMarkerItem2> getMarkerList() {return markerList;}
+
+    public void setTargetListArray(ArrayList<TargetList> targetA){
         for(int i = 0;i<targetA.size();i++){
             targetListArray.add(targetA.get(i));
         }
     }
 
-    public void setState(TargetList[] targetB){
+    public void setTargetListArray(TargetList[] targetB){
         for(int i = 0;i<targetB.length;i++){
             targetListArray.add(targetB[i]);
         }
     }
 
+    public void setTargetListItem(TargetList target){
+        targetListArray.add(target);
+    }
+
+    public void setMarkerList(ArrayList<TMapMarkerItem2> markerA){
+        for(int i = 0;i<markerA.size();i++){
+            markerList.add(markerA.get(i));
+        }
+    }
+
+    public void setMarkerListItem(MarkerOverlay marker){
+        markerList.add(marker);
+    }
 }
