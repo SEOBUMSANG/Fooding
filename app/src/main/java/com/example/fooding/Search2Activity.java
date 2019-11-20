@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -377,19 +378,14 @@ public class Search2Activity extends MapActivity {
                     Log.e("getTargeList 완료", "완료");
 
                     globalTargetList.setState(targetList);
-                    targetListForIntent = new ArrayList<>();
-                    for(int i = 0 ; i<targetList.length; i++){
-                        targetListForIntent.add(targetList[i]);
-//                        if ( !targetListForIntent.get(i).resImageUrlList.isEmpty() )
-//                            Log.i("intent용 target으로 옮길 때 ", "" + targetListForIntent.get(i).resImageUrlList.get(0) );
-                    }
+
 
                     if (makeBigMarker(targetList, bigMarkerList)) {    // 마커 생성
                         showMarker(bigMarkerList, centerPoint);
                         makeMarker(targetList, markerList);
                     }
 
-                    initYoutuber(targetListForIntent);
+                    initYoutuber(targetList);
                 }
             }, 5000);
         }
@@ -520,7 +516,7 @@ public class Search2Activity extends MapActivity {
         startActivityForResult(intent, 203);
     }
 
-    private void initYoutuber(ArrayList<TargetList> targetListArray) {
+    private void initYoutuber(TargetList[] targetListArray) {
 
         youtuberListview = findViewById(R.id.youtuber_listview);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
@@ -542,18 +538,18 @@ public class Search2Activity extends MapActivity {
         youtuberListview.addItemDecoration(decoration);
     }
 
-    private void youtuberFilter(ArrayList<TargetList> targetListArray){
+    private void youtuberFilter(TargetList[] targetListArray){
 
         Map<String,Integer> tempArray = new HashMap<String,Integer>();
 
         //Hashmap 생성
-        for(int i=0; i<targetListArray.size();i++){
-            for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++){
-                if(!(tempArray.containsKey(targetListArray.get(i).youtubeItems.get(j).channel))){
-                    tempArray.put(targetListArray.get(i).youtubeItems.get(j).channel, 1);
+        for(int i=0; i<targetListArray.length; i++){
+            for(int j=0; j<targetListArray[i].youtubeItems.size(); j++){
+                if(!(tempArray.containsKey(targetListArray[i].youtubeItems.get(j).channel))){
+                    tempArray.put(targetListArray[i].youtubeItems.get(j).channel, 1);
                 }
                 else{
-                    tempArray.put(targetListArray.get(i).youtubeItems.get(j).channel, tempArray.get(targetListArray.get(i).youtubeItems.get(j).channel)+1);
+                    tempArray.put(targetListArray[i].youtubeItems.get(j).channel, tempArray.get(targetListArray[i].youtubeItems.get(j).channel)+1);
                 }
             }
         }
@@ -588,11 +584,11 @@ public class Search2Activity extends MapActivity {
             top10YoutuberList[i].channelName = (String)entry.getKey();
         }
 
-        for(int i=0; i<targetListArray.size(); i++){
-            for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++) {
+        for(int i=0; i<targetListArray.length; i++){
+            for(int j=0; j<targetListArray[i].youtubeItems.size(); j++) {
                 for (int k = 0; k < top10YoutuberList.length; k++) {
-                    if (targetListArray.get(i).youtubeItems.get(j).channel == top10YoutuberList[k].channelName)
-                        top10YoutuberList[k].resNameList.add(targetListArray.get(i).name);
+                    if (targetListArray[i].youtubeItems.get(j).channel == top10YoutuberList[k].channelName)
+                        top10YoutuberList[k].resNameList.add(targetListArray[i].name);
                 }
 
             }
@@ -600,16 +596,17 @@ public class Search2Activity extends MapActivity {
 
     }
 
-    public void showYoutuberMarker(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint, Top10YoutuberList youtuber) {
+    public void showYoutuberMarker(ArrayList<TMapMarkerItem2> markerList, Top10YoutuberList youtuber) {
         TMapMarkerItem2 marker;
         for (int i = 0; i < markerList.size(); i++) {
             for(int j=0; j<youtuber.resNameList.size(); j++) {
-                if (youtuber.resNameList.get(j) == markerList.get(i).getID()) {
+                if ( ("markerItem"+youtuber.resNameList.get(j)).equals( markerList.get(i).getID() ) ) {
                     marker = markerList.get(i);
                     tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
                 }
             }
         }
+
     }
 
 
@@ -625,11 +622,9 @@ public class Search2Activity extends MapActivity {
             int clickedPosition = -1;
             //adapter.setInitial();
 
-
-
             for(int i=0; i<top10YoutuberList.length; i++){
                 if(top10YoutuberList[i].channelName == str){
-//잠시 주석처리              //showYoutuberMarker(markerList, centerPoint, top10YoutuberList[i]);
+                    showYoutuberMarker(markerList, top10YoutuberList[i]);
                 }
             }
 
