@@ -54,7 +54,6 @@ public class YoutuberActivity extends Search2Activity {
 
     ArrayList<JSONObject> jsonObjectArrayList;
     ArrayList<TMapMarkerItem2> markerList;
-    ArrayList<TargetList> targetListArray;
 
     private RecyclerView listview;
     private YoutuberAdapter adapter;
@@ -77,9 +76,8 @@ public class YoutuberActivity extends Search2Activity {
         tMapView = new TMapView(this);
         tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");   //API key setting
         layoutTmap.addView( tMapView );
+        Global globalTargetList= ((Global)getApplicationContext());
 
-        targetListArray = new ArrayList<TargetList>();
-        targetListArray = intent.getParcelableArrayListExtra("targetListForYoutuberActivity");
 
         checkClicked = new boolean[10];
 
@@ -179,7 +177,7 @@ public class YoutuberActivity extends Search2Activity {
         TMapPoint tMapPoint1 = tMapView.getCenterPoint();
 
         //youtuber listview 셋팅
-        init(targetListArray);
+        init(globalTargetList.getState());
 
     }
 
