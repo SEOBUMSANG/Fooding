@@ -1,13 +1,18 @@
 package com.example.fooding;
 
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+import android.webkit.URLUtil;
 
+import com.example.fooding.Target.TargetList;
+import com.example.fooding.Youtube.YoutubeItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 import com.skt.Tmap.TMapPoint;
 
 import org.json.JSONException;
@@ -19,10 +24,12 @@ import androidx.annotation.NonNull;
 
 public class SearchDB {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Gson gson = new Gson();
     public SearchDB() {
     }
 
-    public void returnData(final ArrayList<JSONObject> jsonObjectArrayList,final TMapPoint centerPoint) {
+    public void returnData(Context context) {
+        Global global = ((Global)context);
         db.collection("GangNam")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -35,24 +42,25 @@ public class SearchDB {
 //                                    continue;
 //                                }
 //                                else {
-                                    JSONObject jsonObject = new JSONObject();
-                                    try {
-                                        String imageURL = document.getData().get("resImageURL").toString();
+                                JSONObject jsonObject = new JSONObject();
+                                try {
+                                    String imageURL = document.getData().get("resImageURL").toString();
 
-                                        jsonObject.put("name",document.getData().get("name"));
-                                        jsonObject.put("lat",document.getData().get("lat"));
-                                        jsonObject.put("lng",document.getData().get("lng"));
-                                        jsonObject.put("description",document.getData().get("description"));
-                                        jsonObject.put("resAddress",document.getData().get("resAddress"));
-                                        jsonObject.put("resImageURL",setImageArray(imageURL));
-                                        jsonObject.put("youtube",document.getData().get("youtube"));
+                                    jsonObject.put("name",document.getData().get("name"));
+                                    jsonObject.put("lat",document.getData().get("lat"));
+                                    jsonObject.put("lng",document.getData().get("lng"));
+                                    jsonObject.put("description",document.getData().get("description"));
+                                    jsonObject.put("resAddress",document.getData().get("resAddress"));
+                                    jsonObject.put("resImageURL",setImageArray(imageURL));
+                                    jsonObject.put("youtube",document.getData().get("youtube"));
 
-                                        Log.w("getTargetList", jsonObject + "");
+                                    Log.w("getTargetList", jsonObject + "");
 
-                                        jsonObjectArrayList.add(jsonObject);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                                    //jsonObjectArrayList.add(jsonObject);
+                                    setGlobalTarget(global,jsonObject);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
 //                                }
                             }
                         } else {
@@ -96,7 +104,6 @@ public class SearchDB {
 
                                 Log.d("returnYoutube",jsonObject.toString());
 
-                                jsonObjectArrayList.add(jsonObject);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -140,5 +147,30 @@ public class SearchDB {
         return imageArray;
     }
 
+    public void setGlobalTarget(Global global,JSONObject jsonObject){
 
+        YoutubeItem[] temptubeItems;
+        String[] tempUrls;
+        TargetList target;
+        String response = jsonObject.toString();
+
+        target = gson.fromJson(response, TargetList.class);
+        target.youtubeItems = new ArrayList<>();
+        target.resImageUrlList = new ArrayList<>();
+
+        temptubeItems = gson.fromJson(target.youtube, YoutubeItem[].class);
+        tempUrls = gson.fromJson(target.resImageURL, String[].class);
+
+        for (int j = 0; j < temptubeItems.length; j++) {
+            target.youtubeItems.add(temptubeItems[j]);
+        }
+        //에러 발생 부분
+        for (int j = 0; j < tempUrls.length; j++) {
+            if (URLUtil.isValidUrl( tempUrls[j] ) ) {
+                target.resImageUrlList.add(tempUrls[j]);
+            }
+        }
+        global.getTargetListArray().add(target);
+    }
 }
+
