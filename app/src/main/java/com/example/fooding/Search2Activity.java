@@ -331,7 +331,7 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 tMapView.MapZoomIn();
                 Log.v("MapZoomIn", "zoomlevel : " + tMapView.getZoomLevel());
-                if (tMapView.getZoomLevel() == 15) {
+                if (tMapView.getZoomLevel() == 15 && !youtuberMode) {
                     parseBigMarker(tMapView.getCenterPoint());
                     bigMode = false;
                 }
@@ -344,7 +344,7 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 tMapView.MapZoomOut();
                 Log.v("MapZoomOut", "zoomlevel : " + tMapView.getZoomLevel());
-                if (tMapView.getZoomLevel() == 16) {
+                if (tMapView.getZoomLevel() == 16 && !youtuberMode) {
                     mergeMarker(tMapView.getCenterPoint());
                     bigMode = true;
                 }
