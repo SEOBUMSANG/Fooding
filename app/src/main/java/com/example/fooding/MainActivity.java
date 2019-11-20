@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +25,8 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 SearchDB searchDB = new SearchDB();
                 searchDB.returnData(getApplicationContext());
-                }
+            }
+
         }).start();
 
         homeButton.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +40,5 @@ public class MainActivity extends AppCompatActivity {
     public void showSearchActivity() {
         Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
         startActivityForResult(intent, 101);
-        finish();
     }
 }

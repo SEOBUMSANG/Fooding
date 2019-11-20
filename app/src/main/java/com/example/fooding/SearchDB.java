@@ -42,6 +42,7 @@ public class SearchDB {
 //                                    continue;
 //                                }
 //                                else {
+
                                     JSONObject jsonObject = new JSONObject();
                                     try {
                                         String imageURL = document.getData().get("resImageURL").toString();
@@ -61,6 +62,7 @@ public class SearchDB {
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
+
 //                                }
                             }
                         } else {
@@ -132,6 +134,7 @@ public class SearchDB {
     public String setImageArray(String str){
         String[] array = str.substring(1,str.length()-1).split(",");
         String imageArray = new String();
+
         for(int i = 0 ;i<array.length;i++){
             if(i == 0) {
                 array[i] = "[\"" + array[i] + "\",";
@@ -144,6 +147,7 @@ public class SearchDB {
             }
             imageArray = imageArray + array[i];
         }
+
         return imageArray;
     }
 
@@ -164,13 +168,15 @@ public class SearchDB {
         for (int j = 0; j < temptubeItems.length; j++) {
             target.youtubeItems.add(temptubeItems[j]);
         }
-        //에러 발생 부분
+
         for (int j = 0; j < tempUrls.length; j++) {
             if (URLUtil.isValidUrl( tempUrls[j] ) ) {
                 target.resImageUrlList.add(tempUrls[j]);
             }
         }
-         global.getTargetListArray().add(target);
-        }
+
+        global.getTargetListArray().add(target);
     }
+}
+
 

@@ -76,6 +76,7 @@ public class MapActivity extends AppCompatActivity {
 
 
     public boolean makeMarker(ArrayList<TargetList> targetList, ArrayList<TMapMarkerItem2> markerList) {
+        Global global = ((Global)getApplicationContext());
 
         if (targetList == null || targetList.size() == 0) {
             Log.e("makeMarker", "어레이 비어있음");

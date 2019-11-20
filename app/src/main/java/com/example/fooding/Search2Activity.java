@@ -59,12 +59,11 @@ public class Search2Activity extends MapActivity {
     Global global;
     CurrentGps currentGps;
 
-    ArrayList<JSONObject> jsonObjectArrayList;
+    static ArrayList<TMapMarkerItem2> markerList;
+    ArrayList<TMapMarkerItem2> activeMarkerList;
     ArrayList<TMapMarkerItem> bigMarkerList;
-    ArrayList<TMapMarkerItem2> markerList;
-    ArrayList<TMapMarkerItem2> partMarkerList;
     Top10YoutuberList[] top10YoutuberList;
-
+    
     boolean bigMode = true;
     boolean youtuberMode = false;
     boolean worldcupMode = false;
@@ -83,22 +82,22 @@ public class Search2Activity extends MapActivity {
         setContentView(R.layout.activity_search2);
 
         Intent getIntent = getIntent();
+
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         final TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
-        jsonObjectArrayList = new ArrayList<>();
         bigMarkerList = new ArrayList<>();
         markerList = new ArrayList<>();
-        partMarkerList = new ArrayList<>();
         checkClicked = new boolean[10];
-
+        activeMarkerList = new ArrayList<>();
         Global global= ((Global)getApplicationContext());
+
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
         tMapView = new TMapView(this);
         tMapView.setSKTMapApiKey("80e66504-97df-4d02-bc81-57c796cd67a1");   //API key setting
-        layoutTmap.addView( tMapView );
         tMapView.setCenterPoint(centerPointList[1], centerPointList[0], true);
+        layoutTmap.addView( tMapView );
 
 
         //화면 설정
@@ -123,8 +122,8 @@ public class Search2Activity extends MapActivity {
         final Button likeButton = findViewById(R.id.like_button);
 
 
-        init();
-        getTargetList(global.getJsonObjectArrayList());
+        //init();
+        //getTargetList(global.getJsonObjectArrayList());
         initYoutuber(global.getTargetListArray());
 
 
@@ -353,6 +352,7 @@ public class Search2Activity extends MapActivity {
         });
 
         // 시작
+
         new Thread(new Runnable() {
             @Override public void run() {
                 Log.e("getTargeList 시작 전", "시작 전");
@@ -365,17 +365,20 @@ public class Search2Activity extends MapActivity {
 
     }
 
-    public void init() {
+    /*public void init(final TMapPoint centerPoint) {
+
         // 전체 음식점 정보 json으로 받아오기
         searchDB = new SearchDB();
         if (jsonObjectArrayList.isEmpty()) {
             Log.w("init", "jsonObjectArrayList 비어있어서 searchDB.returnData");
             searchDB.returnData(getApplicationContext());
         }
-    }
+    }*/
 
     // db에 유튜브 리스트 요청 및 정제 refactorJS
-    public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList) {
+
+    /*public void getTargetList(ArrayList<JSONObject> jsonObjectArrayList) throws MalformedURLException {
+
         Gson gson = new Gson();
         YoutubeItem[] temptubeItems;
         String[] tempUrls;
@@ -402,7 +405,7 @@ public class Search2Activity extends MapActivity {
 
             global.getTargetListArray().add(target);
         }
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -513,6 +516,7 @@ public class Search2Activity extends MapActivity {
                 }
                 else{
                     tempArray.put(youtubeItem.channel, tempArray.get(youtubeItem.channel)+1);
+
                 }
             }
         }
@@ -576,7 +580,13 @@ public class Search2Activity extends MapActivity {
     private View.OnClickListener onClickItem = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            global = (Global)getApplicationContext();
             //v.setBackgroundResource(R.drawable.radius_background_black);
+            activeMarkerList = tMapView.getAllMarkerItem2();
+
+            for(int i =0;i<activeMarkerList.size();i++){
+                tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+            }
             YoutuberAdapter.ViewHolder textViewList;
             TextView textView = (TextView) v;
             TextView clickedTextView;
@@ -585,11 +595,6 @@ public class Search2Activity extends MapActivity {
             int clickedPosition = -1;
             //adapter.setInitial();
 
-            for(int i=0; i<top10YoutuberList.length; i++){
-                if(top10YoutuberList[i].channelName == str){
-                    showYoutuberMarker(markerList, top10YoutuberList[i]);
-                }
-            }
 
             for(int i = 0 ;i<10;i++){
                 if(checkClicked[i]==true){
@@ -611,9 +616,17 @@ public class Search2Activity extends MapActivity {
                 textView.setTextColor(getResources().getColor(android.R.color.white));
                 checkClicked[position] = true;
                 Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
+
+                for(int i=0; i<top10YoutuberList.length; i++){
+                    if(top10YoutuberList[i].channelName == str){
+                        showYoutuberMarker(markerList, top10YoutuberList[i]);
+                    }
+                }
+
             }
 
         }
     };
+
 
 }
