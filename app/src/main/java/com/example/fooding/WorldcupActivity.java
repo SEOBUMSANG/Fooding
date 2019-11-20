@@ -39,7 +39,7 @@ public class WorldcupActivity extends AppCompatActivity {
     Intent intent;
     Parcelable[] parcelableArray;
 
-    Global globalTargetList;
+    Global global;
     double centerLat;
     double centerLng;
     float[] dist = new float[1];
@@ -71,7 +71,7 @@ public class WorldcupActivity extends AppCompatActivity {
         intent = getIntent();
         centerLat = intent.getExtras().getDouble("lat");
         centerLng = intent.getExtras().getDouble("lng");
-        globalTargetList = ((Global)getApplicationContext());
+        global = ((Global)getApplicationContext());
         //targetListArray = intent.getParcelableArrayListExtra("targetList");
         rand = new Random();
         Log.d("랜덤",rand.nextInt(100)+" "+rand.nextInt(100));
@@ -167,14 +167,14 @@ public class WorldcupActivity extends AppCompatActivity {
     }
 
     public void setUpWorldCupItem() {
-        for(int i = 0 ; i < globalTargetList.getState().size() ; i++){
-            Location.distanceBetween(Double.parseDouble(globalTargetList.getState().get(i).getLat()),Double.parseDouble(globalTargetList.getState().get(i).getLng()),centerLat,centerLng,dist);
+        for(int i = 0 ; i < global.getTargetListArray().size() ; i++){
+            Location.distanceBetween(Double.parseDouble(global.getTargetListArray().get(i).getLat()),Double.parseDouble(global.getTargetListArray().get(i).getLng()),centerLat,centerLng,dist);
             if(dist[0]>3000){
                 Log.d("거리체크1","" + dist[0] +"");
                 continue;
             }
             Log.d("거리체크2","" + dist[0] +"");
-            worldcupItem.add(globalTargetList.getState().get(i));
+            worldcupItem.add(global.getTargetListArray().get(i));
         }
     }
 
