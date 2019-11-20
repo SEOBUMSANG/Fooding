@@ -18,13 +18,15 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:context="com.skt.tmapsample.tmapview.MapDraw" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:context="com.skt.tmapsample.tmapview.MapDraw">
 
-    <!-- 위 toolbar -->
+    </LinearLayout>
+
+    <!-- 위 툴바 -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_up"
         android:layout_width="match_parent"
@@ -67,84 +69,56 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginRight="70dp"
         android:background="@drawable/radius_background_white"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="visible">
 
-        //레이아웃 잡기 용 버튼
         <Button
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="53dp"
-            android:background="@drawable/radius_background_white" />
+            android:id="@+id/my_location_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/location_icon" />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/location_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="15dp">
+            android:layout_marginLeft="5dp"
+            android:ems="8"
+            android:hint="위치 검색"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/black" />
 
-            <Button
-                android:id="@+id/youtuber_story_button"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/radius_background_white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="벤쯔"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-
-        //샘플2
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="15dp">
-
-            <Button
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/radius_background_orange" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="슈기"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-
-        //샘플3
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="15dp">
-
-            <Button
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:background="@drawable/radius_background_white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="범준"
-                android:textColor="@color/black"/>
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/location_input_button"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/magnifier_icon" />
 
     </LinearLayout>
+
+    <!-- youtuber 목록 recyclerview -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/youtuber_listview"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/radius_background_white"
+        android:scrollbars="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible" />
 
     <!-- zoom 버튼 -->
     <LinearLayout
@@ -178,6 +152,21 @@
             android:textColor="@android:color/black"
             android:background="@drawable/radius_background_white"/>
     </LinearLayout>
+
+    <!-- 월드컵 시작 버튼 -->
+    <Button
+        android:id="@+id/worldcup_start_button"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/radius_background_white"
+        android:text="시작"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/toolbar_down"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="invisible"/>
 
     <!-- 아래 toolbar -->
     <androidx.appcompat.widget.Toolbar
@@ -215,7 +204,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_blank">
+                    android:background="@drawable/oval_background_orange_fill">
 
                     <Button
                         android:id="@+id/search_button"
@@ -239,7 +228,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_fill">
+                    android:background="@drawable/oval_background_orange_blank">
 
                     <Button
                         android:id="@+id/youtuber_button"

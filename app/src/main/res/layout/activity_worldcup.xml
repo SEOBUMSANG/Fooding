@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context=".WorldcupActivity">
 
-    <!-- 위 toolbar -->
+    <!-- 위 툴바 -->
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_up"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:background="@android:color/transparent"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/radius_background_toolbar_up"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,134 +23,95 @@
 
         <TextView
             android:id="@+id/textView"
-            tools:layout_editor_absoluteX="174dp"
-            tools:layout_editor_absoluteY="23dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="FOODING"
             android:textColor="@android:color/black"
-            android:textSize="20dp" />
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="174dp"
+            tools:layout_editor_absoluteY="23dp" />
 
         <Button
-            android:id="@+id/magnifier_button"
+            android:id="@+id/setting_button"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="right"
             android:layout_marginRight="10dp"
-            android:background="@drawable/magnifier_icon" />
+            android:background="@drawable/setting_icon" />
 
     </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
-        android:layout_height="635dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_up"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- 후보1 자리 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="270dp">
+            android:layout_height="wrap_content">
 
-            <!--후보1 내용물-->
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/candidate1_layout"
                 android:layout_width="380dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/radius_background_white"
-                android:orientation="vertical"
+                android:layout_height="240dp"
+
+                app:layout_constraintBottom_toTopOf="@+id/linear_layout2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <!--음식점 이름 레이아웃-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="후보1"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true"/>
-                </RelativeLayout>
+            </FrameLayout>
 
-                <!--사진 레이아웃-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:background="@drawable/radius_background_black"
-                    android:layout_marginTop="8dp">
+            <LinearLayout
+                android:id="@+id/linear_layout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/candidate1_layout">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <Button
+                        android:id="@+id/candidate1_select_button"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="160dp"
-                            android:layout_height="140dp"
-                            android:src="@android:color/darker_gray" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" "/>
-
-                        <ImageView
-                            android:layout_width="160dp"
-                            android:layout_height="140dp"
-                            android:src="@android:color/darker_gray" />
-
-                    </LinearLayout>
-
+                        android:background="@drawable/radius_background_white"
+                        android:text="선택"
+                        android:textColor="@color/black" />
                 </RelativeLayout>
-
-                <!--키워드, 상세 버튼 레이아웃-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <Button
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/radius_background_white"
-                            android:layout_centerHorizontal="true"
-                            android:text="키워드" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <Button
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/radius_background_white"
-                            android:layout_centerHorizontal="true"
-                            android:text="상세" />
-                    </RelativeLayout>
-
-                </LinearLayout>
 
             </LinearLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- vs -->
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="vs"
-            android:textSize="40dp"/>
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="vs"
+                android:textSize="30dp" />
+        </RelativeLayout>
 
         <!-- 후보2 자리 -->
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -155,134 +119,44 @@
             android:layout_height="wrap_content">
 
             <!--후보2 내용물-->
-            <LinearLayout
+            <FrameLayout
+                android:id="@+id/candidate2_layout"
                 android:layout_width="380dp"
-                android:layout_height="wrap_content"
-                android:background="@drawable/radius_background_white"
-                android:orientation="vertical"
+                android:layout_height="240dp"
+                app:layout_constraintBottom_toTopOf="@+id/linear_layout3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent"></FrameLayout>
 
-                <!--음식점 이름 레이아웃-->
+            <LinearLayout
+                android:id="@+id/linear_layout3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/candidate2_layout">
+
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="후보2"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true"/>
-                </RelativeLayout>
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
 
-                <!--사진 레이아웃-->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:background="@drawable/radius_background_black"
-                    android:layout_marginTop="8dp">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <Button
+                        android:id="@+id/candidate2_select_button"
+                        android:layout_width="70dp"
+                        android:layout_height="50dp"
                         android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="160dp"
-                            android:layout_height="140dp"
-                            android:src="@android:color/darker_gray" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=" "/>
-
-                        <ImageView
-                            android:layout_width="160dp"
-                            android:layout_height="140dp"
-                            android:src="@android:color/darker_gray" />
-
-                    </LinearLayout>
-
+                        android:background="@drawable/radius_background_white"
+                        android:text="선택"
+                        android:textColor="@color/black" />
                 </RelativeLayout>
-
-                <!--키워드, 상세 버튼 레이아웃-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="8dp">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <Button
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/radius_background_white"
-                            android:layout_centerHorizontal="true"
-                            android:text="키워드" />
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
-                        <Button
-                            android:layout_width="70dp"
-                            android:layout_height="50dp"
-                            android:background="@drawable/radius_background_white"
-                            android:layout_centerHorizontal="true"
-                            android:text="상세" />
-                    </RelativeLayout>
-
-                </LinearLayout>
 
             </LinearLayout>
 
+
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </LinearLayout>
-
-    <!-- 아래 toolbar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/holo_orange_light"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <Button
-            android:id="@+id/home_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="left"
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/home_icon" />
-
-        <Button
-            android:id="@+id/worldcup_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:background="@drawable/trophy_icon" />
-
-        <Button
-            android:id="@+id/like_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/heart_blank_icon" />
-
-    </androidx.appcompat.widget.Toolbar>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
