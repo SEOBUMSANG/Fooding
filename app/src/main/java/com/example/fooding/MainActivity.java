@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +20,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Button homeButton = findViewById(R.id.home_button);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SearchDB searchDB = new SearchDB();
+                searchDB.returnData(getApplicationContext());
+                }
+        }).start();
 
         homeButton.setOnClickListener(new View.OnClickListener() {
             @Override
