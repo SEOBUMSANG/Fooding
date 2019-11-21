@@ -269,8 +269,13 @@ public class Search2Activity extends MapActivity {
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 //유튜버 버튼 레이아웃 fill
                 layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
-                //지도 위의 마커 다 삭제
+                //지도 위의 빅마커 다 삭제
                 tMapView.removeAllMarkerItem();
+                //지도 위의 마커 다 삭제
+                activeMarkerList = tMapView.getAllMarkerItem2();
+                for(int i =0;i<activeMarkerList.size();i++){
+                    tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+                }
 
 
                 if (worldcupMode) {
@@ -554,8 +559,12 @@ public class Search2Activity extends MapActivity {
         for(int i=0; i<targetListArray.size(); i++){
             for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++) {
                 for (int k = 0; k < top10YoutuberList.length; k++) {
-                    if (targetListArray.get(i).youtubeItems.get(j).channel == top10YoutuberList[k].channelName)
+                    if (targetListArray.get(i).youtubeItems.get(j).channel == top10YoutuberList[k].channelName) {
                         top10YoutuberList[k].resNameList.add(targetListArray.get(i).name);
+                        top10YoutuberList[k].indexList.add(i);
+                    }
+
+                    Log.d("쏴아아아",top10YoutuberList[k].channelName + top10YoutuberList[k].indexList.size());
                 }
 
             }
@@ -566,9 +575,10 @@ public class Search2Activity extends MapActivity {
     public void showYoutuberMarker(ArrayList<TMapMarkerItem2> markerList, Top10YoutuberList youtuber) {
         TMapMarkerItem2 marker;
         for (int i = 0; i < markerList.size(); i++) {
-            for(int j=0; j<youtuber.resNameList.size(); j++) {
-                if ( ("markerItem"+youtuber.resNameList.get(j)).equals( markerList.get(i).getID() ) ) {
-                    marker = markerList.get(i);
+            for(int j=0; j<youtuber.indexList.size(); j++) {
+                Log.d("싸이즈측정 쏴아",youtuber.indexList.size() + "");
+                if ( markerList.size()>=youtuber.indexList.get(j)) {
+                    marker = markerList.get(youtuber.indexList.get(j));
                     tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
                 }
             }
@@ -620,6 +630,7 @@ public class Search2Activity extends MapActivity {
                 for(int i=0; i<top10YoutuberList.length; i++){
                     if(top10YoutuberList[i].channelName == str){
                         showYoutuberMarker(markerList, top10YoutuberList[i]);
+                        break;
                     }
                 }
 
