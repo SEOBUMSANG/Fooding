@@ -3,6 +3,7 @@ package com.example.fooding;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
+import android.util.AttributeSet;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,16 +23,16 @@ public class MapActivity extends AppCompatActivity {
     float[] distance = new float[1];
 
 
-    public boolean makeBigMarker(TargetList[] targetList, ArrayList<TMapMarkerItem> bigMarkerList) {
+    public boolean makeBigMarker(ArrayList<TargetList> targetList, ArrayList<TMapMarkerItem> bigMarkerList) {
 
-        if (targetList == null || targetList.length == 0) {
+        if (targetList == null || targetList.size() == 0) {
             Log.e("makeBigMarker", "json 어레이 비어있음");
             return false;
         }
 
         // 첫 번째 빅마커 생성
         if (bigMarkerList.isEmpty()) {
-            TargetList firstTarget = targetList[0];
+            TargetList firstTarget = targetList.get(0);
             firstMarkerItem = new TMapMarkerItem();
             firstMarkerItem.setID("firstBigMarkerItem");
             bigMarkerList.add(firstMarkerItem);
@@ -39,12 +40,12 @@ public class MapActivity extends AppCompatActivity {
 
         TMapMarkerItem markerItem;
         TMapPoint tMapPoint;
-        for (int i = 0; i < targetList.length; i++) {
+        for (int i = 0; i < targetList.size(); i++) {
             // 마커 생성
             markerItem = new TMapMarkerItem();
-            tMapPoint = new TMapPoint(Double.parseDouble(targetList[i].lat), Double.parseDouble(targetList[i].lng));
+            tMapPoint = new TMapPoint(Double.parseDouble(targetList.get(i).lat), Double.parseDouble(targetList.get(i).lng));
             markerItem.setTMapPoint( tMapPoint ); // 마커의 좌표 지정
-            markerItem.setID(targetList[i].name);
+            markerItem.setID(targetList.get(i).name);
 
             // 거리 계산
             Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
@@ -74,17 +75,18 @@ public class MapActivity extends AppCompatActivity {
     }
 
 
-    public boolean makeMarker(TargetList[] targetList, ArrayList<TMapMarkerItem2> markerList) {
+    public boolean makeMarker(ArrayList<TargetList> targetList, ArrayList<TMapMarkerItem2> markerList) {
+        Global global = ((Global)getApplicationContext());
 
-        if (targetList == null || targetList.length == 0) {
+        if (targetList == null || targetList.size() == 0) {
             Log.e("makeMarker", "어레이 비어있음");
             return false;
         }
 
         //refactorJS
         TargetList eachTarget;
-        for (int i = 0; i < targetList.length; i++) {
-            eachTarget = targetList[i];
+        for (int i = 0; i < targetList.size(); i++) {
+            eachTarget = targetList.get(i);
             Log.i("makeMarker", eachTarget.name);
 
             // 마커 생성

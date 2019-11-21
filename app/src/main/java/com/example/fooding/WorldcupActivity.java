@@ -38,10 +38,10 @@ public class WorldcupActivity extends AppCompatActivity {
     ArrayList<TargetList> worldcupRandomItem;
     ArrayList<TargetList> test;
     Intent intent;
-    ArrayList<TargetList> targetListArray;
-    ArrayList<ResImageUrl> resImageUrls;
+
     Parcelable[] parcelableArray;
 
+    Global global;
     double centerLat;
     double centerLng;
     float[] dist = new float[1];
@@ -73,10 +73,10 @@ public class WorldcupActivity extends AppCompatActivity {
         intent = getIntent();
         centerLat = intent.getExtras().getDouble("lat");
         centerLng = intent.getExtras().getDouble("lng");
-        targetListArray = intent.getParcelableArrayListExtra("targetList");
-        resImageUrls = intent.getParcelableArrayListExtra("resImageUrlList");
 
-        Log.d("타겟리스트사이즈","" + targetListArray.size() +"");
+        global = ((Global)getApplicationContext());
+        //targetListArray = intent.getParcelableArrayListExtra("targetList");
+
         rand = new Random();
         Log.d("랜덤",rand.nextInt(100)+" "+rand.nextInt(100));
 
@@ -174,16 +174,14 @@ public class WorldcupActivity extends AppCompatActivity {
     }
 
     public void setUpWorldCupItem() {
-        Log.d("사이즈","" + targetListArray +"");
-        Log.d("쏴아","" + targetListArray.get(0).getName() +"");
-        for(int i = 0 ; i < targetListArray.size() ; i++){
-            Location.distanceBetween(Double.parseDouble(targetListArray.get(i).getLat()),Double.parseDouble(targetListArray.get(i).getLng()),centerLat,centerLng,dist);
+        for(int i = 0 ; i < global.getTargetListArray().size() ; i++){
+            Location.distanceBetween(Double.parseDouble(global.getTargetListArray().get(i).getLat()),Double.parseDouble(global.getTargetListArray().get(i).getLng()),centerLat,centerLng,dist);
             if(dist[0]>3000){
                 Log.d("거리체크1","" + dist[0] +"");
                 continue;
             }
             Log.d("거리체크2","" + dist[0] +"");
-            worldcupItem.add(targetListArray.get(i));
+            worldcupItem.add(global.getTargetListArray().get(i));
         }
     }
 

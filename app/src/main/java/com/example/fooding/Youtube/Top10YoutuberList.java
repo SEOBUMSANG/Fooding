@@ -9,6 +9,7 @@ import java.util.ArrayList;
 public class Top10YoutuberList {
     public String channelName = new String();
     public ArrayList<String> resNameList = new ArrayList<>();
+    public ArrayList<Integer> indexList = new ArrayList<>();
 
     public Top10YoutuberList() {
         this.channelName = channelName;

@@ -35,29 +35,14 @@ public class WorldcupItemView extends LinearLayout {
         init(context, candidateTarget);
 
         if ( !candidateTarget.resImageUrlList.isEmpty() ) {
-            imageLoadTask1 = new ImageLoadTask(resImageUrl.resImageUrl1, candidateImageViewLeft);
+            Log.e("WorldcupItemView", "이 씨발");
+            imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
             imageLoadTask1.execute();
-            imageLoadTask2 = new ImageLoadTask(resImageUrl.resImageUrl2, candidateImageViewRight);
-            imageLoadTask2.execute();
 
-            /*
-            Thread leftImageThread = new Thread() {
-                public void run() {
-                    imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
-                    imageLoadTask1.execute();
-                }
-            };
-            leftImageThread.start();
-
-            Thread rightImageThread = new Thread() {
-                public void run() {
-                    imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
-                    imageLoadTask2.execute();
-                }
-            };
-            rightImageThread.start();
-            */
-
+            if(candidateTarget.resImageUrlList.size()>=2) {
+                imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
+                imageLoadTask2.execute();
+            }
         }
     }
 
