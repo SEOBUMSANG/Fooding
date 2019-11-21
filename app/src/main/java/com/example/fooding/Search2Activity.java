@@ -22,6 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import com.example.fooding.Target.TargetList;
 
+import com.example.fooding.Youtube.ResImageUrl;
 import com.example.fooding.Youtube.YoutubeItem;
 import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
@@ -32,6 +33,7 @@ import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapPolyLine;
 import com.skt.Tmap.TMapView;
 
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -54,6 +56,8 @@ public class Search2Activity extends MapActivity {
 
     TargetList[] targetList;
     ArrayList<TargetList> targetListForIntent;
+    ArrayList<ResImageUrl> resImageUrls;
+
 
     SearchDB searchDB;
 
@@ -238,7 +242,6 @@ public class Search2Activity extends MapActivity {
                 intent = new Intent(getApplicationContext(), YoutuberActivity.class);
                 intent.putExtra("point", centerPointList);
                 intent.putParcelableArrayListExtra("targetListForYoutuberActivity", targetListForIntent);
-                Log.i("Youtuber Button 검사", "들어가긴 했니?");
 
                 startActivityForResult(intent, 203);
             }
@@ -326,7 +329,7 @@ public class Search2Activity extends MapActivity {
                     Log.e("getTargeList 완료", "완료");
 
                     targetListForIntent = new ArrayList<>();
-                    for(int i = 0 ; i<targetList.length; i++){
+                    for (int i = 0; i < targetList.length; i++) {
                         targetListForIntent.add(targetList[i]);
 //                        if ( !targetListForIntent.get(i).resImageUrlList.isEmpty() )
 //                            Log.i("intent용 target으로 옮길 때 ", "" + targetListForIntent.get(i).resImageUrlList.get(0) );
@@ -339,7 +342,6 @@ public class Search2Activity extends MapActivity {
                 }
             }, 5000);
         }
-
     }
 
     public void init(final TMapPoint centerPoint) {
@@ -375,12 +377,27 @@ public class Search2Activity extends MapActivity {
                 targetList[i].youtubeItems.add(temptubeItems[j]);
             }
             //에러 발생 부분
-//            for (int j = 0; j < tempUrls.length; j++) {
-//                if (URLUtil.isValidUrl( tempUrls[j] ) ) {
-//                    targetList[i].resImageUrlList.add( tempUrls[j] );
-//                }
-//            }
 
+            for (int j = 0; j < 4; j++) {
+                if (URLUtil.isValidUrl( tempUrls[j] ) && tempUrls.length == 4 ) {
+                    targetList[i].resImageUrlList.add( tempUrls[j] );
+                }
+                else{
+                    targetList[i].resImageUrlList.add( "http://3.bp.blogspot.com/-WhBe10rJzG4/U4W-hvWvRCI/AAAAAAAABxg/RyWcixpgr3k/s1600/noimg.jpg&type=f420_312" );
+                }
+            }
+        }
+        setResImageUrl(targetList);
+    }
+
+    public void setResImageUrl (TargetList[] targetList){
+        ResImageUrl tempResUrl ;
+
+        resImageUrls = new ArrayList<ResImageUrl>();
+
+        for(int i=0; i<targetList.length;i++){
+            tempResUrl = new ResImageUrl(targetList[i].name, targetList[i].getResImageUrlList().get(0), targetList[i].getResImageUrlList().get(1));
+            resImageUrls.add(tempResUrl);
         }
     }
 
@@ -461,6 +478,7 @@ public class Search2Activity extends MapActivity {
         intent.putExtra("lat", tMapView.getCenterPoint().getLatitude());
         intent.putExtra("lng", tMapView.getCenterPoint().getLongitude());
         intent.putExtra("targetList", targetListForIntent);
+        intent.putExtra("resImageUrlList", resImageUrls);
 
         startActivityForResult(intent, 203);
     }
@@ -499,4 +517,5 @@ public class Search2Activity extends MapActivity {
         }
 
     }*/
+
 }

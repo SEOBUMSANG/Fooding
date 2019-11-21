@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.fooding.Target.TargetList;
 import com.example.fooding.WorldCup.WorldcupItemView;
+import com.example.fooding.Youtube.ResImageUrl;
 import com.google.api.Distribution;
 import com.skt.Tmap.TMapPoint;
 
@@ -38,6 +39,7 @@ public class WorldcupActivity extends AppCompatActivity {
     ArrayList<TargetList> test;
     Intent intent;
     ArrayList<TargetList> targetListArray;
+    ArrayList<ResImageUrl> resImageUrls;
     Parcelable[] parcelableArray;
 
     double centerLat;
@@ -72,6 +74,8 @@ public class WorldcupActivity extends AppCompatActivity {
         centerLat = intent.getExtras().getDouble("lat");
         centerLng = intent.getExtras().getDouble("lng");
         targetListArray = intent.getParcelableArrayListExtra("targetList");
+        resImageUrls = intent.getParcelableArrayListExtra("resImageUrlList");
+
         Log.d("타겟리스트사이즈","" + targetListArray.size() +"");
         rand = new Random();
         Log.d("랜덤",rand.nextInt(100)+" "+rand.nextInt(100));
@@ -94,7 +98,10 @@ public class WorldcupActivity extends AppCompatActivity {
             candidateListSize = worldcupRandomItem.size();
             // 후보들 만들어두기
             for (TargetList target : worldcupRandomItem) {
-                candidatesList.add(new WorldcupItemView(context, target));
+                for(int i=0; i<resImageUrls.size();i++) {
+                    if(resImageUrls.get(i).resName == target.name)
+                        candidatesList.add(new WorldcupItemView(context, target, resImageUrls.get(i)));
+                }
             }
 
             // 첫 후보 둘 띄우기

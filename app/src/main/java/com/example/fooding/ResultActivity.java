@@ -13,6 +13,9 @@ import com.example.fooding.WorldCup.WorldcupItemView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.lang.reflect.MalformedParameterizedTypeException;
+import java.net.MalformedURLException;
+
 public class ResultActivity extends AppCompatActivity {
 
     private Intent intent;
@@ -27,7 +30,9 @@ public class ResultActivity extends AppCompatActivity {
 
         intent = getIntent();
         result = intent.getParcelableExtra("result");
-        WorldcupItemView worldcupResultItem = new WorldcupItemView(getApplicationContext(), result);
+        WorldcupItemView worldcupResultItem = null;
+
+        //worldcupResultItem = new WorldcupItemView(getApplicationContext(), result);
 
         ImageView imageView = (ImageView) findViewById(R.id.trophy_image);
         GlideDrawableImageViewTarget gifImage = new GlideDrawableImageViewTarget(imageView);
@@ -44,7 +49,7 @@ public class ResultActivity extends AppCompatActivity {
         routeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent = new Intent(getApplicationContext(),RouteActivity.class);
+                intent = new Intent(getApplicationContext(), RouteActivity.class);
                 intent.putExtra("result", result);
                 startActivityForResult(intent, 401);
                 finish();
@@ -58,7 +63,7 @@ public class ResultActivity extends AppCompatActivity {
             }
         });
 
-        upToolbar = (androidx.appcompat.widget.Toolbar)findViewById(R.id.toolbar_up);
+        upToolbar = (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar_up);
         upToolbar.bringToFront();
     }
 

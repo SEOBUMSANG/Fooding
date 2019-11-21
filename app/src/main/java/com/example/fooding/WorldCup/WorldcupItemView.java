@@ -14,8 +14,10 @@ import com.example.fooding.ImageLoadTask;
 import com.example.fooding.R;
 import com.example.fooding.Target.TargetList;
 import com.example.fooding.WorldcupActivity;
+import com.example.fooding.Youtube.ResImageUrl;
 
 import java.lang.annotation.Target;
+import java.net.MalformedURLException;
 
 public class WorldcupItemView extends LinearLayout {
     Context mcontext;
@@ -27,19 +29,36 @@ public class WorldcupItemView extends LinearLayout {
     ImageLoadTask imageLoadTask1;
     ImageLoadTask imageLoadTask2;
 
-    public WorldcupItemView(Context context, TargetList candidateTarget) {
+    public WorldcupItemView(Context context, TargetList candidateTarget, ResImageUrl resImageUrl){
         super(context);
 
-        if ( !candidateTarget.resImageUrlList.isEmpty() ) {
-            Log.e("WorldcupItemView", "이 씨발");
-            //imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
-            Log.e("WorldcupItemView", "개새");
-            //imageLoadTask1.execute();
-//            imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
-//            imageLoadTask2.execute();
-        }
-
         init(context, candidateTarget);
+
+        if ( !candidateTarget.resImageUrlList.isEmpty() ) {
+            imageLoadTask1 = new ImageLoadTask(resImageUrl.resImageUrl1, candidateImageViewLeft);
+            imageLoadTask1.execute();
+            imageLoadTask2 = new ImageLoadTask(resImageUrl.resImageUrl2, candidateImageViewRight);
+            imageLoadTask2.execute();
+
+            /*
+            Thread leftImageThread = new Thread() {
+                public void run() {
+                    imageLoadTask1 = new ImageLoadTask(candidateTarget.resImageUrlList.get(0), candidateImageViewLeft);
+                    imageLoadTask1.execute();
+                }
+            };
+            leftImageThread.start();
+
+            Thread rightImageThread = new Thread() {
+                public void run() {
+                    imageLoadTask2 = new ImageLoadTask(candidateTarget.resImageUrlList.get(1), candidateImageViewRight);
+                    imageLoadTask2.execute();
+                }
+            };
+            rightImageThread.start();
+            */
+
+        }
     }
 
     @Override
