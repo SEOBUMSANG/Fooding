@@ -17,7 +17,6 @@
 
         <activity android:name=".RouteActivity" />
         <activity android:name=".ResultActivity" />
-        <activity android:name=".WorldcupActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".Search2Activity" />
         <activity android:name=".MainActivity">

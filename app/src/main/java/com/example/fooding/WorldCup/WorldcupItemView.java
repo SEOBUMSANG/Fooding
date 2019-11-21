@@ -1,11 +1,8 @@
 package com.example.fooding.WorldCup;
 
 import android.content.Context;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,11 +10,7 @@ import android.widget.TextView;
 import com.example.fooding.ImageLoadTask;
 import com.example.fooding.R;
 import com.example.fooding.Target.TargetList;
-import com.example.fooding.WorldcupActivity;
 import com.example.fooding.Youtube.ResImageUrl;
-
-import java.lang.annotation.Target;
-import java.net.MalformedURLException;
 
 public class WorldcupItemView extends LinearLayout {
     Context mcontext;
