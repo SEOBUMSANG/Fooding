@@ -574,7 +574,7 @@ public class Search2Activity extends MapActivity {
             top10YoutuberList[i].channelName = (String)entry.getKey();
         }
 
-        for(int i=0; i<targetListArray.size(); i++){
+        /*for(int i=0; i<targetListArray.size(); i++){
             for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++) {
                 for (int k = 0; k < top10YoutuberList.length; k++) {
                     if (targetListArray.get(i).youtubeItems.get(j).channel == top10YoutuberList[k].channelName) {
@@ -585,6 +585,17 @@ public class Search2Activity extends MapActivity {
                     Log.d("쏴아아아",top10YoutuberList[k].channelName + top10YoutuberList[k].indexList.size());
                 }
 
+            }
+        }*/
+
+        for (int i =0;i<top10YoutuberList.length;i++){
+            for( int j =0 ;j<targetListArray.size();j++){
+                for (int k =0 ; k<targetListArray.get(j).youtubeItems.size();k++){
+
+                    if(targetListArray.get(j).youtubeItems.get(k).channel.equals(top10YoutuberList[i].channelName)){
+                        top10YoutuberList[i].indexList.add(j);
+                    }
+                }
             }
         }
 
