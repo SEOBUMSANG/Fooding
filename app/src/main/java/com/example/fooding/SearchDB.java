@@ -1,13 +1,18 @@
 package com.example.fooding;
 
+import android.content.Context;
 import android.location.Location;
 import android.util.Log;
+import android.webkit.URLUtil;
 
+import com.example.fooding.Target.TargetList;
+import com.example.fooding.Youtube.YoutubeItem;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 import com.skt.Tmap.TMapPoint;
 
 import org.json.JSONException;
@@ -19,11 +24,12 @@ import androidx.annotation.NonNull;
 
 public class SearchDB {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private Gson gson = new Gson();
     public SearchDB() {
     }
 
-    public void returnData(final ArrayList<JSONObject> jsonObjectArrayList,final TMapPoint centerPoint) {
+    public void returnData(Context context) {
+        Global global = ((Global)context);
         db.collection("GangNam")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -31,16 +37,33 @@ public class SearchDB {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                double distance = checkDistance(document,centerPoint);
-                                if(distance>1000) {
-                                    continue;
-                                }
-                                else {
-                                    JSONObject jsonObject = new JSONObject();
+//                                double distance = checkDistance(document,centerPoint);
+//                                if(distance>10000000) {
+//                                    continue;
+//                                }
+//                                else {
 
-                                    Log.d("returnData", document.getId() + " => " + document.getData().get("name"));
-                                    returnYoutube(jsonObjectArrayList, jsonObject, document);
-                                }
+                                    JSONObject jsonObject = new JSONObject();
+                                    try {
+                                        String imageURL = document.getData().get("resImageURL").toString();
+
+                                        jsonObject.put("name",document.getData().get("name"));
+                                        jsonObject.put("lat",document.getData().get("lat"));
+                                        jsonObject.put("lng",document.getData().get("lng"));
+                                        jsonObject.put("description",document.getData().get("description"));
+                                        jsonObject.put("resAddress",document.getData().get("resAddress"));
+                                        jsonObject.put("resImageURL",setImageArray(imageURL));
+                                        jsonObject.put("youtube",document.getData().get("youtube"));
+
+                                        Log.w("getTargetList", jsonObject + "");
+
+                                        //jsonObjectArrayList.add(jsonObject);
+                                        setGlobalTarget(global,jsonObject);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+//                                }
                             }
                         } else {
                             Log.e("returnData", "Error getting documents: ", task.getException());
@@ -83,7 +106,6 @@ public class SearchDB {
 
                                 Log.d("returnYoutube",jsonObject.toString());
 
-                                jsonObjectArrayList.add(jsonObject);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -109,5 +131,52 @@ public class SearchDB {
         return distance;
     }
 
+    public String setImageArray(String str){
+        String[] array = str.substring(1,str.length()-1).split(",");
+        String imageArray = new String();
 
+        for(int i = 0 ;i<array.length;i++){
+            if(i == 0) {
+                array[i] = "[\"" + array[i] + "\",";
+            }
+            else if(i==array.length-1){
+                array[i] = "\"" + array[i].substring(1) + "\"]";
+            }
+            else{
+                array[i] = "\"" + array[i].substring(1) + "\",";
+            }
+            imageArray = imageArray + array[i];
+        }
+
+        return imageArray;
+    }
+
+    public void setGlobalTarget(Global global,JSONObject jsonObject){
+
+        YoutubeItem[] temptubeItems;
+        String[] tempUrls;
+        TargetList target;
+        String response = jsonObject.toString();
+
+        target = gson.fromJson(response, TargetList.class);
+        target.youtubeItems = new ArrayList<>();
+        target.resImageUrlList = new ArrayList<>();
+
+        temptubeItems = gson.fromJson(target.youtube, YoutubeItem[].class);
+        tempUrls = gson.fromJson(target.resImageURL, String[].class);
+
+        for (int j = 0; j < temptubeItems.length; j++) {
+            target.youtubeItems.add(temptubeItems[j]);
+        }
+
+        for (int j = 0; j < tempUrls.length; j++) {
+            if (URLUtil.isValidUrl( tempUrls[j] ) ) {
+                target.resImageUrlList.add(tempUrls[j]);
+            }
+        }
+
+        global.getTargetListArray().add(target);
+    }
 }
+
+

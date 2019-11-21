@@ -30,7 +30,6 @@ public class BalloonOverlayView extends FrameLayout {
     private LinearLayout layout;
     private TextView title;
 
-    //ListView listView;
     RecyclerView listView;
 
     //refactorJS
@@ -42,6 +41,7 @@ public class BalloonOverlayView extends FrameLayout {
     TMapPoint markerPoint;
     String uri[];
 
+
     public BalloonOverlayView(Context context, TargetList eachTarget) {
         super(context);
 
@@ -52,12 +52,13 @@ public class BalloonOverlayView extends FrameLayout {
         layout = new LinearLayout(context);
         layout.setVisibility(VISIBLE);
 
-        // 좌표 만들기
-        markerPoint = new TMapPoint(Double.parseDouble(eachTarget.lat), Double.parseDouble(eachTarget.lng));
-        // 뷰 설정
-        setupView(context, layout, eachTarget.name);
-
-
+        if (eachTarget != null) {
+            items = eachTarget.youtubeItems;
+            // 좌표 만들기
+            markerPoint = new TMapPoint(Double.parseDouble(eachTarget.lat), Double.parseDouble(eachTarget.lng));
+            // 뷰 설정
+            setupView(context, layout, eachTarget.name, eachTarget);
+        }
 
         // 풍선뷰 크기
         LayoutParams param = new LayoutParams(width, height);
@@ -66,7 +67,7 @@ public class BalloonOverlayView extends FrameLayout {
     }
 
 
-    protected void setupView(Context context, final ViewGroup parent, String name) {
+    protected void setupView(Context context, final ViewGroup parent, String name, TargetList eachTarget) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.youtube_list_view, parent, true);
@@ -80,7 +81,7 @@ public class BalloonOverlayView extends FrameLayout {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         listView.setLayoutManager(layoutManager);
 
-        adapter = new YoutubeAdapter(getContext(), items, onClickItem);
+        adapter = new YoutubeAdapter(getContext(), eachTarget.youtubeItems, onClickItem);
         adapter.notifyDataSetChanged();
         listView.setAdapter(adapter);
 
@@ -96,25 +97,6 @@ public class BalloonOverlayView extends FrameLayout {
             Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
         }
     };
-
-    /*refactorJS
-    public boolean processResponse(String response) {
-        Gson gson = new Gson();
-
-        targetList = gson.fromJson(response, TargetList.class);
-        youtubeItems = gson.fromJson(targetList.youtube, YoutubeItem[].class);
-
-        setYoutubeList();
-
-        return true;
-    }*/
-
-    public void setYoutubeList() {
-        for (int i = 0; i < youtubeItems.length; i++) {
-            YoutubeItem youtubeItem = youtubeItems[i];
-            items.add(youtubeItem);
-        }
-    }
 
     public void setTitle(String str) {
         title.setText(str);

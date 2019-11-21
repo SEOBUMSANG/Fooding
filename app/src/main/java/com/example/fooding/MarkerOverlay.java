@@ -80,12 +80,13 @@ public class MarkerOverlay extends TMapMarkerItem2 {
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
         balloonView.layout(0, 0, balloonView.getMeasuredWidth(), balloonView.getMeasuredHeight());
+
     }
 
     @Override
     public void draw(Canvas canvas, TMapView mapView, boolean showCallout) {
-        int x = mapView.getRotatedMapXForPoint(getTMapPoint().getLatitude(), getTMapPoint().getLongitude());
-        int y = mapView.getRotatedMapYForPoint(getTMapPoint().getLatitude(), getTMapPoint().getLongitude());
+            int x = mapView.getRotatedMapXForPoint(getTMapPoint().getLatitude(), getTMapPoint().getLongitude());
+            int y = mapView.getRotatedMapYForPoint(getTMapPoint().getLatitude(), getTMapPoint().getLongitude());
 
         canvas.save();
         canvas.rotate(-mapView.getRotate(), mapView.getCenterPointX(), mapView.getCenterPointY());
@@ -100,6 +101,7 @@ public class MarkerOverlay extends TMapMarkerItem2 {
         int marginX = 0;
         int marginY = 0;
 
+        //
         nMarkerIconWidth = getIcon().getWidth();
         nMarkerIconHeight = getIcon().getHeight();
 
@@ -133,7 +135,13 @@ public class MarkerOverlay extends TMapMarkerItem2 {
             int nTempY =  y - marginY - balloonView.getMeasuredHeight();
 
             canvas.translate(nTempX, nTempY);
-            balloonView.draw(canvas);
+//            try {
+                balloonView.draw(canvas);
+
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+
 
             // 풍선뷰 영역 설정
             rect.left = nTempX;

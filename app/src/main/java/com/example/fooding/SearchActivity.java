@@ -10,6 +10,7 @@ import android.widget.Button;
 import com.skt.Tmap.TMapPoint;
 
 public class SearchActivity extends AppCompatActivity {
+    Search2Activity search2Activity = new Search2Activity();
     Intent intent;
 
     @Override
@@ -62,7 +63,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void moveToSearch2(double[] tMapPoint) {
-        intent = new Intent(getApplicationContext(), Search2Activity.class);
+        intent = new Intent(getApplicationContext(), search2Activity.getClass());
         intent.putExtra("point", tMapPoint);
         startActivityForResult(intent, 102);
     }
