@@ -240,6 +240,13 @@ public class Search2Activity extends MapActivity {
                     layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                     youtuberListview.setVisibility(View.INVISIBLE);
                     linearLayoutLocationInput.setVisibility(View.VISIBLE);
+
+                    //다시 서치모드로 전환 시 마커 삭제
+                    tMapView.removeAllMarkerItem();
+                    activeMarkerList = tMapView.getAllMarkerItem2();
+                    for(int i =0;i<activeMarkerList.size();i++){
+                        tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+                    }
                 }
 
                 tMapView.removeAllTMapCircle();
@@ -249,6 +256,13 @@ public class Search2Activity extends MapActivity {
 
                     layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                     worldcupStartButton.setVisibility(View.INVISIBLE);
+                }
+
+                //다시 서치모드로 전환 시 마커 띄워줌
+                if (bigMode) {
+                    showMarker(bigMarkerList, tMapView.getCenterPoint());
+                } else {
+                    showMarker2(markerList, tMapView.getCenterPoint());
                 }
 
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
@@ -336,8 +350,10 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 tMapView.MapZoomIn();
                 Log.v("MapZoomIn", "zoomlevel : " + tMapView.getZoomLevel());
-                if (tMapView.getZoomLevel() == 15 && !youtuberMode) {
-                    parseBigMarker(tMapView.getCenterPoint());
+                if (tMapView.getZoomLevel() == 15 ) {
+                    if(!youtuberMode) {
+                        parseBigMarker(tMapView.getCenterPoint());
+                    }
                     bigMode = false;
                 }
             }
@@ -349,8 +365,10 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 tMapView.MapZoomOut();
                 Log.v("MapZoomOut", "zoomlevel : " + tMapView.getZoomLevel());
-                if (tMapView.getZoomLevel() == 16 && !youtuberMode) {
-                    mergeMarker(tMapView.getCenterPoint());
+                if (tMapView.getZoomLevel() == 16 ) {
+                    if(!youtuberMode) {
+                        mergeMarker(tMapView.getCenterPoint());
+                    }
                     bigMode = true;
                 }
             }
