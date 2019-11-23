@@ -109,7 +109,6 @@ public class MapActivity extends AppCompatActivity {
         return true;
     }
 
-    //todo 여기서 터져용
     public void deleteMarker(TMapView tMapView, ArrayList<TMapMarkerItem> markerList){
         for(int i=0;i<markerList.size();i++) {
             tMapView.removeMarkerItem(markerList.get(i).getID());

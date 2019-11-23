@@ -90,7 +90,7 @@ public class Search2Activity extends MapActivity {
         markerList = new ArrayList<>();
         checkClicked = new boolean[10];
         activeMarkerList = new ArrayList<>();
-        Global global= ((Global)getApplicationContext());
+        global= ((Global)getApplicationContext());
 
 
         LinearLayout layoutTmap = findViewById(R.id.layout_tmap);
