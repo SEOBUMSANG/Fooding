@@ -240,6 +240,13 @@ public class Search2Activity extends MapActivity {
                     layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                     youtuberListview.setVisibility(View.INVISIBLE);
                     linearLayoutLocationInput.setVisibility(View.VISIBLE);
+
+                    //다시 서치모드로 전환 시 마커 삭제
+                    tMapView.removeAllMarkerItem();
+                    activeMarkerList = tMapView.getAllMarkerItem2();
+                    for(int i =0;i<activeMarkerList.size();i++){
+                        tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+                    }
                 }
 
                 tMapView.removeAllTMapCircle();
@@ -249,6 +256,13 @@ public class Search2Activity extends MapActivity {
 
                     layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                     worldcupStartButton.setVisibility(View.INVISIBLE);
+                }
+
+                //다시 서치모드로 전환 시 마커 띄워줌
+                if (bigMode) {
+                    showMarker(bigMarkerList, tMapView.getCenterPoint());
+                } else {
+                    showMarker2(markerList, tMapView.getCenterPoint());
                 }
 
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
@@ -269,8 +283,13 @@ public class Search2Activity extends MapActivity {
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 //유튜버 버튼 레이아웃 fill
                 layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
-                //지도 위의 마커 다 삭제
+                //지도 위의 빅마커 다 삭제
                 tMapView.removeAllMarkerItem();
+                //지도 위의 마커 다 삭제
+                activeMarkerList = tMapView.getAllMarkerItem2();
+                for(int i =0;i<activeMarkerList.size();i++){
+                    tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+                }
 
 
                 if (worldcupMode) {
@@ -331,8 +350,10 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 tMapView.MapZoomIn();
                 Log.v("MapZoomIn", "zoomlevel : " + tMapView.getZoomLevel());
-                if (tMapView.getZoomLevel() == 15) {
-                    parseBigMarker(tMapView.getCenterPoint());
+                if (tMapView.getZoomLevel() == 15 ) {
+                    if(!youtuberMode) {
+                        parseBigMarker(tMapView.getCenterPoint());
+                    }
                     bigMode = false;
                 }
             }
@@ -344,8 +365,10 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 tMapView.MapZoomOut();
                 Log.v("MapZoomOut", "zoomlevel : " + tMapView.getZoomLevel());
-                if (tMapView.getZoomLevel() == 16) {
-                    mergeMarker(tMapView.getCenterPoint());
+                if (tMapView.getZoomLevel() == 16 ) {
+                    if(!youtuberMode) {
+                        mergeMarker(tMapView.getCenterPoint());
+                    }
                     bigMode = true;
                 }
             }
@@ -551,13 +574,28 @@ public class Search2Activity extends MapActivity {
             top10YoutuberList[i].channelName = (String)entry.getKey();
         }
 
-        for(int i=0; i<targetListArray.size(); i++){
+        /*for(int i=0; i<targetListArray.size(); i++){
             for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++) {
                 for (int k = 0; k < top10YoutuberList.length; k++) {
-                    if (targetListArray.get(i).youtubeItems.get(j).channel == top10YoutuberList[k].channelName)
+                    if (targetListArray.get(i).youtubeItems.get(j).channel == top10YoutuberList[k].channelName) {
                         top10YoutuberList[k].resNameList.add(targetListArray.get(i).name);
+                        top10YoutuberList[k].indexList.add(i);
+                    }
+
+                    Log.d("쏴아아아",top10YoutuberList[k].channelName + top10YoutuberList[k].indexList.size());
                 }
 
+            }
+        }*/
+
+        for (int i =0;i<top10YoutuberList.length;i++){
+            for( int j =0 ;j<targetListArray.size();j++){
+                for (int k =0 ; k<targetListArray.get(j).youtubeItems.size();k++){
+
+                    if(targetListArray.get(j).youtubeItems.get(k).channel.equals(top10YoutuberList[i].channelName)){
+                        top10YoutuberList[i].indexList.add(j);
+                    }
+                }
             }
         }
 
@@ -566,9 +604,10 @@ public class Search2Activity extends MapActivity {
     public void showYoutuberMarker(ArrayList<TMapMarkerItem2> markerList, Top10YoutuberList youtuber) {
         TMapMarkerItem2 marker;
         for (int i = 0; i < markerList.size(); i++) {
-            for(int j=0; j<youtuber.resNameList.size(); j++) {
-                if ( ("markerItem"+youtuber.resNameList.get(j)).equals( markerList.get(i).getID() ) ) {
-                    marker = markerList.get(i);
+            for(int j=0; j<youtuber.indexList.size(); j++) {
+                Log.d("싸이즈측정 쏴아",youtuber.indexList.size() + "");
+                if ( markerList.size()>=youtuber.indexList.get(j)) {
+                    marker = markerList.get(youtuber.indexList.get(j));
                     tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
                 }
             }
@@ -620,6 +659,7 @@ public class Search2Activity extends MapActivity {
                 for(int i=0; i<top10YoutuberList.length; i++){
                     if(top10YoutuberList[i].channelName == str){
                         showYoutuberMarker(markerList, top10YoutuberList[i]);
+                        break;
                     }
                 }
 
