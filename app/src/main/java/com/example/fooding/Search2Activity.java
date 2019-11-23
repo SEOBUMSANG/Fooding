@@ -67,6 +67,7 @@ public class Search2Activity extends MapActivity {
     boolean bigMode = true;
     boolean youtuberMode = false;
     boolean worldcupMode = false;
+    boolean likeMode = false;
     float[] dist = new float[1];
 
     //Youtuber Activity
@@ -258,6 +259,12 @@ public class Search2Activity extends MapActivity {
                     worldcupStartButton.setVisibility(View.INVISIBLE);
                 }
 
+                if(likeMode){
+                    likeMode = false;
+
+                    layoutLikeButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                }
+
                 //다시 서치모드로 전환 시 마커 띄워줌
                 if (bigMode) {
                     showMarker(bigMarkerList, tMapView.getCenterPoint());
@@ -279,10 +286,13 @@ public class Search2Activity extends MapActivity {
                 linearLayoutLocationInput.setVisibility(View.INVISIBLE);
                 //리스트뷰 visible
                 youtuberListview.setVisibility(View.VISIBLE);
-                //서치 버튼 레이아웃 blank
+                //나머지 버튼 레이아웃 blank
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                layoutLikeButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 //유튜버 버튼 레이아웃 fill
                 layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
+
                 //지도 위의 빅마커 다 삭제
                 tMapView.removeAllMarkerItem();
                 //지도 위의 마커 다 삭제
@@ -292,7 +302,7 @@ public class Search2Activity extends MapActivity {
                 }
 
 
-                if (worldcupMode) {
+                if (worldcupMode || likeMode) {
                     worldcupStartButton.setVisibility(View.INVISIBLE);
                     layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 }
@@ -304,13 +314,16 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 worldcupMode = true;
 
-                layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
+                layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                layoutLikeButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 worldcupStartButton.setVisibility(View.VISIBLE);
                 setWorldcupCircle();
 
-                if (youtuberMode)
+                if (youtuberMode || likeMode) {
                     layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                }
 
             }
         });
@@ -318,7 +331,37 @@ public class Search2Activity extends MapActivity {
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                likeMode = true;
 
+                layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                layoutLikeButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
+
+                //위치검색창 invisible
+                linearLayoutLocationInput.setVisibility(View.INVISIBLE);
+
+                //지도 위의 빅마커 다 삭제
+                tMapView.removeAllMarkerItem();
+                //지도 위의 마커 다 삭제
+                activeMarkerList = tMapView.getAllMarkerItem2();
+                for(int i =0;i<activeMarkerList.size();i++){
+                    tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+                }
+
+                intent = new Intent(getApplicationContext(), LikeActivity.class);
+                intent.putExtra("lat", tMapView.getCenterPoint().getLatitude());
+                intent.putExtra("lng", tMapView.getCenterPoint().getLongitude());
+                //intent.putExtra("targetList", targetListForIntent);
+
+                startActivityForResult(intent, 203);
+
+
+
+
+                if (worldcupMode || youtuberMode){
+                    layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                }
             }
         });
 
