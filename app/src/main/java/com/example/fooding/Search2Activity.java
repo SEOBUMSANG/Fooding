@@ -163,14 +163,21 @@ public class Search2Activity extends MapActivity {
         tMapView.setOnEnableScrollWithZoomLevelListener(new TMapView.OnEnableScrollWithZoomLevelCallback() {
             @Override
             public void onEnableScrollWithZoomLevelEvent(float v, TMapPoint tMapPoint) {
-
+                boolean result;
+                for (int i = 0; i < markerList.size(); i++) {
+                    result = markerList.get(i).getMarkerTouch();
+                    if (result == true) {
+                        markerList.get(i).setMarkerTouch(false);
+                    }
+                }
             }
         });
             // 지도 스크롤 종료
         tMapView.setOnDisableScrollWithZoomLevelListener(new TMapView.OnDisableScrollWithZoomLevelCallback() {
             @Override
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
-                if (!youtuberMode && !likeMode) {
+
+                if (!youtuberMode) {
 
                     // 유튜버 모드일 때는 빅모드 지원 안함
                     if (bigMode) {
@@ -185,6 +192,8 @@ public class Search2Activity extends MapActivity {
                 if(worldcupMode) {
                     setWorldcupCircle();
                 }
+
+
             }
         });
             // 마커 클릭 이벤트
