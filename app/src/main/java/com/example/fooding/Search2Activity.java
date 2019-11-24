@@ -161,7 +161,7 @@ public class Search2Activity extends MapActivity {
         tMapView.setOnDisableScrollWithZoomLevelListener(new TMapView.OnDisableScrollWithZoomLevelCallback() {
             @Override
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
-                if (!youtuberMode) {
+                if (!youtuberMode && !likeMode) {
                     boolean result;
                     for (int i = 0; i < markerList.size(); i++) {
                         result = markerList.get(i).getMarkerTouch();
@@ -197,6 +197,7 @@ public class Search2Activity extends MapActivity {
                 startActivity(myintent);
 
                 global.setLikeList(marker.getID());
+                Log.d("추가된 라이크리스트 :"," "+marker.getID());
             }
 
         });
@@ -356,8 +357,6 @@ public class Search2Activity extends MapActivity {
                     }
 
                 }
-
-
             }
         });
 
@@ -391,6 +390,8 @@ public class Search2Activity extends MapActivity {
                 }
 
                 showLikeMarker();
+
+                Log.d("라이크리스트","사이즈 :"+global.getlikeList().size());
             }
         });
 
@@ -423,7 +424,7 @@ public class Search2Activity extends MapActivity {
                 tMapView.MapZoomIn();
                 Log.v("MapZoomIn", "zoomlevel : " + tMapView.getZoomLevel());
                 if (tMapView.getZoomLevel() == 15 ) {
-                    if(!youtuberMode) {
+                    if(!youtuberMode && !likeMode) {
                         parseBigMarker(tMapView.getCenterPoint());
                     }
                     bigMode = false;
@@ -438,7 +439,7 @@ public class Search2Activity extends MapActivity {
                 tMapView.MapZoomOut();
                 Log.v("MapZoomOut", "zoomlevel : " + tMapView.getZoomLevel());
                 if (tMapView.getZoomLevel() == 16 ) {
-                    if(!youtuberMode) {
+                    if(!youtuberMode && !likeMode) {
                         mergeMarker(tMapView.getCenterPoint());
                     }
                     bigMode = true;
@@ -685,10 +686,15 @@ public class Search2Activity extends MapActivity {
     }
 
     public void showLikeMarker(){
-        for(int i=0; i<global.getMarkerList().size(); i++){
+        global = (Global)getApplicationContext();
+        TMapMarkerItem2 marker;
+
+
+        for(int i=0; i<markerList.size(); i++){
             for(int j=0; j<global.getlikeList().size(); j++){
-                if(global.getMarkerList().get(i).getID() == global.getlikeList().get(j)) {
-                    tMapView.addMarkerItem2(global.getMarkerList().get(i).getID(), global.getMarkerList().get(i));    // 지도에 추가
+                if(markerList.get(i).getID().equals(global.getlikeList().get(j))) {
+                    marker = markerList.get(i);
+                    tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
                 }
             }
         }
