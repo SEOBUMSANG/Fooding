@@ -148,15 +148,6 @@ public class Search2Activity extends MapActivity {
             @Override
             public void onLongPressEvent(ArrayList arrayList, ArrayList arrayList1, TMapPoint tMapPoint) {
                 //Toast.makeText(MapEvent.this, "onLongPress~!", Toast.LENGTH_SHORT).show();
-//                if (!youtuberMode && !likeMode) {
-//                    boolean result;
-//                    for (int i = 0; i < markerList.size(); i++) {
-//                        result = markerList.get(i).getMarkerTouch();
-//                        if (result == true) {
-//                            markerList.get(i).setMarkerTouch(false);
-//                        }
-//                    }
-//                }
             }
         });
 
