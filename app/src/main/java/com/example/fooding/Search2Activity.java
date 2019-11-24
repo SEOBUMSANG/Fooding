@@ -168,8 +168,7 @@ public class Search2Activity extends MapActivity {
             @Override
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
 
-                if (!youtuberMode) {
-
+                if (!youtuberMode && !likeMode) {
                     // 유튜버 모드일 때는 빅모드 지원 안함
                     if (bigMode) {
                         deleteMarker(tMapView, bigMarkerList);
@@ -199,7 +198,7 @@ public class Search2Activity extends MapActivity {
                 startActivity(myintent);
 
                 global.setLikeList(marker.getID());
-                Log.d("추가된 라이크리스트 :"," "+marker.getID());
+                Log.d("추가된 라이크리스트"," "+marker.getID());
             }
 
         });
