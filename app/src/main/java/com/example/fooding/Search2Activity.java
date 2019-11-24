@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
+import android.graphics.Rect;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
@@ -63,7 +64,7 @@ public class Search2Activity extends MapActivity {
     ArrayList<TMapMarkerItem2> activeMarkerList;
     ArrayList<TMapMarkerItem> bigMarkerList;
     Top10YoutuberList[] top10YoutuberList;
-    
+
     boolean bigMode = true;
     boolean youtuberMode = false;
     boolean worldcupMode = false;
@@ -195,7 +196,7 @@ public class Search2Activity extends MapActivity {
                 MarkerOverlay marker = (MarkerOverlay) tMapMarkerItem2;
 
                 Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.items.get(0).URL));
-                startActivity(myintent);
+                startActivityForResult(myintent, 001);
 
                 global.setLikeList(marker.getID());
                 Log.d("추가된 라이크리스트"," "+marker.getID());
@@ -504,11 +505,6 @@ public class Search2Activity extends MapActivity {
         }
     }*/
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
     public void mergeMarker(TMapPoint centerPoint) {
         Log.d("mergeMarker", "delete Marker & makeBigMarker");
 
@@ -755,5 +751,20 @@ public class Search2Activity extends MapActivity {
         }
     };
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+
+        if (requestCode == 001) {
+            boolean result;
+
+            for (TMapMarkerItem2 marker : markerList) {
+                result = marker.getMarkerTouch();
+
+                if (result == true)
+                    marker.setMarkerTouch(false);
+            }
+        }
+    }
 
 }
