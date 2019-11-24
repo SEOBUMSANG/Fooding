@@ -293,6 +293,8 @@ public class Search2Activity extends MapActivity {
 
 
                 if (worldcupMode) {
+                    worldcupMode = false;
+                    tMapView.removeAllTMapCircle();
                     worldcupStartButton.setVisibility(View.INVISIBLE);
                     layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 }
@@ -309,8 +311,26 @@ public class Search2Activity extends MapActivity {
                 worldcupStartButton.setVisibility(View.VISIBLE);
                 setWorldcupCircle();
 
-                if (youtuberMode)
+                if (youtuberMode) {
+                    youtuberMode = false;
+
+                    activeMarkerList = tMapView.getAllMarkerItem2();
+                    for(int i =0;i<activeMarkerList.size();i++) {
+                        tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+                    }
+
                     layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                    youtuberListview.setVisibility(View.INVISIBLE);
+                    linearLayoutLocationInput.setVisibility(View.VISIBLE);
+
+                    if (bigMode) {
+                        showMarker(bigMarkerList, tMapView.getCenterPoint());
+                    } else {
+                        showMarker2(markerList, tMapView.getCenterPoint());
+                    }
+
+                }
+
 
             }
         });
@@ -486,7 +506,7 @@ public class Search2Activity extends MapActivity {
         tMapView.removeAllTMapCircle();
         tMapCircle = new TMapCircle();
         tMapCircle.setCenterPoint( tMapView.getCenterPoint() ); // 센터 설정
-        tMapCircle.setRadius(3000);
+        tMapCircle.setRadius(1000);
         tMapCircle.setCircleWidth(15);
         tMapCircle.setLineColor(Color.BLUE);
         tMapCircle.setAreaColor(Color.GRAY);
