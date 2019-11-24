@@ -148,6 +148,15 @@ public class Search2Activity extends MapActivity {
             @Override
             public void onLongPressEvent(ArrayList arrayList, ArrayList arrayList1, TMapPoint tMapPoint) {
                 //Toast.makeText(MapEvent.this, "onLongPress~!", Toast.LENGTH_SHORT).show();
+//                if (!youtuberMode && !likeMode) {
+//                    boolean result;
+//                    for (int i = 0; i < markerList.size(); i++) {
+//                        result = markerList.get(i).getMarkerTouch();
+//                        if (result == true) {
+//                            markerList.get(i).setMarkerTouch(false);
+//                        }
+//                    }
+//                }
             }
         });
 
@@ -162,13 +171,6 @@ public class Search2Activity extends MapActivity {
             @Override
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
                 if (!youtuberMode && !likeMode) {
-                    boolean result;
-                    for (int i = 0; i < markerList.size(); i++) {
-                        result = markerList.get(i).getMarkerTouch();
-                        if (result == true) {
-                            markerList.get(i).setMarkerTouch(false);
-                        }
-                    }
 
                     // 유튜버 모드일 때는 빅모드 지원 안함
                     if (bigMode) {
