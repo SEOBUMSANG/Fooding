@@ -67,6 +67,7 @@ public class Search2Activity extends MapActivity {
     boolean bigMode = true;
     boolean youtuberMode = false;
     boolean worldcupMode = false;
+    boolean likeMode = false;
     float[] dist = new float[1];
 
     //Youtuber Activity
@@ -186,6 +187,7 @@ public class Search2Activity extends MapActivity {
         });
             // 마커 클릭 이벤트
         tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
+
             @Override
             public void onCalloutMarker2ClickEvent(String s, TMapMarkerItem2 tMapMarkerItem2) {
                 Toast.makeText(getApplicationContext(), "marker", Toast.LENGTH_SHORT).show();
@@ -193,7 +195,10 @@ public class Search2Activity extends MapActivity {
 
                 Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.items.get(0).URL));
                 startActivity(myintent);
+
+                global.setLikeList(marker.getID());
             }
+
         });
 
 
@@ -249,6 +254,8 @@ public class Search2Activity extends MapActivity {
                     }
                 }
 
+
+
                 tMapView.removeAllTMapCircle();
 
                 if (worldcupMode) {
@@ -256,6 +263,22 @@ public class Search2Activity extends MapActivity {
 
                     layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                     worldcupStartButton.setVisibility(View.INVISIBLE);
+                }
+
+                if (likeMode) {
+                    likeMode = false;
+
+                    showMarker(bigMarkerList, centerPoint);
+
+                    layoutLikeButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                    linearLayoutLocationInput.setVisibility(View.VISIBLE);
+
+                    //다시 서치모드로 전환 시 마커 삭제
+                    tMapView.removeAllMarkerItem();
+                    activeMarkerList = tMapView.getAllMarkerItem2();
+                    for(int i =0;i<activeMarkerList.size();i++){
+                        tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+                    }
                 }
 
                 //다시 서치모드로 전환 시 마커 띄워줌
@@ -281,6 +304,8 @@ public class Search2Activity extends MapActivity {
                 youtuberListview.setVisibility(View.VISIBLE);
                 //서치 버튼 레이아웃 blank
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                //라이크 버튼 레이아웃 blank
+                layoutLikeButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 //유튜버 버튼 레이아웃 fill
                 layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
                 //지도 위의 빅마커 다 삭제
@@ -307,6 +332,7 @@ public class Search2Activity extends MapActivity {
                 worldcupMode = true;
 
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                layoutLikeButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
                 layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
                 worldcupStartButton.setVisibility(View.VISIBLE);
                 setWorldcupCircle();
@@ -335,10 +361,36 @@ public class Search2Activity extends MapActivity {
             }
         });
 
+        //TODO LikeButton
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                likeMode = true;
 
+                //위치검색창 invisible
+                linearLayoutLocationInput.setVisibility(View.INVISIBLE);
+                //서치 버튼 레이아웃 blank
+                layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                //유튜버 버튼 레이아웃 blank
+                layoutYoutuberButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                //라이크 버튼 레이아웃 fill
+                layoutLikeButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
+                //지도 위의 빅마커 다 삭제
+                tMapView.removeAllMarkerItem();
+                //지도 위의 마커 다 삭제
+                activeMarkerList = tMapView.getAllMarkerItem2();
+                for(int i =0;i<activeMarkerList.size();i++){
+                    tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+                }
+
+                if (worldcupMode) {
+                    worldcupMode = false;
+                    tMapView.removeAllTMapCircle();
+                    worldcupStartButton.setVisibility(View.INVISIBLE);
+                    layoutWorldcupButton.setBackgroundResource(R.drawable.oval_background_orange_blank);
+                }
+
+                showLikeMarker();
             }
         });
 
@@ -537,8 +589,6 @@ public class Search2Activity extends MapActivity {
         for(int i=0; i<10; i++) {
             itemList.add(top10YoutuberList[i].channelName);
         }
-        //TODO top10YoutuberChannel 스트링배열이 상위 10명 유튜버 TargetList.YoutubeItems.Channel 명임
-
 
         adapter = new YoutuberAdapter(this, itemList, onClickItem);
         youtuberListview.setAdapter(adapter);
@@ -632,6 +682,17 @@ public class Search2Activity extends MapActivity {
                 }
             }
         }
+    }
+
+    public void showLikeMarker(){
+        for(int i=0; i<global.getMarkerList().size(); i++){
+            for(int j=0; j<global.getlikeList().size(); j++){
+                if(global.getMarkerList().get(i).getID() == global.getlikeList().get(j)) {
+                    tMapView.addMarkerItem2(global.getMarkerList().get(i).getID(), global.getMarkerList().get(i));    // 지도에 추가
+                }
+            }
+        }
+
 
     }
 
@@ -682,7 +743,6 @@ public class Search2Activity extends MapActivity {
                         break;
                     }
                 }
-
             }
 
         }

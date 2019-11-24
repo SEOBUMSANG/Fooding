@@ -41,6 +41,8 @@ public class BalloonOverlayView extends FrameLayout {
     TMapPoint markerPoint;
     String uri[];
 
+    Global global;
+
 
     public BalloonOverlayView(Context context, TargetList eachTarget) {
         super(context);
@@ -91,11 +93,17 @@ public class BalloonOverlayView extends FrameLayout {
     }
 
     private View.OnClickListener onClickItem = new View.OnClickListener() {
+
         @Override
         public void onClick(View v) {
+
             String str = (String) v.getTag();
             Toast.makeText(getContext(), str, Toast.LENGTH_SHORT).show();
+
+            global.setLikeList(str);
         }
+
+
     };
 
     public void setTitle(String str) {
