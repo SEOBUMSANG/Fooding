@@ -11,6 +11,10 @@ public class Global extends Application {
     private ArrayList<TargetList> targetListArray = new ArrayList<>(100);
     private ArrayList<JSONObject> jsonObjectArrayList = new ArrayList<>(100);
     private ArrayList<TMapMarkerItem2> markerList = new ArrayList<>(100);
+    private ArrayList<String> likeList = new ArrayList<>(100);
+
+    public Global (){
+    }
 
 
     public ArrayList<TargetList> getTargetListArray(){
@@ -20,6 +24,8 @@ public class Global extends Application {
     public ArrayList<JSONObject> getJsonObjectArrayList() { return jsonObjectArrayList;}
 
     public ArrayList<TMapMarkerItem2> getMarkerList() {return markerList;}
+
+    public ArrayList<String> getlikeList() {return likeList;}
 
 
     public void setTargetListArray(ArrayList<TargetList> targetA){
@@ -46,6 +52,10 @@ public class Global extends Application {
         for(int i = 0;i<markerA.size();i++){
             markerList.add(markerA.get(i));
         }
+    }
+
+    public void setLikeList(String likeItem){
+        likeList.add(likeItem);
     }
 
     public void setMarkerListItem(MarkerOverlay marker){

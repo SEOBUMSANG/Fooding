@@ -92,7 +92,7 @@ public class MapActivity extends AppCompatActivity {
             // 마커 생성
             MarkerOverlay markerItem = new MarkerOverlay(this, eachTarget);
             markerItem.setTMapPoint( markerItem.markerPoint ); // 마커의 좌표 지정
-            String sID = "markerItem" + eachTarget.name;
+            String sID = eachTarget.name;
 
             Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.marker_icon_blue);
             markerItem.setIcon(resizeBitmap(bitmap, 200)); // 마커 아이콘 지정
@@ -109,7 +109,6 @@ public class MapActivity extends AppCompatActivity {
         return true;
     }
 
-    //todo 여기서 터져용
     public void deleteMarker(TMapView tMapView, ArrayList<TMapMarkerItem> markerList){
         for(int i=0;i<markerList.size();i++) {
             tMapView.removeMarkerItem(markerList.get(i).getID());
