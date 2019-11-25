@@ -55,7 +55,7 @@ public class SearchDB {
                                         jsonObject.put("resImageURL",setImageArray(imageURL));
                                         jsonObject.put("youtube",document.getData().get("youtube"));
 
-                                        Log.w("getTargetList", jsonObject + "");
+                                        Log.d("getTargetList", jsonObject + "");
 
                                         //jsonObjectArrayList.add(jsonObject);
                                         setGlobalTarget(global,jsonObject);

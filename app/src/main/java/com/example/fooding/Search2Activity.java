@@ -168,8 +168,19 @@ public class Search2Activity extends MapActivity {
         tMapView.setOnDisableScrollWithZoomLevelListener(new TMapView.OnDisableScrollWithZoomLevelCallback() {
             @Override
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
+                //마커가 클릭되서 말풍선이 떠있는지 감지
+                boolean markerClicked = false;
+                for (TMapMarkerItem2 marker : markerList) {
+                    if (marker.getMarkerTouch()) {
+                        markerClicked = true;
+                        break;
+                    } else {
+                        markerClicked = false;
+                    }
+                }
 
-                if (!youtuberMode && !likeMode) {
+                if (!youtuberMode && !likeMode && !markerClicked) {
+                    Log.w("setOnDisableScroll", "마커 갱신");
                     // 유튜버 모드일 때는 빅모드 지원 안함
                     if (bigMode) {
                         deleteMarker(tMapView, bigMarkerList);
@@ -192,7 +203,7 @@ public class Search2Activity extends MapActivity {
 
             @Override
             public void onCalloutMarker2ClickEvent(String s, TMapMarkerItem2 tMapMarkerItem2) {
-                Toast.makeText(getApplicationContext(), "marker", Toast.LENGTH_SHORT).show();
+                Log.w("setOnMarkerClick", "말풍선 클릭");
                 MarkerOverlay marker = (MarkerOverlay) tMapMarkerItem2;
 
                 Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.items.get(0).URL));
@@ -638,8 +649,12 @@ public class Search2Activity extends MapActivity {
         }
 
         for(int i=0; i<10; i++){
-            Map.Entry entry = (Map.Entry)iterator.next();
-            top10YoutuberList[i].channelName = (String)entry.getKey();
+            try {
+                Map.Entry entry = (Map.Entry)iterator.next();
+                top10YoutuberList[i].channelName = (String)entry.getKey();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         /*for(int i=0; i<targetListArray.size(); i++){
@@ -751,20 +766,21 @@ public class Search2Activity extends MapActivity {
         }
     };
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-
-        if (requestCode == 001) {
-            boolean result;
-
-            for (TMapMarkerItem2 marker : markerList) {
-                result = marker.getMarkerTouch();
-
-                if (result == true)
-                    marker.setMarkerTouch(false);
-            }
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+//        super.onActivityResult(requestCode, resultCode, intent);
+//
+//        if (requestCode == 001) {
+//            Log.w("onActivityResult 001", "유튜브에서 돌아옴");
+//            boolean result;
+//
+////            for (TMapMarkerItem2 marker : markerList) {
+////                result = marker.getMarkerTouch();
+////
+////                if (result == true)
+////                    marker.setMarkerTouch(false);
+////            }
+//        }
+//    }
 
 }
