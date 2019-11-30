@@ -461,13 +461,17 @@ public class Search2Activity extends MapActivity {
         });
 
         // 시작
+        int end = global.getTargetListArray().size();
+        int middle = end/2;
 
         new Thread(new Runnable() {
             @Override public void run() {
                 Log.e("getTargeList 시작 전", "시작 전");
                 if (makeBigMarker(global.getTargetListArray(), bigMarkerList)) {    // 마커 생성
                     showMarker(bigMarkerList, centerPoint);
+                    Log.i("Thread1", "makeMarker");
                     makeMarker(global.getTargetListArray(), markerList);
+                    //makeMarker(new ArrayList<TargetList> (global.getTargetListArray().subList(0, middle)), markerList);
                 }
             }
         }).start();
