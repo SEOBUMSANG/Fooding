@@ -50,7 +50,7 @@ public class MapActivity extends AppCompatActivity {
             // 거리 계산
             Location.distanceBetween(firstMarkerItem.latitude, firstMarkerItem.longitude, markerItem.latitude, markerItem.longitude, distance);
 
-            if (distance[0] <= 3000) {
+            if (distance[0] <= 2800) {
                 //firstMarkerItem.markerList.add(markerItem);
             } else {
                 firstMarkerItem = markerItem;

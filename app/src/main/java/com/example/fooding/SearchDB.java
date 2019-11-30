@@ -70,6 +70,86 @@ public class SearchDB {
                         }
                     }
                 });
+        db.collection("jongro")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                double distance = checkDistance(document,centerPoint);
+//                                if(distance>10000000) {
+//                                    continue;
+//                                }
+//                                else {
+
+                                JSONObject jsonObject = new JSONObject();
+                                try {
+                                    String imageURL = document.getData().get("resImageURL").toString();
+
+                                    jsonObject.put("name",document.getData().get("name"));
+                                    jsonObject.put("lat",document.getData().get("lat"));
+                                    jsonObject.put("lng",document.getData().get("lng"));
+                                    jsonObject.put("description",document.getData().get("description"));
+                                    jsonObject.put("resAddress",document.getData().get("resAddress"));
+                                    jsonObject.put("resImageURL",setImageArray(imageURL));
+                                    jsonObject.put("youtube",document.getData().get("youtube"));
+
+                                    Log.d("getTargetList", jsonObject + "");
+
+                                    //jsonObjectArrayList.add(jsonObject);
+                                    setGlobalTarget(global,jsonObject);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+//                                }
+                            }
+                        } else {
+                            Log.e("returnData", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+        db.collection("mapo")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                double distance = checkDistance(document,centerPoint);
+//                                if(distance>10000000) {
+//                                    continue;
+//                                }
+//                                else {
+
+                                JSONObject jsonObject = new JSONObject();
+                                try {
+                                    String imageURL = document.getData().get("resImageURL").toString();
+
+                                    jsonObject.put("name",document.getData().get("name"));
+                                    jsonObject.put("lat",document.getData().get("lat"));
+                                    jsonObject.put("lng",document.getData().get("lng"));
+                                    jsonObject.put("description",document.getData().get("description"));
+                                    jsonObject.put("resAddress",document.getData().get("resAddress"));
+                                    jsonObject.put("resImageURL",setImageArray(imageURL));
+                                    jsonObject.put("youtube",document.getData().get("youtube"));
+
+                                    Log.d("getTargetList", jsonObject + "");
+
+                                    //jsonObjectArrayList.add(jsonObject);
+                                    setGlobalTarget(global,jsonObject);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+//                                }
+                            }
+                        } else {
+                            Log.e("returnData", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
     public void returnYoutube(final ArrayList<JSONObject> jsonObjectArrayList, final JSONObject jsonObject , final QueryDocumentSnapshot document){

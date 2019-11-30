@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 
 public class Global extends Application {
-    private ArrayList<TargetList> targetListArray = new ArrayList<>(100);
-    private ArrayList<JSONObject> jsonObjectArrayList = new ArrayList<>(100);
-    private ArrayList<TMapMarkerItem2> markerList = new ArrayList<>(100);
-    private ArrayList<String> likeList = new ArrayList<>(100);
+    private ArrayList<TargetList> targetListArray = new ArrayList<>(300);
+    private ArrayList<JSONObject> jsonObjectArrayList = new ArrayList<>(300);
+    private ArrayList<TMapMarkerItem2> markerList = new ArrayList<>(300);
+    private ArrayList<String> likeList = new ArrayList<>(300);
 
     public Global (){
     }

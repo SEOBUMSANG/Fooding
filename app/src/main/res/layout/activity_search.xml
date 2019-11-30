@@ -20,40 +20,16 @@
         app:srcCompat="@drawable/seoul_gu" />
 
     <Button
-        android:id="@+id/dongjak"
+        android:id="@+id/mapho"
         android:layout_width="27dp"
         android:layout_height="25dp"
         android:background="@drawable/radius_background_transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.424"
+        app:layout_constraintVertical_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.340"
         app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.586" />
-
-    <Button
-        android:id="@+id/guanack"
-        android:layout_width="27dp"
-        android:layout_height="25dp"
-        android:background="@drawable/radius_background_transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.424"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.640" />
-
-    <Button
-        android:id="@+id/seocho"
-        android:layout_width="27dp"
-        android:layout_height="25dp"
-        android:background="@drawable/radius_background_transparent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.57"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.609" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/gangnam"
@@ -68,14 +44,14 @@
         app:layout_constraintVertical_bias="0.588" />
 
     <Button
-        android:id="@+id/songpha"
+        android:id="@+id/jongro"
         android:layout_width="27dp"
         android:layout_height="25dp"
         android:background="@drawable/radius_background_transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.802"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.575" />
+        app:layout_constraintVertical_bias="0.465" />
 </androidx.constraintlayout.widget.ConstraintLayout>

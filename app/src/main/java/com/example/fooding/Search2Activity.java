@@ -60,7 +60,6 @@ public class Search2Activity extends MapActivity {
     Global global;
     CurrentGps currentGps;
 
-    static ArrayList<TMapMarkerItem2> markerList;
     ArrayList<TMapMarkerItem2> activeMarkerList;
     ArrayList<TMapMarkerItem> bigMarkerList;
     Top10YoutuberList[] top10YoutuberList;
@@ -89,7 +88,7 @@ public class Search2Activity extends MapActivity {
         final TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
 
         bigMarkerList = new ArrayList<>();
-        markerList = new ArrayList<>();
+
         checkClicked = new boolean[10];
         activeMarkerList = new ArrayList<>();
         global= ((Global)getApplicationContext());
@@ -156,10 +155,10 @@ public class Search2Activity extends MapActivity {
             @Override
             public void onEnableScrollWithZoomLevelEvent(float v, TMapPoint tMapPoint) {
                 boolean result;
-                for (int i = 0; i < markerList.size(); i++) {
-                    result = markerList.get(i).getMarkerTouch();
+                for (int i = 0; i < global.getMarkerList().size(); i++) {
+                    result = global.getMarkerList().get(i).getMarkerTouch();
                     if (result == true) {
-                        markerList.get(i).setMarkerTouch(false);
+                        global.getMarkerList().get(i).setMarkerTouch(false);
                     }
                 }
             }
@@ -170,7 +169,7 @@ public class Search2Activity extends MapActivity {
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
                 //마커가 클릭되서 말풍선이 떠있는지 감지
                 boolean markerClicked = false;
-                for (TMapMarkerItem2 marker : markerList) {
+                for (TMapMarkerItem2 marker : global.getMarkerList()) {
                     if (marker.getMarkerTouch()) {
                         markerClicked = true;
                         break;
@@ -186,8 +185,8 @@ public class Search2Activity extends MapActivity {
                         deleteMarker(tMapView, bigMarkerList);
                         showMarker(bigMarkerList, centerPoint);
                     } else {
-                        deleteMarker2(tMapView, markerList);
-                        showMarker2(markerList, centerPoint);
+                        deleteMarker2(tMapView, global.getMarkerList());
+                        showMarker2(global.getMarkerList(), centerPoint);
                     }
                 }
 
@@ -200,7 +199,6 @@ public class Search2Activity extends MapActivity {
         });
             // 마커 클릭 이벤트
         tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
-
             @Override
             public void onCalloutMarker2ClickEvent(String s, TMapMarkerItem2 tMapMarkerItem2) {
                 Log.w("setOnMarkerClick", "말풍선 클릭");
@@ -299,7 +297,7 @@ public class Search2Activity extends MapActivity {
                 if (bigMode) {
                     showMarker(bigMarkerList, tMapView.getCenterPoint());
                 } else {
-                    showMarker2(markerList, tMapView.getCenterPoint());
+                    showMarker2(global.getMarkerList(), tMapView.getCenterPoint());
                 }
 
                 layoutSearchButton.setBackgroundResource(R.drawable.oval_background_orange_fill);
@@ -366,7 +364,7 @@ public class Search2Activity extends MapActivity {
                     if (bigMode) {
                         showMarker(bigMarkerList, tMapView.getCenterPoint());
                     } else {
-                        showMarker2(markerList, tMapView.getCenterPoint());
+                        showMarker2(global.getMarkerList(), tMapView.getCenterPoint());
                     }
 
                 }
@@ -470,7 +468,8 @@ public class Search2Activity extends MapActivity {
                 if (makeBigMarker(global.getTargetListArray(), bigMarkerList)) {    // 마커 생성
                     showMarker(bigMarkerList, centerPoint);
                     Log.i("Thread1", "makeMarker");
-                    makeMarker(global.getTargetListArray(), markerList);
+                    if (global.getMarkerList().isEmpty())
+                        makeMarker(global.getTargetListArray(), global.getMarkerList());
                     //makeMarker(new ArrayList<TargetList> (global.getTargetListArray().subList(0, middle)), markerList);
                 }
             }
@@ -523,7 +522,7 @@ public class Search2Activity extends MapActivity {
     public void mergeMarker(TMapPoint centerPoint) {
         Log.d("mergeMarker", "delete Marker & makeBigMarker");
 
-        deleteMarker2(tMapView, markerList);
+        deleteMarker2(tMapView, global.getMarkerList());
         showMarker(bigMarkerList,centerPoint);
     }
 
@@ -531,7 +530,7 @@ public class Search2Activity extends MapActivity {
         Log.d("parseBigMarker", "delete BigMarker & makeMarker");
 
         deleteMarker(tMapView, bigMarkerList);
-        showMarker2(markerList, centerPoint);
+        showMarker2(global.getMarkerList(), centerPoint);
     }
 
     public void showMarker(ArrayList<TMapMarkerItem> markerList, TMapPoint centerPoint) {
@@ -709,11 +708,10 @@ public class Search2Activity extends MapActivity {
         global = (Global)getApplicationContext();
         TMapMarkerItem2 marker;
 
-
-        for(int i=0; i<markerList.size(); i++){
+        for(int i=0; i<global.getMarkerList().size(); i++){
             for(int j=0; j<global.getlikeList().size(); j++){
-                if(markerList.get(i).getID().equals(global.getlikeList().get(j))) {
-                    marker = markerList.get(i);
+                if(global.getMarkerList().get(i).getID().equals(global.getlikeList().get(j))) {
+                    marker = global.getMarkerList().get(i);
                     tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
                 }
             }
@@ -765,7 +763,7 @@ public class Search2Activity extends MapActivity {
 
                 for(int i=0; i<top10YoutuberList.length; i++){
                     if(top10YoutuberList[i].channelName == str){
-                        showYoutuberMarker(markerList, top10YoutuberList[i]);
+                        showYoutuberMarker(global.getMarkerList(), top10YoutuberList[i]);
                         break;
                     }
                 }
