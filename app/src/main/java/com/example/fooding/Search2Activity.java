@@ -535,7 +535,9 @@ public class Search2Activity extends MapActivity {
     }
 
     public void showMarker(ArrayList<TMapMarkerItem> markerList, TMapPoint centerPoint) {
-        for (TMapMarkerItem marker : markerList) {
+        Iterator<TMapMarkerItem> iter = markerList.iterator();
+        while (iter.hasNext()) {
+            TMapMarkerItem marker = iter.next();
             Location.distanceBetween(marker.latitude, marker.longitude, centerPoint.getLatitude(), centerPoint.getLongitude(), dist);
 
             if (bigMode) {
@@ -543,7 +545,7 @@ public class Search2Activity extends MapActivity {
                     continue;
                 tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
             } else {
-                if(dist[0]>500)
+                if (dist[0] > 500)
                     continue;
                 tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
             }
@@ -552,7 +554,9 @@ public class Search2Activity extends MapActivity {
 
 
     public void showMarker2(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint) {
-        for (TMapMarkerItem2 marker : markerList) {
+        Iterator<TMapMarkerItem2> iter = markerList.iterator();
+        while (iter.hasNext()) {
+            TMapMarkerItem2 marker = iter.next();
             Location.distanceBetween(marker.latitude, marker.longitude, centerPoint.getLatitude(), centerPoint.getLongitude(), dist);
 
             if (bigMode) {
@@ -560,7 +564,7 @@ public class Search2Activity extends MapActivity {
                     continue;
                 tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
             } else {
-                if(dist[0]>500)
+                if (dist[0] > 500)
                     continue;
                 tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
             }

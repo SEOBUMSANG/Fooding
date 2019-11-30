@@ -30,7 +30,7 @@ public class SearchDB {
 
     public void returnData(Context context) {
         Global global = ((Global)context);
-        db.collection("GangNam")
+        db.collection("gangnam")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -165,8 +165,10 @@ public class SearchDB {
         temptubeItems = gson.fromJson(target.youtube, YoutubeItem[].class);
         tempUrls = gson.fromJson(target.resImageURL, String[].class);
 
-        for (int j = 0; j < temptubeItems.length; j++) {
-            target.youtubeItems.add(temptubeItems[j]);
+        if(temptubeItems!=null) {
+            for (int j = 0; j < temptubeItems.length; j++) {
+                target.youtubeItems.add(temptubeItems[j]);
+            }
         }
 
         for (int j = 0; j < tempUrls.length; j++) {
