@@ -135,15 +135,15 @@ public class MarkerOverlay extends TMapMarkerItem2 {
             int nTempY =  y - marginY - balloonView.getMeasuredHeight();
 
             canvas.translate(nTempX, nTempY);
-            try {
+            //try {
                 balloonView.draw(canvas);
 
-            } catch (Exception e) {
-//                balloonView.removeAllViewsInLayout();
-//                this.setMarkerTouch(false);
+            /*} catch (Exception e) {
+                //balloonView.removeAllViewsInLayout();
+                //this.setMarkerTouch(false);
 
                 e.printStackTrace();
-            }
+            }*/
 
 
             // 풍선뷰 영역 설정

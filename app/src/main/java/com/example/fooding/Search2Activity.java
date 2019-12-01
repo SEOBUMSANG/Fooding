@@ -29,6 +29,7 @@ import com.example.fooding.Youtube.Top10YoutuberList;
 import com.example.fooding.Youtube.YoutubeItem;
 import com.example.fooding.Youtuber.MyListDecoration;
 import com.example.fooding.Youtuber.YoutuberAdapter;
+import com.google.api.LogDescriptor;
 import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
 
@@ -75,7 +76,7 @@ public class Search2Activity extends MapActivity {
     private YoutuberAdapter adapter;
     private TMapCircle tMapCircle;
     boolean[] checkClicked;
-
+    String guName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class Search2Activity extends MapActivity {
         setContentView(R.layout.activity_search2);
 
         Intent getIntent = getIntent();
+        guName = getIntent.getStringExtra("guName");
 
         final double[] centerPointList = getIntent.getDoubleArrayExtra("point");
         final TMapPoint centerPoint = new TMapPoint(centerPointList[0], centerPointList[1]);
@@ -371,7 +373,6 @@ public class Search2Activity extends MapActivity {
             }
         });
 
-        //TODO LikeButton
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -460,7 +461,7 @@ public class Search2Activity extends MapActivity {
 
         // 시작
         int end = global.getTargetListArray().size();
-        int middle = end/2;
+            int middle = end/2;
 
         new Thread(new Runnable() {
             @Override public void run() {
@@ -613,19 +614,20 @@ public class Search2Activity extends MapActivity {
         youtuberListview.addItemDecoration(decoration);
     }
 
+    //TODO
     private void youtuberFilter(ArrayList<TargetList> targetListArray){
 
         Map<String,Integer> tempArray = new HashMap<>();
 
         //Hashmap 생성
-        for(TargetList targetList : targetListArray){
-            for(YoutubeItem youtubeItem : targetList.youtubeItems){
-                if( !(tempArray.containsKey(youtubeItem.channel)) ){
-                    tempArray.put(youtubeItem.channel, 1);
-                }
-                else{
-                    tempArray.put(youtubeItem.channel, tempArray.get(youtubeItem.channel)+1);
-
+        for(TargetList targetList : targetListArray) {
+            if (targetList.resAddress.contains(guName)) {
+                for (YoutubeItem youtubeItem : targetList.youtubeItems) {
+                    if (!(tempArray.containsKey(youtubeItem.channel))) {
+                        tempArray.put(youtubeItem.channel, 1);
+                    } else {
+                        tempArray.put(youtubeItem.channel, tempArray.get(youtubeItem.channel) + 1);
+                    }
                 }
             }
         }
@@ -659,6 +661,8 @@ public class Search2Activity extends MapActivity {
             try {
                 Map.Entry entry = (Map.Entry)iterator.next();
                 top10YoutuberList[i].channelName = (String)entry.getKey();
+                Log.d("sortedHashmap 값 ", (String)entry.getKey());
+                Log.d("sortedHashmap 값 ", entry.getValue().toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -681,7 +685,6 @@ public class Search2Activity extends MapActivity {
         for (int i =0;i<top10YoutuberList.length;i++){
             for( int j =0 ;j<targetListArray.size();j++){
                 for (int k =0 ; k<targetListArray.get(j).youtubeItems.size();k++){
-
                     if(targetListArray.get(j).youtubeItems.get(k).channel.equals(top10YoutuberList[i].channelName)){
                         top10YoutuberList[i].indexList.add(j);
                     }
@@ -693,9 +696,10 @@ public class Search2Activity extends MapActivity {
 
     public void showYoutuberMarker(ArrayList<TMapMarkerItem2> markerList, Top10YoutuberList youtuber) {
         TMapMarkerItem2 marker;
+
+
         for (int i = 0; i < markerList.size(); i++) {
             for(int j=0; j<youtuber.indexList.size(); j++) {
-                Log.d("싸이즈측정 쏴아",youtuber.indexList.size() + "");
                 if ( markerList.size()>=youtuber.indexList.get(j)) {
                     marker = markerList.get(youtuber.indexList.get(j));
                     tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
