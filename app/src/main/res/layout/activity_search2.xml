@@ -161,49 +161,45 @@
         android:visibility="invisible"/>
 
     <!-- 아래 toolbar -->
-    <androidx.appcompat.widget.Toolbar
+    <LinearLayout
         android:id="@+id/toolbar_down"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:background="@drawable/radius_background_toolbar_down"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/radius_background_toolbar_down"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginBottom="5dp"
+            android:layout_marginBottom="4dp"
             android:orientation="horizontal"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="15dp">
+            >
 
             <!-- 첫 번째 버튼 -->
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="5dp"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1">
 
                 <RelativeLayout
                     android:id="@+id/layout_search_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_fill">
+                    android:layout_centerInParent="true">
 
                     <Button
                         android:id="@+id/search_button"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/ic_loupe" />
+                        android:background="@drawable/new_blank_magnify" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -219,15 +215,14 @@
                     android:id="@+id/layout_youtuber_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_blank">
+                    android:layout_centerInParent="true">
 
                     <Button
                         android:id="@+id/youtuber_button"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/ic_recruitment" />
+                        android:background="@drawable/new_blank_story" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -243,15 +238,14 @@
                     android:id="@+id/layout_worldcup_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_blank">
+                    android:layout_centerInParent="true">
 
                     <Button
                         android:id="@+id/worldcup_button"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/worldcup_icon" />
+                        android:background="@drawable/new_blank_trophy" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -267,20 +261,19 @@
                     android:id="@+id/layout_like_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/oval_background_orange_blank">
+                    android:layout_centerInParent="true">
 
                     <Button
                         android:id="@+id/like_button"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/ic_playlist" />
+                        android:background="@drawable/heart_blank_icon" />
                 </RelativeLayout>
             </RelativeLayout>
 
         </LinearLayout>
 
-    </androidx.appcompat.widget.Toolbar>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
