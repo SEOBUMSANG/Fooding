@@ -13,9 +13,7 @@ public class Global extends Application {
     private ArrayList<TMapMarkerItem2> markerList = new ArrayList<>(300);
     private ArrayList<String> likeList = new ArrayList<>(300);
 
-    public Global (){
-    }
-
+    public Global (){ }
 
     public ArrayList<TargetList> getTargetListArray(){
         return targetListArray;

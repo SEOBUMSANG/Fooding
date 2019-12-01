@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/youtube_item"
     android:layout_width="287dp"
-    android:layout_height="85dp"
-    android:background="@drawable/radius_background_white"
+    android:layout_height="95dp"
+    android:background="@drawable/radius_background_orange"
     android:orientation="horizontal">
 
     <ImageView

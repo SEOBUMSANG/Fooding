@@ -4,8 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/radius_background_beige"
     tools:context=".SearchActivity">
+
+    <!-- 위 툴바 -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_up"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/radius_background_toolbar_up1"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="FOODING"
+            android:textColor="@android:color/black"
+            android:textSize="20dp"
+            tools:layout_editor_absoluteX="174dp"
+            tools:layout_editor_absoluteY="23dp" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <ImageView
         android:id="@+id/imageView"
@@ -17,7 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.498"
-        app:srcCompat="@drawable/seoul_gu" />
+        app:srcCompat="@drawable/seoul" />
 
     <Button
         android:id="@+id/mapho"

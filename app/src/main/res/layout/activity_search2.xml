@@ -52,14 +52,6 @@
             tools:layout_editor_absoluteX="174dp"
             tools:layout_editor_absoluteY="23dp" />
 
-        <Button
-            android:id="@+id/setting_button"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/setting_icon" />
-
     </androidx.appcompat.widget.Toolbar>
 
     <!-- 위치 입력 창 -->
@@ -71,7 +63,7 @@
         android:layout_marginTop="50dp"
         android:layout_marginLeft="70dp"
         android:layout_marginRight="70dp"
-        android:background="@drawable/radius_background_white"
+        android:background="@drawable/radius_background_beige"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -139,7 +131,7 @@
             android:text="+"
             android:textSize="20dp"
             android:textColor="@android:color/black"
-            android:background="@drawable/radius_background_white"/>
+            android:background="@drawable/radius_background_beige"/>
 
         <Button
             android:id="@+id/button_zoom_out"
@@ -150,7 +142,7 @@
             android:text="-"
             android:textSize="20dp"
             android:textColor="@android:color/black"
-            android:background="@drawable/radius_background_white"/>
+            android:background="@drawable/radius_background_beige"/>
     </LinearLayout>
 
     <!-- 월드컵 시작 버튼 -->
@@ -211,7 +203,7 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/magnifier_icon" />
+                        android:background="@drawable/ic_loupe" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -235,7 +227,7 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/radius_background_white" />
+                        android:background="@drawable/ic_recruitment" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -259,7 +251,7 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/trophy_icon" />
+                        android:background="@drawable/worldcup_icon" />
                 </RelativeLayout>
             </RelativeLayout>
 
@@ -283,7 +275,7 @@
                         android:layout_width="35dp"
                         android:layout_height="35dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/heart_blank_icon" />
+                        android:background="@drawable/ic_playlist" />
                 </RelativeLayout>
             </RelativeLayout>
 
