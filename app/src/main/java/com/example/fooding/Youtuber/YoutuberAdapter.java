@@ -40,8 +40,9 @@ public class YoutuberAdapter extends RecyclerView.Adapter<YoutuberAdapter.ViewHo
     public void onBindViewHolder(ViewHolder holder, int position) {
         String item = itemList.get(position);
 
-        holder.textview.setText(item);
-        holder.textview.setTag(position);
+        holder.textview_name.setText(item);
+        holder.textview.setText(item.substring(0,1));
+        holder.textview.setTag(position + item);
         holder.textview.setOnClickListener(onClickItem);
 
     }
@@ -63,11 +64,13 @@ public class YoutuberAdapter extends RecyclerView.Adapter<YoutuberAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView textview;
+        public TextView textview_name;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             textview = itemView.findViewById(R.id.item_textview);
+            textview_name = itemView.findViewById(R.id.item_name);
         }
     }
 }

@@ -752,11 +752,14 @@ public class Search2Activity extends MapActivity {
             for(int i =0;i<activeMarkerList.size();i++){
                 tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
             }
+
             YoutuberAdapter.ViewHolder textViewList;
             TextView textView = (TextView) v;
             TextView clickedTextView;
-            String str = (String)textView.getText();
-            int position = Integer.parseInt(textView.getTag().toString());
+            String str = (String)textView.getTag().toString();
+            int strLength = str.length();
+            str = str.substring(1,strLength);
+            int position = Integer.parseInt(textView.getTag().toString().substring(0,1));
             int clickedPosition = -1;
             //adapter.setInitial();
 
@@ -770,7 +773,7 @@ public class Search2Activity extends MapActivity {
             if(clickedPosition!=-1) {
                 textViewList = (YoutuberAdapter.ViewHolder) youtuberListview.findViewHolderForLayoutPosition(clickedPosition);
                 clickedTextView = textViewList.textview;
-                clickedTextView.getText();
+                //clickedTextView.getText();
                 clickedTextView.setBackgroundResource(R.drawable.radius_background_orange);
                 clickedTextView.setTextColor(getResources().getColor(android.R.color.black));
                 checkClicked[clickedPosition] = false;
@@ -783,7 +786,7 @@ public class Search2Activity extends MapActivity {
                 Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
 
                 for(int i=0; i<top10YoutuberList.length; i++){
-                    if(top10YoutuberList[i].channelName == str){
+                    if(top10YoutuberList[i].channelName.equals(str)){
                         showYoutuberMarker(global.getMarkerList(), top10YoutuberList[i]);
                         break;
                     }
