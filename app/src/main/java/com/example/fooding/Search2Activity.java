@@ -776,13 +776,13 @@ public class Search2Activity extends MapActivity {
                 textViewList = (YoutuberAdapter.ViewHolder) youtuberListview.findViewHolderForLayoutPosition(clickedPosition);
                 clickedTextView = textViewList.textview;
                 //clickedTextView.getText();
-                clickedTextView.setBackgroundResource(R.drawable.radius_background_orange);
+                clickedTextView.setBackgroundResource(R.drawable.radius_background_white);
                 //clickedTextView.setTextColor(getResources().getColor(android.R.color.black));
                 checkClicked[clickedPosition] = false;
             }
 
             if(position != clickedPosition) {
-                textView.setBackgroundResource(R.drawable.radius_background_white);
+                textView.setBackgroundResource(R.drawable.radius_background_orange);
                 //textView.setTextColor(getResources().getColor(android.R.color.white));
                 checkClicked[position] = true;
                 Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
