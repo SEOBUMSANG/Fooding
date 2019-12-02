@@ -124,7 +124,7 @@ public class Search2Activity extends MapActivity {
         final Button worldcupButton = findViewById(R.id.worldcup_button);
         final Button likeButton = findViewById(R.id.like_button);
 
-
+        searchButton.setBackgroundResource(R.drawable.new_fill_magnify);
         //init();
         //getTargetList(global.getJsonObjectArrayList());
         initYoutuber(global.getTargetListArray());

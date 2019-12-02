@@ -3,7 +3,6 @@ package com.example.fooding;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
-import android.util.AttributeSet;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 

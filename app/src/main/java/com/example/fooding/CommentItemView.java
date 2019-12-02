@@ -48,3 +48,4 @@ public class CommentItemView extends LinearLayout {
     public void setItemAddress(String address) {addressView.setText(address);}
 
 }
+

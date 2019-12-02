@@ -25,6 +25,7 @@ public class MarkerOverlay extends TMapMarkerItem2 {
     private Context mContext = null;
     public BalloonOverlayView balloonView = null;
     public TMapPoint markerPoint = null;
+    public TargetList target;
 
     private Rect rect = new Rect();
 
@@ -62,10 +63,10 @@ public class MarkerOverlay extends TMapMarkerItem2 {
     }
 
 
-
     public MarkerOverlay(Context context, TargetList eachTarget) {
         this.mContext = context;
         markerList = new ArrayList<>();
+        target = eachTarget;
 
         dm = new DisplayMetrics();
         WindowManager wmgr = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);

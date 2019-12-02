@@ -162,118 +162,114 @@
 
     <!-- 아래 toolbar -->
     <LinearLayout
-        android:id="@+id/toolbar_down"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/radius_background_toolbar_down"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp">
+                android:id="@+id/toolbar_down"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/radius_background_toolbar_down"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="4dp"
+                    android:orientation="horizontal"
+                    >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="4dp"
-            android:orientation="horizontal"
-            >
+                    <!-- 첫 번째 버튼 -->
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1">
 
-            <!-- 첫 번째 버튼 -->
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="4dp"
-                android:layout_weight="1">
+                        <RelativeLayout
+                            android:id="@+id/layout_search_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true">
 
-                <RelativeLayout
-                    android:id="@+id/layout_search_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                            <Button
+                                android:id="@+id/search_button"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/new_blank_magnify" />
+                        </RelativeLayout>
+                    </RelativeLayout>
 
-                    <Button
-                        android:id="@+id/search_button"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/new_blank_magnify" />
-                </RelativeLayout>
-            </RelativeLayout>
+                    <!-- 두 번째 버튼 -->
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1">
 
-            <!-- 두 번째 버튼 -->
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1">
+                        <RelativeLayout
+                            android:id="@+id/layout_youtuber_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true">
 
-                <RelativeLayout
-                    android:id="@+id/layout_youtuber_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                            <Button
+                                android:id="@+id/youtuber_button"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/new_blank_story" />
+                        </RelativeLayout>
+                    </RelativeLayout>
 
-                    <Button
-                        android:id="@+id/youtuber_button"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/new_blank_story" />
-                </RelativeLayout>
-            </RelativeLayout>
+                    <!-- 세 번째 버튼 -->
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_weight="1">
 
-            <!-- 세 번째 버튼 -->
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1">
+                        <RelativeLayout
+                            android:id="@+id/layout_worldcup_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true">
 
-                <RelativeLayout
-                    android:id="@+id/layout_worldcup_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                            <Button
+                                android:id="@+id/worldcup_button"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/new_blank_trophy" />
+                        </RelativeLayout>
+                    </RelativeLayout>
 
-                    <Button
-                        android:id="@+id/worldcup_button"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/new_blank_trophy" />
-                </RelativeLayout>
-            </RelativeLayout>
+                    <!-- 네 번째 버튼 -->
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="18dp"
+                        android:layout_weight="1">
 
-            <!-- 네 번째 버튼 -->
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="18dp"
-                android:layout_weight="1">
+                        <RelativeLayout
+                            android:id="@+id/layout_like_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true">
 
-                <RelativeLayout
-                    android:id="@+id/layout_like_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
+                            <Button
+                                android:id="@+id/like_button"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_centerInParent="true"
+                                android:background="@drawable/heart_blank_icon" />
+                        </RelativeLayout>
+                    </RelativeLayout>
 
-                    <Button
-                        android:id="@+id/like_button"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_centerInParent="true"
-                        android:background="@drawable/ic_playlist_new_1" />
-                </RelativeLayout>
-            </RelativeLayout>
+                </LinearLayout>
 
-        </LinearLayout>
-
-    </LinearLayout>
+            </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,7 +1,6 @@
 package com.example.fooding;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -9,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +18,6 @@ import com.example.fooding.Target.TargetList;
 import com.example.fooding.Youtube.YoutubeAdapter;
 import com.example.fooding.Youtube.YoutubeItem;
 import com.example.fooding.Youtube.YoutubeItemDecoration;
-import com.google.gson.Gson;
 import com.skt.Tmap.TMapPoint;
 
 import java.util.ArrayList;
@@ -48,7 +45,7 @@ public class BalloonOverlayView extends FrameLayout {
         super(context);
 
         final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
-        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 279, getResources().getDisplayMetrics());
+        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 265, getResources().getDisplayMetrics());
 
         setPadding(10, 0, 10, 0);
         layout = new LinearLayout(context);
@@ -74,7 +71,7 @@ public class BalloonOverlayView extends FrameLayout {
 
         View view = inflater.inflate(R.layout.youtube_list_view, parent, true);
 
-        listView = view.findViewById(R.id.listView);
+        listView = view.findViewById(R.id.likeListView);
         title = view.findViewById(R.id.list_title_view);
 
         // 음식점 이름 설정
