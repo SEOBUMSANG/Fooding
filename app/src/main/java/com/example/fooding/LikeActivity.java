@@ -46,7 +46,6 @@ public class LikeActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        super.onBackPressed();
         Intent intent2 = new Intent();
         setResult(110, intent2);
         finish();
