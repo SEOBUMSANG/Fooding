@@ -268,7 +268,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_centerInParent="true"
-                        android:background="@drawable/heart_blank_icon" />
+                        android:background="@drawable/ic_playlist_new_1" />
                 </RelativeLayout>
             </RelativeLayout>
 
