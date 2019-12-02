@@ -124,7 +124,6 @@ public class Search2Activity extends MapActivity {
         final Button worldcupButton = findViewById(R.id.worldcup_button);
         final Button likeButton = findViewById(R.id.like_button);
 
-        searchButton.setBackgroundResource(R.drawable.new_fill_magnify);
         //init();
         //getTargetList(global.getJsonObjectArrayList());
         initYoutuber(global.getTargetListArray());
@@ -256,7 +255,7 @@ public class Search2Activity extends MapActivity {
 
                     showMarker(bigMarkerList, centerPoint);
 
-                    youtuberButton.setBackgroundResource(R.drawable.new_blank_story);
+                    youtuberButton.setBackgroundResource(R.drawable.youtuber_icon);
                     youtuberListview.setVisibility(View.INVISIBLE);
                     linearLayoutLocationInput.setVisibility(View.VISIBLE);
 
@@ -283,8 +282,9 @@ public class Search2Activity extends MapActivity {
 
                     showMarker(bigMarkerList, centerPoint);
 
-                    likeButton.setBackgroundResource(R.drawable.heart_blank_icon);
+                    likeButton.setBackgroundResource(R.drawable.ic_playlist_new_1);
                     linearLayoutLocationInput.setVisibility(View.VISIBLE);
+                    worldcupStartButton.setVisibility(View.INVISIBLE);
 
                     //다시 서치모드로 전환 시 마커 삭제
                     tMapView.removeAllMarkerItem();
@@ -301,7 +301,7 @@ public class Search2Activity extends MapActivity {
                     showMarker2(global.getMarkerList(), tMapView.getCenterPoint());
                 }
 
-                searchButton.setBackgroundResource(R.drawable.new_fill_magnify);
+                searchButton.setBackgroundResource(R.drawable.new_fill_home);
             }
         });
 
@@ -316,9 +316,9 @@ public class Search2Activity extends MapActivity {
                 //리스트뷰 visible
                 youtuberListview.setVisibility(View.VISIBLE);
                 //서치 버튼 레이아웃 blank
-                searchButton.setBackgroundResource(R.drawable.new_blank_magnify);
+                searchButton.setBackgroundResource(R.drawable.new_blank_home);
                 //유튜버 버튼 레이아웃 fill
-                youtuberButton.setBackgroundResource(R.drawable.new_fill_story);
+                youtuberButton.setBackgroundResource(R.drawable.youtuber_fill_icon);
                 //지도 위의 빅마커 다 삭제
                 tMapView.removeAllMarkerItem();
                 //지도 위의 마커 다 삭제
@@ -338,7 +338,7 @@ public class Search2Activity extends MapActivity {
                 if (likeMode){
                     likeMode = false;
                     worldcupStartButton.setVisibility(View.INVISIBLE);
-                    likeButton.setBackgroundResource(R.drawable.heart_blank_icon);
+                    likeButton.setBackgroundResource(R.drawable.ic_playlist_new_1);
                     //유튜버 버튼 레이아웃 fill
                 }
             }
@@ -349,8 +349,8 @@ public class Search2Activity extends MapActivity {
             public void onClick(View v) {
                 worldcupMode = true;
 
-                searchButton.setBackgroundResource(R.drawable.new_blank_magnify);
-                likeButton.setBackgroundResource(R.drawable.heart_blank_icon);
+                searchButton.setBackgroundResource(R.drawable.new_blank_home);
+                likeButton.setBackgroundResource(R.drawable.ic_playlist_new_1);
                 worldcupButton.setBackgroundResource(R.drawable.new_fill_trophy);
                 worldcupStartButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -370,7 +370,7 @@ public class Search2Activity extends MapActivity {
                         tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
                     }
 
-                    youtuberButton.setBackgroundResource(R.drawable.new_blank_story);
+                    youtuberButton.setBackgroundResource(R.drawable.youtuber_icon);
                     youtuberListview.setVisibility(View.INVISIBLE);
                     linearLayoutLocationInput.setVisibility(View.VISIBLE);
 
@@ -402,11 +402,11 @@ public class Search2Activity extends MapActivity {
                 //위치검색창 invisible
                 linearLayoutLocationInput.setVisibility(View.VISIBLE);
                 //서치 버튼 레이아웃 blank
-                searchButton.setBackgroundResource(R.drawable.new_blank_magnify);
+                searchButton.setBackgroundResource(R.drawable.new_blank_home);
                 //유튜버 버튼 레이아웃 blank
-                youtuberButton.setBackgroundResource(R.drawable.new_blank_story);
+                youtuberButton.setBackgroundResource(R.drawable.youtuber_icon);
                 //라이크 버튼 레이아웃 fill
-                likeButton.setBackgroundResource(R.drawable.new_heart_icon);
+                likeButton.setBackgroundResource(R.drawable.ic_playlist_new_2);
                 //지도 위의 빅마커 다 삭제
                 youtuberListview.setVisibility(View.INVISIBLE);
                 tMapView.removeAllMarkerItem();
@@ -777,13 +777,13 @@ public class Search2Activity extends MapActivity {
                 clickedTextView = textViewList.textview;
                 //clickedTextView.getText();
                 clickedTextView.setBackgroundResource(R.drawable.radius_background_orange);
-                clickedTextView.setTextColor(getResources().getColor(android.R.color.black));
+                //clickedTextView.setTextColor(getResources().getColor(android.R.color.black));
                 checkClicked[clickedPosition] = false;
             }
 
             if(position != clickedPosition) {
-                textView.setBackgroundResource(R.drawable.radius_background_black);
-                textView.setTextColor(getResources().getColor(android.R.color.white));
+                textView.setBackgroundResource(R.drawable.radius_background_white);
+                //textView.setTextColor(getResources().getColor(android.R.color.white));
                 checkClicked[position] = true;
                 Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
 
