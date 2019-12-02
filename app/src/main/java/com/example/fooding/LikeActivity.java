@@ -2,6 +2,8 @@ package com.example.fooding;
 
         import android.content.Intent;
         import android.os.Bundle;
+        import android.view.View;
+        import android.widget.Button;
         import android.widget.ListView;
         import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +12,7 @@ public class LikeActivity extends AppCompatActivity {
     ListView listView;
     CommentAdapter adapter;
     Global global;
+    Button dButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,11 +22,13 @@ public class LikeActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         global= ((Global)getApplicationContext());
-        adapter = new CommentAdapter();
+        adapter = new CommentAdapter(getApplicationContext());
         setCommentList();
         listView = findViewById(R.id.likeListView);
-
         listView.setAdapter(adapter);
+
+
+
 
     }
 
@@ -38,6 +43,12 @@ public class LikeActivity extends AppCompatActivity {
             }
         }
         adapter.notifyDataSetChanged();
+    }
+
+    public void onBackPressed() {
+        Intent intent2 = new Intent();
+        setResult(110, intent2);
+        finish();
     }
 
 }

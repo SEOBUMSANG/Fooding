@@ -18,6 +18,7 @@ public class CommentItemView extends LinearLayout {
     TextView nameView;
     TextView descriptionView;
     TextView addressView;
+    Button button;
 
     public CommentItemView(Context context) {
         super(context);
@@ -38,6 +39,7 @@ public class CommentItemView extends LinearLayout {
         nameView = (TextView) findViewById(R.id.name_view);
         descriptionView = (TextView) findViewById(R.id.description_view);
         addressView = findViewById(R.id.resAddress_view);
+        button = (Button)findViewById(R.id.button_delete);
     }
 
 
