@@ -1,5 +1,6 @@
 package com.example.fooding;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -40,7 +41,11 @@ public class CommentAdapter extends BaseAdapter {
         TargetList item = items.get(position);
 
         //view.setItemId(item.getName());
-        view.setItemImage(/*item.getResId()*/);
+        if (!item.resImageUrlList.isEmpty()) {
+            view.setItemImage(item.resImageUrlList.get(0));
+        } else {
+            Log.e("resImageURL", "없대");
+        }
         view.setItemName(item.getName());
         view.setItemDescription(item.getDescription());
         view.setItemAddress(item.getResAddress());

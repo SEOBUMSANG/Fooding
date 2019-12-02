@@ -14,7 +14,7 @@ import android.widget.TextView;
 public class CommentItemView extends LinearLayout {
     int reviewId;
     ImageView writerImageView;
-
+    ImageLoadTask imageLoadTask;
     TextView nameView;
     TextView descriptionView;
     TextView addressView;
@@ -35,14 +35,13 @@ public class CommentItemView extends LinearLayout {
         inflater.inflate(R.layout.comment_item_view, this, true);
 
         writerImageView = (ImageView) findViewById(R.id.writer_image_view);
-
         nameView = (TextView) findViewById(R.id.name_view);
         descriptionView = (TextView) findViewById(R.id.description_view);
         addressView = findViewById(R.id.resAddress_view);
     }
 
 
-    public void setItemImage(/*int resId*/) {writerImageView.setImageResource(R.drawable.user1);}
+    public void setItemImage(String url) {imageLoadTask = new ImageLoadTask(url, writerImageView); imageLoadTask.execute();}
     public void setItemName(String name) {nameView.setText(name);}
     public void setItemDescription(String description) {descriptionView.setText(description);}
     public void setItemAddress(String address) {addressView.setText(address);}
