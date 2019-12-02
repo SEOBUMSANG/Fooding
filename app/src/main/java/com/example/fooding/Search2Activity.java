@@ -170,14 +170,18 @@ public class Search2Activity extends MapActivity {
             public void onDisableScrollWithZoomLevelEvent(float zoom, TMapPoint centerPoint) {
                 //마커가 클릭되서 말풍선이 떠있는지 감지
                 boolean markerClicked = false;
-                for (TMapMarkerItem2 marker : global.getMarkerList()) {
-                    if (marker.getMarkerTouch()) {
+
+                Iterator<TMapMarkerItem2> itr = global.getMarkerList().iterator();
+                while(itr.hasNext()) {
+                    if (itr.next().getMarkerTouch()) {
                         markerClicked = true;
                         break;
-                    } else {
+                    }
+                    else{
                         markerClicked = false;
                     }
                 }
+
 
                 if (!youtuberMode && !likeMode && !markerClicked) {
                     Log.w("setOnDisableScroll", "마커 갱신");
