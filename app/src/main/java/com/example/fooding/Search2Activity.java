@@ -35,6 +35,7 @@ import com.skt.Tmap.TMapCircle;
 
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
+import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
@@ -213,7 +214,24 @@ public class Search2Activity extends MapActivity {
             }
 
         });
+        tMapView.setOnLongClickListenerCallback(new TMapView.OnLongClickListenerCallback() {
+            @Override
+            public void onLongPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint) {
+                Log.w("CalloutRightButtonClick", "말풍선 롱클릭1");
+                MarkerOverlay markerOverlay;
+                for (TMapMarkerItem2 marker : global.getMarkerList()) {
+                    if (marker.getMarkerTouch()) {
+                        markerOverlay = (MarkerOverlay) marker;
 
+                        Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(markerOverlay.balloonView.items.get(1).URL));
+                        startActivityForResult(myintent, 001);
+
+                        global.setLikeList(marker.getID());
+                        Log.d("추가된 라이크리스트"," "+marker.getID());
+                    }
+                }
+            }
+        });
 
         //현재위치 버튼
         mylocationButton.setOnClickListener(new View.OnClickListener() {
