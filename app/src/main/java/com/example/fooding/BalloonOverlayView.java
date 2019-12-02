@@ -45,7 +45,7 @@ public class BalloonOverlayView extends FrameLayout {
         super(context);
 
         final int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 320, getResources().getDisplayMetrics());
-        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 285, getResources().getDisplayMetrics());
+        final int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 270, getResources().getDisplayMetrics());
 
         setPadding(10, 0, 10, 0);
         layout = new LinearLayout(context);
