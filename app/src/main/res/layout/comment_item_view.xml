@@ -28,6 +28,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
             android:layout_weight="0.4"
+            android:maxLines="1"
+            android:ellipsize="end"
             android:text="name_view"
             android:textColor="@android:color/black"
             android:textSize="14dp"
@@ -46,6 +48,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:text="description"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@android:color/black"
                 android:textSize="10dp" />
 
@@ -56,6 +60,8 @@
                 android:layout_marginLeft="5dp"
                 android:layout_weight="1"
                 android:text="resAddress"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/black"
                 android:textSize="10dp" />
 
