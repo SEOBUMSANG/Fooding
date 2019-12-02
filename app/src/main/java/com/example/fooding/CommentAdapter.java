@@ -42,7 +42,7 @@ public class CommentAdapter extends BaseAdapter {
 
         //view.setItemId(item.getName());
         if (!item.resImageUrlList.isEmpty()) {
-            view.setItemImage(item.resImageUrlList.get(0));
+            view.setItemImage(item.youtubeItems.get(0).getThumbnail());
         } else {
             Log.e("resImageURL", "없대");
         }

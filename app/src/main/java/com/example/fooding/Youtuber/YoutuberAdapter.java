@@ -41,7 +41,8 @@ public class YoutuberAdapter extends RecyclerView.Adapter<YoutuberAdapter.ViewHo
         String item = itemList.get(position);
 
         holder.textview_name.setText(item);
-        holder.textview.setText(item.substring(0,1));
+        if (!item.toString().equals(""))
+            holder.textview.setText(item.substring(0,1));
         holder.textview.setTag(position + item);
         holder.textview.setOnClickListener(onClickItem);
 
