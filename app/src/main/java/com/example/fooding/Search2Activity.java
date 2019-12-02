@@ -428,7 +428,7 @@ public class Search2Activity extends MapActivity {
                     public void onClick(View v) {
                         //List 뜨게 해야함 여기서
                         intent = new Intent(getApplicationContext(), LikeActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent,100);
                     }
                 });
                 worldcupStartButton.setText("List");
@@ -832,21 +832,25 @@ public class Search2Activity extends MapActivity {
         }
     };
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-//        super.onActivityResult(requestCode, resultCode, intent);
-//
-//        if (requestCode == 001) {
-//            Log.w("onActivityResult 001", "유튜브에서 돌아옴");
-//            boolean result;
-//
-////            for (TMapMarkerItem2 marker : markerList) {
-////                result = marker.getMarkerTouch();
-////
-////                if (result == true)
-////                    marker.setMarkerTouch(false);
-////            }
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 100) {
+            if (resultCode == 110) {
+                Log.d("바부야","바부야");
+                activeMarkerList = tMapView.getAllMarkerItem2();
+                for(int i =0;i<activeMarkerList.size();i++){
+                    tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
+                }
+                showLikeMarker();
+            } else {   // RESULT_CANCEL
+                Toast.makeText(Search2Activity.this, "Failed", Toast.LENGTH_SHORT).show();
+            }
+//        } else if (requestCode == REQUEST_ANOTHER) {
+//            ...
+        }
+
+    }
 
 }

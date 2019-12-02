@@ -1,16 +1,27 @@
 package com.example.fooding;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 
 import com.example.fooding.Target.TargetList;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CommentAdapter extends BaseAdapter {
-    ArrayList<TargetList> items = new ArrayList<>();
+    private ArrayList<TargetList> items = new ArrayList<>();
+    private Global global;
+    private Context context;
+
+    public CommentAdapter(Context context){
+        this.context = context;
+    }
+
 
     public void addItem(TargetList item){
         items.add(item);
@@ -49,6 +60,18 @@ public class CommentAdapter extends BaseAdapter {
         view.setItemName(item.getName());
         view.setItemDescription(item.getDescription());
         view.setItemAddress(item.getResAddress());
+        view.button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //do something
+                global = (Global)context;
+                global.getlikeList().remove(position);
+                items.remove(position); //or some other task
+                notifyDataSetChanged();
+            }
+        });
+
+
 
         return view;
     }
