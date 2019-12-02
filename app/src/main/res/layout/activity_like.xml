@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/radius_background_fill"
+    android:background="@drawable/radius_background_grey"
     android:orientation="vertical">
 
     <ImageView
@@ -11,7 +11,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/new_heart_icon" />
+        app:srcCompat="@drawable/ic_playlist_new_2" />
 
     <LinearLayout
         android:layout_width="match_parent"

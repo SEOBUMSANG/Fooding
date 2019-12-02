@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/radius_background_beige"
+    android:background="@drawable/radius_background_grey"
     tools:context=".SearchActivity">
 
     <!-- 위 툴바 -->

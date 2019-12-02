@@ -104,7 +104,6 @@ public class Search2Activity extends MapActivity {
 
 
         //화면 설정
-        Button settingButton = findViewById(R.id.setting_button);
         Button mylocationButton = findViewById(R.id.my_location_button);
         Button locationInputButton = findViewById(R.id.location_input_button);
         Button buttonZoomIn = findViewById(R.id.button_zoom_in);

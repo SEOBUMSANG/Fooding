@@ -11,9 +11,8 @@
             <gradient
                 android:angle="45"
                 android:type="linear"
-                android:startColor="#fffaf0"
-                android:centerColor="#ffffff"
-                android:endColor="#fffaf0"/>
+                android:startColor="#f7f7f7"
+                android:endColor="#ffffff"/>
 
             <!-- 테두리 내부 여백 설정 -->
             <padding

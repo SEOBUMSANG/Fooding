@@ -8,7 +8,11 @@
             android:shape="rectangle">
 
             <!-- 테두리 내부 색상 설정 -->
-            <solid android:color="@android:color/white" />
+            <gradient
+                android:angle="45"
+                android:type="linear"
+                android:startColor="#ffffff"
+                android:endColor="#ffffff"/>
 
             <!-- 테두리 내부 여백 설정 -->
             <padding
