@@ -1,17 +1,15 @@
-package com.example.fooding;
+package com.example.fooding.Like;
 
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
+import com.example.fooding.Global;
 import com.example.fooding.Target.TargetList;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class CommentAdapter extends BaseAdapter {
     private ArrayList<TargetList> items = new ArrayList<>();

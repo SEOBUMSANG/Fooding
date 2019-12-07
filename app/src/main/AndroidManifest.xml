@@ -14,10 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
-        <activity android:name=".LikeActivity"></activity>
-        <activity android:name=".RouteActivity" />
-        <activity android:name=".ResultActivity" />
-        <activity android:name=".WorldcupActivity" />
+        <activity android:name=".Like.LikeActivity"></activity>
+        <activity android:name=".WorldCup.RouteActivity" />
+        <activity android:name=".WorldCup.ResultActivity" />
+        <activity android:name=".WorldCup.WorldcupActivity" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".Search2Activity" />
         <activity android:name=".MainActivity">

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f7f7f7"
-    tools:context=".WorldcupActivity">
+    tools:context=".WorldCup.WorldcupActivity">
 
     <!-- 위 툴바 -->
     <androidx.appcompat.widget.Toolbar

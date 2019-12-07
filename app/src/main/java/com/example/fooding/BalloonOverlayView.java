@@ -100,7 +100,6 @@ public class BalloonOverlayView extends FrameLayout {
             global.setLikeList(str);
         }
 
-
     };
 
     public void setTitle(String str) {

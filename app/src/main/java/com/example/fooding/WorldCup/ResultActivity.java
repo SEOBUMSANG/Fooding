@@ -1,4 +1,4 @@
-package com.example.fooding;
+package com.example.fooding.WorldCup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,8 +8,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.example.fooding.R;
 import com.example.fooding.Target.TargetList;
-import com.example.fooding.WorldCup.WorldcupItemView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -44,7 +45,7 @@ public class ResultActivity extends AppCompatActivity {
         routeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent = new Intent(getApplicationContext(),RouteActivity.class);
+                intent = new Intent(getApplicationContext(), RouteActivity.class);
                 intent.putExtra("result", result);
                 startActivityForResult(intent, 401);
                 finish();

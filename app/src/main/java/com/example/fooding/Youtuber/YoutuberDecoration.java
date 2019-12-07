@@ -5,7 +5,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MyListDecoration extends RecyclerView.ItemDecoration {
+public class YoutuberDecoration extends RecyclerView.ItemDecoration {
 
     @Override
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {

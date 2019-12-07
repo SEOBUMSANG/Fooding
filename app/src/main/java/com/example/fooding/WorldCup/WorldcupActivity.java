@@ -1,4 +1,4 @@
-package com.example.fooding;
+package com.example.fooding.WorldCup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,25 +7,18 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import android.os.Parcel;
 import android.os.Parcelable;
-import android.service.autofill.TextValueSanitizer;
 import android.util.Log;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+
+import com.example.fooding.Global;
+import com.example.fooding.R;
 import com.example.fooding.Target.TargetList;
-import com.example.fooding.WorldCup.WorldcupItemView;
-import com.google.api.Distribution;
-import com.skt.Tmap.TMapPoint;
 
 import java.util.ArrayList;
 import java.util.Random;

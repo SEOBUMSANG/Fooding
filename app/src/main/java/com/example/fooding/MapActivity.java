@@ -8,7 +8,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fooding.Target.TargetList;
-import com.example.fooding.Youtube.Top10YoutuberList;
+import com.example.fooding.Youtuber.Top10YoutuberList;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;

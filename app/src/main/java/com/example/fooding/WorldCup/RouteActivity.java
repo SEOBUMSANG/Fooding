@@ -1,4 +1,4 @@
-package com.example.fooding;
+package com.example.fooding.WorldCup;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.fooding.MapActivity;
+import com.example.fooding.MarkerOverlay;
+import com.example.fooding.R;
 import com.example.fooding.Target.TargetList;
 import com.example.fooding.Youtube.YoutubeItem;
 import com.google.gson.Gson;
