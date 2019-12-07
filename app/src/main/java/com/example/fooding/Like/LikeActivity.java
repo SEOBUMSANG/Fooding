@@ -1,11 +1,15 @@
-package com.example.fooding;
+package com.example.fooding.Like;
 
         import android.content.Intent;
         import android.os.Bundle;
-        import android.view.View;
         import android.widget.Button;
         import android.widget.ListView;
         import androidx.appcompat.app.AppCompatActivity;
+
+        import com.example.fooding.Global;
+        import com.example.fooding.Like.CommentAdapter;
+        import com.example.fooding.MarkerOverlay;
+        import com.example.fooding.R;
 
 
 public class LikeActivity extends AppCompatActivity {

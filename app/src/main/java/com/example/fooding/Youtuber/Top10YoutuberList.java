@@ -1,4 +1,4 @@
-package com.example.fooding.Youtube;
+package com.example.fooding.Youtuber;
 
 import android.os.Parcel;
 import android.os.Parcelable;

@@ -1,45 +1,37 @@
 package com.example.fooding;
 
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PointF;
-import android.graphics.Rect;
 import android.location.Geocoder;
-import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.fooding.Like.LikeActivity;
 import com.example.fooding.Target.TargetList;
 
-import com.example.fooding.Youtube.Top10YoutuberList;
+import com.example.fooding.WorldCup.WorldcupActivity;
+import com.example.fooding.Youtuber.Top10YoutuberList;
 import com.example.fooding.Youtube.YoutubeItem;
-import com.example.fooding.Youtuber.MyListDecoration;
+import com.example.fooding.Youtuber.YoutuberDecoration;
 import com.example.fooding.Youtuber.YoutuberAdapter;
-import com.google.api.LogDescriptor;
-import com.google.gson.Gson;
 import com.skt.Tmap.TMapCircle;
 
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
-import com.skt.Tmap.TMapPOIItem;
 import com.skt.Tmap.TMapPoint;
 import com.skt.Tmap.TMapView;
 
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -51,14 +43,12 @@ import java.util.List;
 import java.util.Map;
 
 import android.location.Address;
-import org.json.JSONObject;
 
 
 public class Search2Activity extends MapActivity {
     TMapView tMapView;
 
     Intent intent;
-    SearchDB searchDB;
     Global global;
     CurrentGps currentGps;
 
@@ -626,7 +616,7 @@ public class Search2Activity extends MapActivity {
         adapter = new YoutuberAdapter(this, itemList, onClickItem);
         youtuberListview.setAdapter(adapter);
 
-        MyListDecoration decoration = new MyListDecoration();
+        YoutuberDecoration decoration = new YoutuberDecoration();
         youtuberListview.addItemDecoration(decoration);
     }
 
