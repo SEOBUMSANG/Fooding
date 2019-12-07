@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.fooding.Target.TargetList;
+import com.example.fooding.Youtube.Top10YoutuberList;
 import com.skt.Tmap.TMapMarkerItem;
 import com.skt.Tmap.TMapMarkerItem2;
 import com.skt.Tmap.TMapPoint;
@@ -15,11 +16,12 @@ import com.skt.Tmap.TMapView;
 
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class MapActivity extends AppCompatActivity {
     TMapMarkerItem firstMarkerItem;
     float[] distance = new float[1];
-
+    float[] dist = new float[1];
 
     public boolean makeBigMarker(ArrayList<TargetList> targetList, ArrayList<TMapMarkerItem> bigMarkerList) {
 
@@ -107,6 +109,46 @@ public class MapActivity extends AppCompatActivity {
         return true;
     }
 
+    public void showMarker(ArrayList<TMapMarkerItem> markerList, TMapPoint centerPoint, boolean bigMode, TMapView tMapView) {
+        Iterator<TMapMarkerItem> iter = markerList.iterator();
+        while (iter.hasNext()) {
+            TMapMarkerItem marker = iter.next();
+            Location.distanceBetween(marker.latitude, marker.longitude, centerPoint.getLatitude(), centerPoint.getLongitude(), dist);
+
+            if (bigMode) {
+                if (dist[0] > 2000)
+                    continue;
+                tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
+            } else {
+                if (dist[0] > 500)
+                    continue;
+                tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
+            }
+        }
+    }
+
+    public void showMarker2(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint, boolean bigMode, TMapView tMapView) {
+        Iterator<TMapMarkerItem2> iter = markerList.iterator();
+        while (iter.hasNext()) {
+            try {
+                TMapMarkerItem2 marker = iter.next();
+                Location.distanceBetween(marker.latitude, marker.longitude, centerPoint.getLatitude(), centerPoint.getLongitude(), dist);
+
+                if (bigMode) {
+                    if (dist[0] > 2000)
+                        continue;
+                    tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
+                } else {
+                    if (dist[0] > 500)
+                        continue;
+                    tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void deleteMarker(TMapView tMapView, ArrayList<TMapMarkerItem> markerList){
         for(int i=0;i<markerList.size();i++) {
             tMapView.removeMarkerItem(markerList.get(i).getID());
@@ -122,6 +164,34 @@ public class MapActivity extends AppCompatActivity {
         }
         //markerList.clear();
         Log.d("deleteMarker","지도에서 마커 삭제");
+    }
+
+    public void showYoutuberMarker(ArrayList<TMapMarkerItem2> markerList, Top10YoutuberList youtuber, TMapView tMapView) {
+        TMapMarkerItem2 marker;
+
+
+        for (int i = 0; i < markerList.size(); i++) {
+            for(int j=0; j<youtuber.indexList.size(); j++) {
+                if ( markerList.size()>=youtuber.indexList.get(j)) {
+                    marker = markerList.get(youtuber.indexList.get(j));
+                    tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
+                }
+            }
+        }
+    }
+
+    public void showLikeMarker(Global global, TMapView tMapView){
+        global = (Global)getApplicationContext();
+        TMapMarkerItem2 marker;
+
+        for(int i=0; i<global.getMarkerList().size(); i++){
+            for(int j=0; j<global.getlikeList().size(); j++){
+                if(global.getMarkerList().get(i).getID().equals(global.getlikeList().get(j))) {
+                    marker = global.getMarkerList().get(i);
+                    tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
+                }
+            }
+        }
     }
 
     public Bitmap resizeBitmap(Bitmap original, int width) {

@@ -70,7 +70,7 @@ public class Search2Activity extends MapActivity {
     boolean youtuberMode = false;
     boolean worldcupMode = false;
     boolean likeMode = false;
-    float[] dist = new float[1];
+
 
     //Youtuber Activity
     private RecyclerView youtuberListview;
@@ -188,10 +188,10 @@ public class Search2Activity extends MapActivity {
                     // 유튜버 모드일 때는 빅모드 지원 안함
                     if (bigMode) {
                         deleteMarker(tMapView, bigMarkerList);
-                        showMarker(bigMarkerList, centerPoint);
+                        showMarker(bigMarkerList, centerPoint, bigMode, tMapView);
                     } else {
                         deleteMarker2(tMapView, global.getMarkerList());
-                        showMarker2(global.getMarkerList(), centerPoint);
+                        showMarker2(global.getMarkerList(), centerPoint, bigMode, tMapView);
                     }
                 }
 
@@ -291,7 +291,7 @@ public class Search2Activity extends MapActivity {
                 if (youtuberMode) {
                     youtuberMode = false;
 
-                    showMarker(bigMarkerList, centerPoint);
+                    showMarker(bigMarkerList, centerPoint, bigMode, tMapView);
 
                     youtuberButton.setBackgroundResource(R.drawable.youtuber_icon);
                     youtuberListview.setVisibility(View.INVISIBLE);
@@ -318,7 +318,7 @@ public class Search2Activity extends MapActivity {
                 if (likeMode) {
                     likeMode = false;
 
-                    showMarker(bigMarkerList, centerPoint);
+                    showMarker(bigMarkerList, centerPoint, bigMode, tMapView);
 
                     likeButton.setBackgroundResource(R.drawable.ic_playlist_new_1);
                     linearLayoutLocationInput.setVisibility(View.VISIBLE);
@@ -334,9 +334,9 @@ public class Search2Activity extends MapActivity {
 
                 //다시 서치모드로 전환 시 마커 띄워줌
                 if (bigMode) {
-                    showMarker(bigMarkerList, tMapView.getCenterPoint());
+                    showMarker(bigMarkerList, tMapView.getCenterPoint(), bigMode, tMapView);
                 } else {
-                    showMarker2(global.getMarkerList(), tMapView.getCenterPoint());
+                    showMarker2(global.getMarkerList(), tMapView.getCenterPoint(), bigMode, tMapView);
                 }
 
                 searchButton.setBackgroundResource(R.drawable.new_fill_home);
@@ -413,9 +413,9 @@ public class Search2Activity extends MapActivity {
                     linearLayoutLocationInput.setVisibility(View.VISIBLE);
 
                     if (bigMode) {
-                        showMarker(bigMarkerList, tMapView.getCenterPoint());
+                        showMarker(bigMarkerList, tMapView.getCenterPoint(), bigMode, tMapView);
                     } else {
-                        showMarker2(global.getMarkerList(), tMapView.getCenterPoint());
+                        showMarker2(global.getMarkerList(), tMapView.getCenterPoint(), bigMode, tMapView);
                     }
 
                 }
@@ -460,7 +460,7 @@ public class Search2Activity extends MapActivity {
                     worldcupButton.setBackgroundResource(R.drawable.new_blank_trophy);
                 }
 
-                showLikeMarker();
+                showLikeMarker(global, tMapView);
             }
         });
 
@@ -524,7 +524,7 @@ public class Search2Activity extends MapActivity {
             @Override public void run() {
                 Log.e("getTargeList 시작 전", "시작 전");
                 if (makeBigMarker(global.getTargetListArray(), bigMarkerList)) {    // 마커 생성
-                    showMarker(bigMarkerList, centerPoint);
+                    showMarker(bigMarkerList, centerPoint, bigMode, tMapView);
                     Log.i("Thread1", "makeMarker");
                     if (global.getMarkerList().isEmpty())
                         makeMarker(global.getTargetListArray(), global.getMarkerList());
@@ -581,52 +581,17 @@ public class Search2Activity extends MapActivity {
         Log.d("mergeMarker", "delete Marker & makeBigMarker");
 
         deleteMarker2(tMapView, global.getMarkerList());
-        showMarker(bigMarkerList,centerPoint);
+        showMarker(bigMarkerList,centerPoint, bigMode, tMapView);
     }
+
 
     public void parseBigMarker(TMapPoint centerPoint) {
         Log.d("parseBigMarker", "delete BigMarker & makeMarker");
 
         deleteMarker(tMapView, bigMarkerList);
-        showMarker2(global.getMarkerList(), centerPoint);
+        showMarker2(global.getMarkerList(), centerPoint, bigMode, tMapView);
     }
 
-    public void showMarker(ArrayList<TMapMarkerItem> markerList, TMapPoint centerPoint) {
-        Iterator<TMapMarkerItem> iter = markerList.iterator();
-        while (iter.hasNext()) {
-            TMapMarkerItem marker = iter.next();
-            Location.distanceBetween(marker.latitude, marker.longitude, centerPoint.getLatitude(), centerPoint.getLongitude(), dist);
-
-            if (bigMode) {
-                if (dist[0] > 2000)
-                    continue;
-                tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
-            } else {
-                if (dist[0] > 500)
-                    continue;
-                tMapView.addMarkerItem(marker.getID(), marker);    // 지도에 추가
-            }
-        }
-    }
-
-
-    public void showMarker2(ArrayList<TMapMarkerItem2> markerList, TMapPoint centerPoint) {
-        Iterator<TMapMarkerItem2> iter = markerList.iterator();
-        while (iter.hasNext()) {
-            TMapMarkerItem2 marker = iter.next();
-            Location.distanceBetween(marker.latitude, marker.longitude, centerPoint.getLatitude(), centerPoint.getLongitude(), dist);
-
-            if (bigMode) {
-                if (dist[0] > 2000)
-                    continue;
-                tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
-            } else {
-                if (dist[0] > 500)
-                    continue;
-                tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
-            }
-        }
-    }
 
     public void setWorldcupCircle() {
         tMapView.removeAllTMapCircle();
@@ -671,7 +636,7 @@ public class Search2Activity extends MapActivity {
         youtuberListview.addItemDecoration(decoration);
     }
 
-    //TODO
+
     private void youtuberFilter(ArrayList<TargetList> targetListArray){
 
         Map<String,Integer> tempArray = new HashMap<>();
@@ -725,20 +690,6 @@ public class Search2Activity extends MapActivity {
             }
         }
 
-        /*for(int i=0; i<targetListArray.size(); i++){
-            for(int j=0; j<targetListArray.get(i).youtubeItems.size(); j++) {
-                for (int k = 0; k < top10YoutuberList.length; k++) {
-                    if (targetListArray.get(i).youtubeItems.get(j).channel == top10YoutuberList[k].channelName) {
-                        top10YoutuberList[k].resNameList.add(targetListArray.get(i).name);
-                        top10YoutuberList[k].indexList.add(i);
-                    }
-
-                    Log.d("쏴아아아",top10YoutuberList[k].channelName + top10YoutuberList[k].indexList.size());
-                }
-
-            }
-        }*/
-
         for (int i =0;i<top10YoutuberList.length;i++){
             for( int j =0 ;j<targetListArray.size();j++){
                 for (int k =0 ; k<targetListArray.get(j).youtubeItems.size();k++){
@@ -748,36 +699,6 @@ public class Search2Activity extends MapActivity {
                 }
             }
         }
-
-    }
-
-    public void showYoutuberMarker(ArrayList<TMapMarkerItem2> markerList, Top10YoutuberList youtuber) {
-        TMapMarkerItem2 marker;
-
-
-        for (int i = 0; i < markerList.size(); i++) {
-            for(int j=0; j<youtuber.indexList.size(); j++) {
-                if ( markerList.size()>=youtuber.indexList.get(j)) {
-                    marker = markerList.get(youtuber.indexList.get(j));
-                    tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
-                }
-            }
-        }
-    }
-
-    public void showLikeMarker(){
-        global = (Global)getApplicationContext();
-        TMapMarkerItem2 marker;
-
-        for(int i=0; i<global.getMarkerList().size(); i++){
-            for(int j=0; j<global.getlikeList().size(); j++){
-                if(global.getMarkerList().get(i).getID().equals(global.getlikeList().get(j))) {
-                    marker = global.getMarkerList().get(i);
-                    tMapView.addMarkerItem2(marker.getID(), marker);    // 지도에 추가
-                }
-            }
-        }
-
 
     }
 
@@ -795,7 +716,7 @@ public class Search2Activity extends MapActivity {
 
             YoutuberAdapter.ViewHolder textViewList;
             TextView textView = (TextView) v;
-            TextView clickedTextView;
+            TextView clickedTextView = (TextView) v;
             String str = (String)textView.getTag().toString();
             int strLength = str.length();
             str = str.substring(1,strLength);
@@ -812,11 +733,16 @@ public class Search2Activity extends MapActivity {
 
             if(clickedPosition!=-1) {
                 textViewList = (YoutuberAdapter.ViewHolder) youtuberListview.findViewHolderForLayoutPosition(clickedPosition);
-                clickedTextView = textViewList.textview;
-                //clickedTextView.getText();
-                clickedTextView.setBackgroundResource(R.drawable.radius_background_white);
-                //clickedTextView.setTextColor(getResources().getColor(android.R.color.black));
-                checkClicked[clickedPosition] = false;
+                try {
+                    clickedTextView = textViewList.textview;
+
+                    clickedTextView.setBackgroundResource(R.drawable.radius_background_white);
+                    checkClicked[clickedPosition] = false;
+                } catch (Exception e) {
+                    Log.e("onClickItem", "clickedPositon : "+clickedPosition);
+                    
+                    e.printStackTrace();
+                }
             }
 
             if(position != clickedPosition) {
@@ -827,7 +753,7 @@ public class Search2Activity extends MapActivity {
 
                 for(int i=0; i<top10YoutuberList.length; i++){
                     if(top10YoutuberList[i].channelName.equals(str)){
-                        showYoutuberMarker(global.getMarkerList(), top10YoutuberList[i]);
+                        showYoutuberMarker(global.getMarkerList(), top10YoutuberList[i], tMapView);
                         break;
                     }
                 }
@@ -835,6 +761,7 @@ public class Search2Activity extends MapActivity {
 
         }
     };
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -847,14 +774,12 @@ public class Search2Activity extends MapActivity {
                 for(int i =0;i<activeMarkerList.size();i++){
                     tMapView.removeMarkerItem2(activeMarkerList.get(i).getID());
                 }
-                showLikeMarker();
+                showLikeMarker(global, tMapView);
             } else {   // RESULT_CANCEL
                 Toast.makeText(Search2Activity.this, "Failed", Toast.LENGTH_SHORT).show();
             }
-//        } else if (requestCode == REQUEST_ANOTHER) {
-//            ...
-        }
 
+        }
     }
 
 }
