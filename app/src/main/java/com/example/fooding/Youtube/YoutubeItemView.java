@@ -64,8 +64,7 @@ public class YoutubeItemView extends LinearLayout {
             @Override
             public void onClick(View v) {
                 //링크 열기
-//                Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink));
-//                mcontext.startActivity(myintent);
+                moveToYoutube();
             }
         });
     }
@@ -79,5 +78,10 @@ public class YoutubeItemView extends LinearLayout {
     public void setItemTitle(String title) {youtubeTitleView.setText(title);}
     public void setItemYoutuber(String youtuber) {youtubeYoutuberView.setText(youtuber);}
     //public void setItemDescription(String description) {youtubeDescriptionView.setText(description);}
+
+    public void moveToYoutube() {
+        Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(youtubeLink));
+        mcontext.startActivity(myintent);
+    }
 
 }
