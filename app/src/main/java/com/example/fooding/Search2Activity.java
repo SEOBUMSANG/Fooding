@@ -223,55 +223,29 @@ public class Search2Activity extends MapActivity {
 
         });
             // 마커 클릭 이벤트
-//        tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
-//            @Override
-//            public void onCalloutMarker2ClickEvent(String s, TMapMarkerItem2 tMapMarkerItem2) {
-//                int likeIndex = 0;
-//                Log.w("setOnMarkerClick", "말풍선 클릭");
-//                MarkerOverlay marker = (MarkerOverlay) tMapMarkerItem2;
-//
-//                Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.items.get(0).URL));
-//                startActivityForResult(myintent, 001);
-//
-//                for(likeIndex=0;likeIndex<global.getlikeList().size();likeIndex++) {
-//                    if(marker.getID().equals(global.getlikeList().get(likeIndex)))
-//                        break;
-//                }
-//
-//                if(likeIndex == global.getlikeList().size()){
-//                    global.setLikeList(marker.getID());
-//                }
-//                Log.d("추가된 라이크리스트"," "+marker.getID());
-//            }
-//
-//        });
-//        tMapView.setOnLongClickListenerCallback(new TMapView.OnLongClickListenerCallback() {
-//            @Override
-//            public void onLongPressEvent(ArrayList<TMapMarkerItem> arrayList, ArrayList<TMapPOIItem> arrayList1, TMapPoint tMapPoint) {
-//                Log.w("CalloutRightButtonClick", "말풍선 롱클릭1");
-//                int likeIndex = 0;
-//                MarkerOverlay markerOverlay;
-//                for (TMapMarkerItem2 marker : global.getMarkerList()) {
-//                    if (marker.getMarkerTouch()) {
-//                        markerOverlay = (MarkerOverlay) marker;
-//
-//                        Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(markerOverlay.balloonView.items.get(1).URL));
-//                        startActivityForResult(myintent, 001);
-//
-//                        for(likeIndex=0;likeIndex<global.getlikeList().size();likeIndex++) {
-//                            if(marker.getID().equals(global.getlikeList().get(likeIndex)))
-//                                break;
-//                        }
-//
-//                        if(likeIndex == global.getlikeList().size()){
-//                            global.setLikeList(marker.getID());
-//                        }
-//                        Log.d("추가된 라이크리스트"," "+marker.getID());
-//                    }
-//
-//                }
-//            }
-//        });
+        tMapView.setOnMarkerClickEvent(new TMapView.OnCalloutMarker2ClickCallback() {
+            @Override
+            public void onCalloutMarker2ClickEvent(String s, TMapMarkerItem2 tMapMarkerItem2) {
+                int likeIndex = 0;
+                Log.w("setOnMarkerClick", "말풍선 클릭");
+                MarkerOverlay marker = (MarkerOverlay) tMapMarkerItem2;
+
+                Intent myintent = new Intent(Intent.ACTION_VIEW, Uri.parse(marker.balloonView.items.get(0).URL));
+                startActivityForResult(myintent, 001);
+
+                for(likeIndex=0;likeIndex<global.getlikeList().size();likeIndex++) {
+                    if(marker.getID().equals(global.getlikeList().get(likeIndex)))
+                        break;
+                }
+
+                if(likeIndex == global.getlikeList().size()){
+                    global.setLikeList(marker.getID());
+                }
+                Log.d("추가된 라이크리스트"," "+marker.getID());
+            }
+
+        });
+
 
         //현재위치 버튼
         mylocationButton.setOnClickListener(new View.OnClickListener() {
