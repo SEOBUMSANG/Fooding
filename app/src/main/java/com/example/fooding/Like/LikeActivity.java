@@ -33,8 +33,8 @@ public class LikeActivity extends AppCompatActivity {
         listView = findViewById(R.id.likeListView);
         listView.setAdapter(adapter);
 
-
-
+        //DB의 데이터 조회
+        DBHelper.selectLikeData("likes");
 
     }
 
@@ -45,16 +45,6 @@ public class LikeActivity extends AppCompatActivity {
                 if(global.getMarkerList().get(i).getID().equals(global.getlikeList().get(j))) {
                     marker = (MarkerOverlay) global.getMarkerList().get(i);
                     adapter.addItem(marker.target);    // 어댑터에 추가가
-
-                    try {
-                        DBHelper.insertLikeData(marker.target.getName(),   // DB에 추
-                                marker.target.getResAddress(),
-                                marker.target.getDescription(),
-                                marker.target.youtubeItems.get(0).getThumbnail());
-                    } catch (Exception e) {
-                        Log.e("LikeActivity", "insertLikeData 오류");
-                        e.printStackTrace();
-                    }
                 }
             }
         }

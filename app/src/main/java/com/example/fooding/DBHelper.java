@@ -12,7 +12,7 @@ public class DBHelper {
 
     private static SQLiteDatabase database;
 
-    private static String createTableLikeSql = "create table IF NOT EXISTS outline" +
+    private static String createTableLikeSql = "create table IF NOT EXISTS likes" +
             "(" +
             "    _id integer PRIMARY KEY autoincrement, " +
             "    name text, " +
@@ -21,8 +21,8 @@ public class DBHelper {
             "    image text" +
             ")";
 
-    // TODO : Target 로칼 저
-    private static String createTableTargetSql = "create table IF NOT EXISTS details" +
+    // TODO : Target 로칼 저장
+    private static String createTableTargetSql = "create table IF NOT EXISTS targets" +
             "(" +
             "    _id integer PRIMARY KEY autoincrement " +
             ")"; //소괄호안에 칼럼정보
@@ -45,12 +45,12 @@ public class DBHelper {
         println("createTable 호출됨 : " + tableName);
 
         if (database != null) {     //SQL 문을 여기다 넣으면 좀 복잡해지니까 위에 문자열을 미리 만들어놓기
-            if (tableName.equals("like")) {  //영화 목록화면 용 테이블
+            if (tableName.equals("likes")) {  //시청목록 용 테이블
                 database.execSQL(createTableLikeSql);
-                println("outline 테이블 생성 요청됨.");
-            } else if (tableName.equals("target")) {  //영화 상세화면 용 테이블
+                println("likes 테이블 생성 요청됨.");
+            } else if (tableName.equals("target")) {  //target 용 테이블
                 database.execSQL(createTableTargetSql);
-                println("details 테이블 생성 요청됨.");
+                println("target 테이블 생성 요청됨.");
             }
 
         } else {
@@ -62,7 +62,7 @@ public class DBHelper {
         println("insertData() 호출됨.");
 
         if (database != null) {
-            String sql = "insert or replace into outline(name, address, description, image) values(?, ?, ?, ?, ?)";
+            String sql = "insert or replace into likes(name, address, description, image) values(?, ?, ?, ?)";
             Object[] params = {name, address, description, image};
 
             database.execSQL(sql, params);
@@ -73,7 +73,7 @@ public class DBHelper {
         }
     }
 
-    public TargetList selectLikeData(String tableName) {
+    public static TargetList selectLikeData(String tableName) {
         println("selectData() 호출됨.");
 
         if (database != null) {
@@ -86,7 +86,7 @@ public class DBHelper {
                 String name = cursor.getString(0);
                 String address = cursor.getString(1);
                 String description = cursor.getString(2);
-                String image = cursor.getString(4);
+                String image = cursor.getString(3);
 
                 println("#" + i + " -> " + name + ", " + address + ", " + description + ", " + image);
             }
