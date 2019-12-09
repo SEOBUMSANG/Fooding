@@ -2,10 +2,12 @@ package com.example.fooding.Like;
 
         import android.content.Intent;
         import android.os.Bundle;
+        import android.util.Log;
         import android.widget.Button;
         import android.widget.ListView;
         import androidx.appcompat.app.AppCompatActivity;
 
+        import com.example.fooding.DBHelper;
         import com.example.fooding.Global;
         import com.example.fooding.Like.CommentAdapter;
         import com.example.fooding.MarkerOverlay;
@@ -42,7 +44,17 @@ public class LikeActivity extends AppCompatActivity {
             for(int j=0; j<global.getlikeList().size(); j++){
                 if(global.getMarkerList().get(i).getID().equals(global.getlikeList().get(j))) {
                     marker = (MarkerOverlay) global.getMarkerList().get(i);
-                    adapter.addItem(marker.target);    // 어댑터에 추가
+                    adapter.addItem(marker.target);    // 어댑터에 추가가
+
+                    try {
+                        DBHelper.insertLikeData(marker.target.getName(),   // DB에 추
+                                marker.target.getResAddress(),
+                                marker.target.getDescription(),
+                                marker.target.youtubeItems.get(0).getThumbnail());
+                    } catch (Exception e) {
+                        Log.e("LikeActivity", "insertLikeData 오류");
+                        e.printStackTrace();
+                    }
                 }
             }
         }
